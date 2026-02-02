@@ -113,7 +113,7 @@
     h5,
     h6 {
       font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 12px;
       letter-spacing: -0.02em;
       color: var(--color-text-primary);
@@ -142,7 +142,7 @@
     /* 论文标题 */
     papertitle {
       font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 16px;
       line-height: 1.4;
       letter-spacing: -0.01em;
@@ -163,7 +163,7 @@
 
     /* 强调文本 */
     strong {
-      font-weight: 600;
+      font-weight: 700;
       color: var(--color-text-primary);
     }
 
@@ -188,17 +188,23 @@
       font-weight: 700;
       font-size: 32px;
       letter-spacing: -0.03em;
-      background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-primary-dark) 100%);
+      background:
+        radial-gradient(circle 80px at var(--x, -100%) var(--y, -100%), rgba(56, 189, 248, 0.6) 0%, transparent 100%),
+        linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-primary-dark) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      /* Removed transition to make the spotlight follow instantly */
     }
+
+    /* Removed .main-title:hover block */
 
     /* ===== Badges ===== */
     .badge {
       display: inline-block;
       /* Match conf-badge */
-      padding: 2px 10px;
+      padding: 5px 10px;
+      margin: 2px 0;
       border-radius: var(--radius-full);
       font-size: 0.85em;
       font-weight: 700;
@@ -210,15 +216,31 @@
     }
 
     .badge-highlight {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      background:
+        radial-gradient(circle 60px at var(--x, -100%) var(--y, -100%), rgba(255, 251, 235, 0.8) 0%, transparent 100%),
+        linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
       color: #b45309;
       border: 1px solid #fcd34d;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .badge-highlight:hover {
+      /* Keep shadow but remove brightness filter */
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
     }
 
     .badge-oral {
-      background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+      background:
+        radial-gradient(circle 60px at var(--x, -100%) var(--y, -100%), rgba(243, 232, 255, 0.8) 0%, transparent 100%),
+        linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
       color: #6d28d9;
       border: 1px solid #c4b5fd;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .badge-oral:hover {
+      /* Keep shadow but remove brightness filter */
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
     }
 
     /* Enhanced tooltip for highlights */
@@ -250,8 +272,8 @@
     /* 会议徽章样式 - 浅灰胶囊 */
     .conf-badge {
       display: inline-block;
-      padding: 2px 10px;
-      margin-right: 4px;
+      padding: 4px 10px;
+      margin: 2px 4px 2px 0;
       border-radius: var(--radius-full);
       font-size: 0.85em;
       font-weight: 700;
@@ -1051,6 +1073,30 @@
           <tbody>
             <tr class="experience-item">
               <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
+                <div class="image-container" style="display:flex;justify-content:center;align-items:center;gap:10px">
+                  <img style="width:65px;height:65px;object-fit:contain" src="images/zju.png" alt="ZJU">
+                  <div style="width:1px;height:50px;background-color:#cbd5e1;"></div>
+                  <img style="width:60px;height:60px;object-fit:contain" src="images/westlake.png" alt="Westlake">
+                </div>
+              </td>
+              <td class="compact-td" style="width:75%;vertical-align:center">
+                <a href="https://www.zju.edu.cn/">
+                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Zhejiang University</papertitle>
+                </a> &
+                <a href="https://westlake.edu.cn/">
+                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Westlake University</papertitle>
+                </a>
+                <br>
+                Joint PhD Program in Computer Science
+                <br>
+                Advised by <a href="https://apchenstu.github.io/">Prof. Anpei Chen</a>
+                <br>
+                2025 ~ Present
+              </td>
+            </tr>
+
+            <tr class="experience-item">
+              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
                 <div class="image-container">
                   <img style="width:80px;height:80px;object-fit:contain" src="images/pku_logo_red.jpg" alt="PKU">
                 </div>
@@ -1062,7 +1108,7 @@
                 <br>
                 Master of Science in Computer Science
                 <br>
-                Under the supervision of <a href="https://www.ece.pku.edu.cn/info/1046/2147.htm">Prof. Ronggang
+                Advised by <a href="https://www.ece.pku.edu.cn/info/1046/2147.htm">Prof. Ronggang
                   Wang</a>
                 <br>
                 Sept. 2022 ~ July. 2025
@@ -1106,6 +1152,25 @@
 
         <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
           <tbody>
+            <tr class="experience-item">
+              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
+                <div class="image-container">
+                  <img style="width:125px;height:auto;object-fit:contain" src="images/lixiang.svg" alt="Li Auto">
+                </div>
+              </td>
+              <td class="compact-td" style="width:75%;vertical-align:center">
+                <a href="https://www.lixiang.com/">
+                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Li Auto</papertitle>
+                </a>
+                <br>
+                Research Intern
+                <br>
+                Research on Spatial Reasoning and Representation, World Models
+                <br>
+                Apr. 2025 ~ Aug. 2025
+              </td>
+            </tr>
+
             <tr class="experience-item">
               <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
                 <div class="image-container">
@@ -1188,7 +1253,7 @@
                   <strong>Reviewer:</strong>
                 </p>
                 <ul style="margin:0;padding-left:20px;line-height:1.4">
-                  <li>Conference: ACM MM'24/25, CVPR'25, ICASSP'25, IJCNN'25</li>
+                  <li>Conference: CVPR, ECCV, ACM MM, ICASSP, IJCNN</li>
                   <li>Journal: TCSVT, ISPRS</li>
                 </ul>
               </td>
@@ -1242,6 +1307,28 @@
       </table>
 
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const shinyElements = document.querySelectorAll('.main-title, .badge-highlight, .badge-oral');
+
+        shinyElements.forEach(el => {
+          el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            el.style.setProperty('--x', `${x}px`);
+            el.style.setProperty('--y', `${y}px`);
+          });
+
+          // Optional: Reset light when leaving
+          el.addEventListener('mouseleave', () => {
+            el.style.setProperty('--x', '-100%');
+            el.style.setProperty('--y', '-100%');
+          });
+        });
+      });
+    </script>
 </body>
 
 </html>
