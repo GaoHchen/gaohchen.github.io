@@ -530,9 +530,9 @@
     }
 
     .fn-mark {
-      font-size: 1.1em;
+      font-size: 1.2em;
       color: var(--c-text-muted);
-      vertical-align: super;
+      vertical-align: 0.1em;
       line-height: 0;
     }
 
@@ -600,7 +600,7 @@
 
     .entry-title {
       font-family: var(--font-anthropic-serif);
-      font-size: 26px;
+      font-size: 20px;
       font-weight: 600;
       line-height: 1.35;
       margin-bottom: 2px;
@@ -778,7 +778,8 @@
         --space-3xl: 40px;
       }
 
-      html, body {
+      html,
+      body {
         overflow-x: hidden;
       }
 
@@ -879,7 +880,7 @@
       }
 
       .pub-title {
-        font-size: 17px;
+        font-size: 20px;
         word-break: break-word;
         overflow-wrap: break-word;
       }
@@ -926,17 +927,17 @@
       }
 
       .entry-title {
-        font-size: 18px;
+        font-size: 23px;
         word-break: break-word;
       }
 
       .entry-detail {
-        font-size: 15px;
+        font-size: 16px;
         word-break: break-word;
       }
 
       .entry-date {
-        font-size: 13px;
+        font-size: 14px;
       }
 
       .entry-logo-wide img {
@@ -1064,7 +1065,7 @@
       <ul class="nav-links">
         <li><a href="#publications">Publications</a></li>
         <li><a href="#education">Education</a></li>
-        <li><a href="#experience">Experience</a></li>
+        <li><a href="#experience">Experiences</a></li>
         <li><a href="#awards">Awards</a></li>
         <li><a href="#services">Services</a></li>
       </ul>
@@ -1330,7 +1331,7 @@
           </div>
           <div class="entry-body">
             <div class="entry-title">
-              <a href="https://www.sdu.edu.cn">Shandong University</a>
+              <a href="https://www.en.sdu.edu.cn">Shandong University</a>
             </div>
             <div class="entry-detail">
               Bachelor of Engineering in Computer Science (with honor)<br>
@@ -1345,7 +1346,7 @@
 
     <!-- ===== Experience ===== -->
     <section class="section" id="experience">
-      <div class="section-label">Experience</div>
+      <div class="section-label">Experiences</div>
 
       <div class="entry-list">
 
@@ -1391,7 +1392,7 @@
               <a href="https://www.tencent.com/">Tencent</a>
             </div>
             <div class="entry-detail">
-              Research Intern at <a href="https://hunyuan.tencent.com">Hunyuan</a><br>
+              Research Intern at <a href="https://hunyuan.tencent.com">Hunyuan 3D Team</a><br>
               R&amp;D on <a href="https://3d.hunyuan.tencent.com/">Hunyuan3D-1.0</a>
             </div>
             <div class="entry-date">Aug. 2023 &ndash; Jan. 2024</div>
@@ -1462,7 +1463,7 @@
 
 </html>
 <script>
-  (function() {
+  (function () {
     const navName = document.getElementById('nav-name-toggle');
     const heroName = document.querySelector('.hero-name');
     if (!navName || !heroName) return;
