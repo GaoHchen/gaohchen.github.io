@@ -424,7 +424,10 @@
     }
 
     .venue-tag {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
       font-family: var(--font-anthropic-serif);
       font-size: 13px;
       font-weight: 600;
@@ -631,9 +634,13 @@
       margin-top: 2px;
     }
 
+    .entry-logo.entry-logo-wide {
+      width: 150px;
+    }
+
     .entry-logo-wide img {
-      max-width: 140px;
-      max-height: 56px;
+      max-width: 150px;
+      max-height: 72px;
     }
 
     .entry-logo-wide-stack {
@@ -933,8 +940,8 @@
       }
 
       .entry-logo-wide img {
-        max-width: 100px;
-        max-height: 44px;
+        max-width: 130px;
+        max-height: 60px;
       }
 
       .entry-logo-wide-stack img:first-child {
@@ -1343,7 +1350,7 @@
 
         <div class="entry-row">
           <div class="entry-logo entry-logo-wide">
-            <img src="images/lixiang.svg" alt="Li Auto" style="max-width:100px;">
+            <img src="images/lixiang.svg" alt="Li Auto">
           </div>
           <div class="entry-body">
             <div class="entry-title">
@@ -1359,7 +1366,7 @@
 
         <div class="entry-row">
           <div class="entry-logo entry-logo-wide">
-            <img src="images/baai.svg" alt="BAAI" style="max-width:90px;">
+            <img src="images/baai.svg" alt="BAAI" style="max-width: 110px;">
           </div>
           <div class="entry-body">
             <div class="entry-title">
