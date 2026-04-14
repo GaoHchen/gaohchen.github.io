@@ -1,157 +1,3 @@
-/* MapleMono 字体声明 - 使用 woff2 格式优化加载 */
-
-/* Thin - 100 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-Thin.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-Thin.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: optional;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-ThinItalic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-ThinItalic.ttf') format('truetype');
-  font-weight: 100;
-  font-style: italic;
-  font-display: optional;
-}
-
-/* Extra Light - 200 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-ExtraLight.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-ExtraLight.ttf') format('truetype');
-  font-weight: 200;
-  font-style: normal;
-  font-display: optional;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-ExtraLightItalic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-ExtraLightItalic.ttf') format('truetype');
-  font-weight: 200;
-  font-style: italic;
-  font-display: optional;
-}
-
-/* Light - 300 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-Light.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: optional;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-LightItalic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-  font-display: optional;
-}
-
-/* Regular - 400 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-Regular.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-Italic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Medium - 500 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-Medium.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-MediumItalic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Semi Bold - 600 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-SemiBold.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-SemiBoldItalic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-SemiBoldItalic.ttf') format('truetype');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Bold - 700 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-Bold.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-BoldItalic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-BoldItalic.ttf') format('truetype');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Extra Bold - 800 */
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-ExtraBold.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: optional;
-}
-
-@font-face {
-  font-family: 'MapleMono';
-  src: url('fonts/MapleMonoNormal-ExtraBoldItalic.woff2') format('woff2'),
-       url('fonts/MapleMono-NF-CN-ExtraBoldItalic.ttf') format('truetype');
-  font-weight: 800;
-  font-style: italic;
-  font-display: optional;
-}
-
 /* 全局样式重置和优化 */
 * {
   margin: 0;
@@ -160,66 +6,70 @@
 }
 
 body {
-  font-family: 'MapleMono', 'SF Pro Text', 'Helvetica Neue', Arial, 'PingFang SC','Microsoft YaHei', '微软雅黑', sans-serif;
+  font-family: 'Newsreader', 'Charter', 'Sitka Text', 'Georgia', serif;
   line-height: 1.5;
   color: #333;
-  font-size: 15px;
-  word-spacing: -1px;
+  font-size: 17px;
+  word-spacing: 0;
 }
 
 /* 链接样式 */
 a {
-  color: rgb(7, 125, 165);
+  color: #b15a27;
   text-decoration: none;
   font-size: inherit;
   transition: color 0.2s ease;
-  word-spacing: -2px;
+  word-spacing: 0;
 }
 
 a:focus,
 a:hover {
-  color: rgb(0, 86, 200);
-  text-decoration: underline;
+  color: #943f14;
 }
 
 /* 文本元素统一样式 */
-body, td, th, tr, p, a {
-  font-family: 'MapleMono', 'SF Pro Text', 'Helvetica Neue', Arial, 'PingFang SC','Microsoft YaHei', '微软雅黑', sans-serif;
-  font-size: 15px;
+body,
+td,
+th,
+tr,
+p,
+a {
+  font-family: inherit;
+  font-size: 17px;
   line-height: 1.4;
 }
 
 strong {
-  font-family: 'MapleMono', 'SF Pro Text', 'Helvetica Neue', Arial, 'PingFang SC','Microsoft YaHei', '微软雅黑', sans-serif;
+  font-family: inherit;
   font-size: inherit;
   font-weight: 600;
 }
 
 /* 标题样式 */
 heading {
-  font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, 'PingFang SC','Microsoft YaHei', '微软雅黑', sans-serif;
+  font-family: 'DM Serif Display', 'Georgia', serif;
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 400;
   display: block;
   margin-bottom: 8px;
-  color: #2c3e50;
+  color: #1a1612;
 }
 
 /* 论文标题样式 */
 papertitle {
-  font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, 'PingFang SC','Microsoft YaHei', '微软雅黑', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+  font-family: 'DM Serif Display', 'Georgia', serif;
+  font-size: 18px;
+  font-weight: 400;
   line-height: 1.3;
   display: inline-block;
-  color: rgb(7, 125, 165);
+  color: #1a1612;
 }
 
 /* 姓名样式 */
 name {
-  font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, 'PingFang SC','Microsoft YaHei', '微软雅黑', sans-serif;
+  font-family: 'DM Serif Display', 'Georgia', serif;
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 /* 主要容器样式 */
@@ -276,7 +126,7 @@ name {
   line-height: 1.5;
 }
 
-.paper-content > * {
+.paper-content>* {
   margin-bottom: 6px;
 }
 
@@ -285,7 +135,8 @@ name {
 }
 
 /* 教育和经历部分 */
-.education-item, .experience-item {
+.education-item,
+.experience-item {
   display: flex;
   align-items: center;
   gap: 18px;
@@ -293,17 +144,20 @@ name {
   padding: 15px;
 }
 
-.education-logo, .experience-logo {
+.education-logo,
+.experience-logo {
   flex: 0 0 80px;
   text-align: center;
 }
 
-.education-logo img, .experience-logo img {
+.education-logo img,
+.experience-logo img {
   max-width: 60px;
   max-height: 60px;
 }
 
-.education-content, .experience-content {
+.education-content,
+.experience-content {
   flex: 1;
   line-height: 1.5;
 }
@@ -376,17 +230,18 @@ span.highlight {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .paper-item {
     flex-direction: column;
   }
-  
+
   .paper-image {
     flex: none;
     align-self: center;
   }
-  
-  .education-item, .experience-item {
+
+  .education-item,
+  .experience-item {
     flex-direction: column;
     text-align: center;
   }

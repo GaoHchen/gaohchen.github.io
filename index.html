@@ -1,307 +1,496 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huachen Gao</title>
+  <meta name="author" content="Huachen Gao">
+  <meta name="description" content="Huachen Gao's Homepage">
+  <link rel="icon" href="images/cat.jpg" type="image/jpg">
+  <link rel="apple-touch-icon" href="images/cat.jpg" type="image/jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&family=LXGW+WenKai+TC:wght@300;400;700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="stylesheet.css">
+
   <style>
-    /* ===== CSS Variables - Modern Color Palette ===== */
-    :root {
-      /* Primary colors */
-      --color-primary: #0ea5e9;
-      --color-primary-dark: #0284c7;
-      --color-primary-light: #e0f2fe;
-
-      /* Text colors */
-      --color-text-primary: #1e293b;
-      --color-text-secondary: #475569;
-      --color-text-muted: #64748b;
-
-      /* Background colors */
-      --color-bg-primary: #ffffff;
-      --color-bg-secondary: #f0f4f8;
-      /* 更淡雅的蓝灰色 */
-      --color-bg-tertiary: #f1f5f9;
-
-      /* Accent colors for badges */
-      --color-highlight: #f97316;
-      --color-oral: #8b5cf6;
-      --color-cvpr: #ef4444;
-      --color-eccv: #3b82f6;
-      --color-acmmm: #10b981;
-
-      /* Shadows */
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
-
-      /* Border radius */
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
-      --radius-full: 9999px;
-
-      /* Transitions */
-      --transition-fast: 0.15s ease;
-      --transition-normal: 0.25s ease;
-      --transition-slow: 0.4s ease;
-    }
-
-    /* ===== Font Imports ===== */
-    @font-face {
-      font-family: 'MapleMono';
-      src: url('fonts/MapleMono-NF-CN-Regular.woff2') format('woff2'),
-        url('fonts/MapleMono-NF-CN-Regular.ttf') format('truetype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: 'MapleMono';
-      src: url('fonts/MapleMono-NF-CN-Medium.woff2') format('woff2'),
-        url('fonts/MapleMono-NF-CN-Medium.ttf') format('truetype');
-      font-weight: 500;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: 'MapleMono';
-      src: url('fonts/MapleMono-NF-CN-SemiBold.woff2') format('woff2'),
-        url('fonts/MapleMono-NF-CN-SemiBold.ttf') format('truetype');
-      font-weight: 600;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: 'MapleMono';
-      src: url('fonts/MapleMono-NF-CN-Bold.woff2') format('woff2'),
-        url('fonts/MapleMono-NF-CN-Bold.ttf') format('truetype');
-      font-weight: 700;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    /* ===== Global Reset & Base Styles ===== */
-    * {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font-sans: 'DM Sans', 'LXGW WenKai TC', 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-display: 'DM Serif Display', 'Georgia', serif;
+      --font-anthropic-serif: 'Newsreader', 'Charter', 'Sitka Text', 'Georgia', serif;
+      --font-mono: 'MapleMono', 'SF Mono', 'Fira Code', monospace;
+
+      --c-bg: #faf9f7;
+      --c-bg-nav: rgba(250, 249, 247, 0.85);
+      --c-bg-card: #ffffff;
+      --c-bg-card-hover: #fefefe;
+      --c-text: #1a1612;
+      --c-text-secondary: #52504b;
+      --c-text-muted: #8b8783;
+      --c-accent: #b15a27;
+      --c-accent-hover: #943f14;
+      --c-border: #e8e5e0;
+      --c-border-light: #f0eeea;
+      --c-highlight-bg: #fef7ed;
+      --c-highlight-text: #9a6b2f;
+      --c-highlight-border: #ecd9b5;
+      --c-oral-bg: #f4f0fa;
+      --c-oral-text: #6b4fa0;
+      --c-oral-border: #d8cce8;
+
+      --max-w: 1000px;
+      --nav-h: 64px;
+      --radius: 12px;
+      --radius-sm: 8px;
+
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 32px;
+      --space-xl: 46px;
+      --space-2xl: 36px;
+      --space-3xl: 70px;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-family: var(--font-anthropic-serif);
+      font-size: 18px;
       font-weight: 400;
-      line-height: 1.6;
-      margin: 0;
-      padding: 20px;
-      color: var(--color-text-primary);
-      background: var(--color-bg-secondary);
-      /* 纯色背景，更干净 */
-      min-height: 100vh;
-      font-size: 15px;
+      line-height: 1.7;
+      color: var(--c-text);
+      background: var(--c-bg);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* ===== Nav ===== */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--c-bg-nav);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--c-border);
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-name {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 400;
+      color: var(--c-text);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-name:hover {
+      color: var(--c-accent);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--c-text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links a:hover {
+      color: var(--c-text);
+      text-decoration: none;
+    }
+
     /* ===== Typography ===== */
-    heading,
     h1,
     h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-      font-weight: 700;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-      color: var(--color-text-primary);
-    }
-
-    heading {
-      font-size: 22px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      position: relative;
-      padding-bottom: 8px;
-    }
-
-    heading::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--color-primary), transparent);
-      border-radius: var(--radius-full);
-    }
-
-    /* 论文标题 */
-    papertitle {
-      font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.4;
+    h3 {
+      font-family: var(--font-display);
+      font-weight: 450;
+      color: var(--c-text);
       letter-spacing: -0.01em;
-      display: block;
-      margin-bottom: 6px;
     }
 
-    papertitle a {
-      color: var(--color-text-primary);
-      background: linear-gradient(180deg, transparent 85%, var(--color-primary-light) 85%);
-      transition: background var(--transition-fast), color var(--transition-fast);
+    h1 {
+      font-size: 46px;
+      line-height: 1.15;
     }
 
-    papertitle a:hover {
-      color: var(--color-primary-dark);
-      background: linear-gradient(180deg, transparent 70%, var(--color-primary-light) 70%);
+    h2 {
+      font-size: 32px;
+      line-height: 1.2;
     }
 
-    /* 强调文本 */
-    strong {
-      font-weight: 700;
-      color: var(--color-text-primary);
-    }
-
-    /* ===== Links ===== */
     a {
-      color: var(--color-primary);
-      font-weight: 500;
+      color: var(--c-accent);
       text-decoration: none;
-      transition: color var(--transition-fast);
+      transition: color 0.2s ease;
     }
 
     a:hover {
-      color: var(--color-primary-dark);
+      color: var(--c-accent-hover);
+    }
+
+    /* ===== Layout ===== */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    .section {
+      padding: var(--space-2xl) 0;
+    }
+
+    .section+.section {
+      border-top: 1px solid var(--c-border);
+    }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--c-text);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* ===== Hero / Profile ===== */
+    .hero {
+      padding: var(--space-3xl) 0 var(--space-2xl);
+    }
+
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .hero-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hero-name {
+      margin-bottom: 4px;
+    }
+
+    .hero-name-cn {
+      font-family: 'LXGW WenKai TC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 34px;
+      font-weight: 400;
+      color: var(--c-text-muted);
+      margin-left: 10px;
+    }
+
+    .hero-email {
+      font-size: 15px;
+      font-family: var(--font-anthropic-serif);
+      color: var(--c-text-muted);
+      margin-bottom: var(--space-lg);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-email a {
+      color: var(--c-text-muted);
+    }
+
+    .hero-email a:hover {
+      color: var(--c-accent);
+    }
+
+    .hero-bio {
+      font-family: var(--font-anthropic-serif);
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--c-text-secondary);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-bio a {
+      font-family: inherit;
+      color: var(--c-text);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--c-border);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s ease, color 0.2s ease;
+    }
+
+    .hero-bio a:hover {
+      color: var(--c-accent);
+      text-decoration-color: var(--c-accent);
+    }
+
+    .hero-interests {
+      font-family: var(--font-anthropic-serif);
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--c-text-muted);
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-photo {
+      flex-shrink: 0;
+      width: 180px;
+    }
+
+    .hero-photo img {
+      width: 100%;
+      border-radius: var(--radius);
+      filter: grayscale(5%);
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-links a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--c-text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--c-border);
+      background: var(--c-bg-card);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .hero-links a:hover {
+      border-color: var(--c-text-muted);
+      color: var(--c-text);
+      text-decoration: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .hero-links a i {
+      font-size: 15px;
+      width: 16px;
+      text-align: center;
+    }
+
+    /* ===== Publication Cards ===== */
+    .section-note {
+      font-size: 18px;
+      color: var(--c-text-muted);
+      margin-top: -20px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .pub-entry {
+      display: flex;
+      gap: 24px;
+      padding: 24px;
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-border-light);
+      border-radius: var(--radius);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .pub-entry:hover {
+      border-color: var(--c-border);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .pub-thumb {
+      flex-shrink: 0;
+      width: 180px;
+      align-self: center;
+    }
+
+    .pub-thumb img {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-origin: center center;
+    }
+
+    .pub-thumb img:hover {
+      transform: scale(1.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+      position: relative;
+      z-index: 10;
+    }
+
+    .pub-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pub-title {
+      font-family: var(--font-anthropic-serif);
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--c-text);
+      margin-bottom: var(--space-xs);
+    }
+
+    .pub-title a {
+      color: var(--c-text);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .pub-title a:hover {
+      color: var(--c-accent);
+    }
+
+    .pub-star {
+      color: #c9963b;
+      font-size: 13px;
+      margin-right: 3px;
+    }
+
+    .pub-star .fa-star {
+      display: inline-block;
+      transition: transform 0.4s ease;
+    }
+
+    .pub-star .fa-star:hover {
+      transform: rotate(360deg) scale(1.2);
+    }
+
+    .pub-authors {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--c-text-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .pub-authors strong {
+      color: var(--c-text);
+      font-weight: 610;
+    }
+
+    .pub-venue {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: var(--space-sm);
+    }
+
+    .venue-tag {
+      display: inline-block;
+      font-family: var(--font-anthropic-serif);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--c-bg);
+      color: var(--c-text-secondary);
+      text-decoration: none;
+      border: 1px solid var(--c-border-light);
+      transition: all 0.15s ease;
+    }
+
+    .venue-tag:hover {
+      border-color: var(--c-border);
+      color: var(--c-text);
       text-decoration: none;
     }
 
-    /* 论文链接样式已禁用 */
-
-    /* ===== Main Title ===== */
-    .main-title {
-      font-family: 'MapleMono', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-      font-weight: 700;
-      font-size: 32px;
-      letter-spacing: -0.03em;
-      background:
-        radial-gradient(circle 80px at var(--x, -100%) var(--y, -100%), rgba(56, 189, 248, 0.6) 0%, transparent 100%),
-        linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-primary-dark) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      /* Removed transition to make the spotlight follow instantly */
-    }
-
-    /* Removed .main-title:hover block */
-
-    /* ===== Badges ===== */
-    .badge {
-      display: inline-block;
-      /* Match conf-badge */
-      padding: 5px 10px;
-      margin: 2px 0;
-      border-radius: var(--radius-full);
-      font-size: 0.85em;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      /* line-height: 1; Removed to allow natural height matching conf-badge */
-      vertical-align: middle;
-      /* Optional, helps align with text */
-    }
-
     .badge-highlight {
-      background:
-        radial-gradient(circle 60px at var(--x, -100%) var(--y, -100%), rgba(255, 251, 235, 0.8) 0%, transparent 100%),
-        linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      color: #b45309;
-      border: 1px solid #fcd34d;
-      transition: box-shadow 0.3s ease;
-    }
-
-    .badge-highlight:hover {
-      /* Keep shadow but remove brightness filter */
-      box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
-    }
-
-    .badge-oral {
-      background:
-        radial-gradient(circle 60px at var(--x, -100%) var(--y, -100%), rgba(243, 232, 255, 0.8) 0%, transparent 100%),
-        linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-      color: #6d28d9;
-      border: 1px solid #c4b5fd;
-      transition: box-shadow 0.3s ease;
-    }
-
-    .badge-oral:hover {
-      /* Keep shadow but remove brightness filter */
-      box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
-    }
-
-    /* Enhanced tooltip for highlights */
-    .highlight-tooltip {
+      background: var(--c-highlight-bg);
+      color: var(--c-highlight-text);
+      border-color: var(--c-highlight-border);
       position: relative;
       cursor: pointer;
     }
 
-    .tooltip-text {
+    .badge-highlight:hover {
+      box-shadow: 0 0 8px rgba(200, 160, 60, 0.3);
+    }
+
+    .badge-oral {
+      background: var(--c-oral-bg);
+      color: var(--c-oral-text);
+      border-color: var(--c-oral-border);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .badge-oral:hover {
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+    }
+
+    .badge-tooltip {
       position: absolute;
       bottom: calc(100% + 8px);
       left: 50%;
       transform: translateX(-50%);
-      background: var(--color-text-primary);
-      color: white;
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
+      background: var(--c-text);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 6px;
       font-size: 12px;
+      font-family: var(--font-anthropic-serif);
       font-weight: 500;
       white-space: nowrap;
+      letter-spacing: 0;
+      text-transform: none;
       opacity: 0;
       visibility: hidden;
-      transition: all var(--transition-fast);
-      z-index: 1000;
+      transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
       pointer-events: none;
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    /* 会议徽章样式 - 浅灰胶囊 */
-    .conf-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      margin: 2px 4px 2px 0;
-      border-radius: var(--radius-full);
-      font-size: 0.85em;
-      font-weight: 700;
-      /* 加粗 */
-      font-style: normal;
-      /* 取消斜体 */
-      color: var(--color-text-secondary) !important;
-      background-color: var(--color-bg-tertiary);
-      text-decoration: none !important;
-      transition: all 0.2s ease;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .conf-badge:hover {
-      background-color: #e2e8f0;
-      color: var(--color-text-primary) !important;
-      transform: translateY(-1px);
-    }
-
-    /* 移除特定颜色的渐变，统一使用上面的浅灰样式 */
-    .badge-cvpr,
-    .badge-eccv,
-    .badge-icassp,
-    .badge-acmmm {
-      background: var(--color-bg-tertiary);
-    }
-
-    .tooltip-text::after {
+    .badge-tooltip::after {
       content: "";
       position: absolute;
       top: 100%;
@@ -309,1026 +498,987 @@
       margin-left: -5px;
       border-width: 5px;
       border-style: solid;
-      border-color: var(--color-text-primary) transparent transparent transparent;
+      border-color: var(--c-text) transparent transparent transparent;
     }
 
-    .highlight-tooltip:hover .tooltip-text {
+    .badge-highlight:hover .badge-tooltip,
+    .badge-oral:hover .badge-tooltip {
       opacity: 1;
       visibility: visible;
       transform: translateX(-50%) translateY(-2px);
     }
 
-    /* ===== Star Animation ===== */
-    .fa-star {
-      color: var(--color-highlight);
-      transition: transform var(--transition-normal);
-      display: inline-block;
+    .pub-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px 12px;
     }
 
-    .fa-star:hover {
-      transform: rotate(360deg) scale(1.2);
+    .pub-links a {
+      font-size: 18px;
+      font-family: var(--font-anthropic-serif);
+      font-weight: 500;
+      color: var(--c-accent);
+      letter-spacing: 0;
     }
 
-    /* ===== Layout Components ===== */
-    .main-container {
-      max-width: 1000px;
-      margin: 0 auto;
+    .pub-links a:hover {
+      text-decoration: underline;
     }
 
-    .section-spacing {
-      margin-bottom: 32px;
+    .fn-mark {
+      font-size: 1.1em;
+      color: var(--c-text-muted);
+      vertical-align: super;
+      line-height: 0;
     }
 
-    .compact-table {
-      margin-bottom: 20px;
+    /* ===== Entry Rows (Edu / Exp) ===== */
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
     }
 
-    .compact-td {
-      padding: 16px 20px;
+    .entry-row {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      padding: 28px;
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-border-light);
+      border-radius: var(--radius);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .no-bottom-margin {
-      margin-bottom: 0;
-    }
-
-    /* ===== Cards & Sections ===== */
-    .main-section {
-      background: var(--color-bg-primary);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
-      margin-bottom: 28px;
-      padding: 24px;
-      transition: box-shadow var(--transition-normal), transform var(--transition-normal);
-      border: 1px solid rgba(0, 0, 0, 0.04);
-    }
-
-    .main-section:hover {
-      box-shadow: var(--shadow-lg);
+    .entry-row:hover {
+      border-color: var(--c-border);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
       transform: translateY(-2px);
     }
 
-    /* Paper cards */
-    .paper-row {
-      border: 1px solid var(--color-bg-tertiary);
-      margin-bottom: 20px;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      transition: all var(--transition-normal);
-      background: var(--color-bg-primary);
-      overflow: hidden;
+    .entry-logo {
+      flex-shrink: 0;
+      width: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
 
-    .paper-row:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-      border-color: var(--color-primary-light);
+    .entry-logo img {
+      max-width: 94px;
+      max-height: 84px;
+      object-fit: contain;
     }
 
-    .paper-row:last-child {
-      margin-bottom: 0;
+    .entry-logo-dual {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* Experience cards */
-    .experience-item {
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 16px;
-      background: var(--color-bg-primary);
-      transition: all var(--transition-normal);
-      border: 1px solid var(--color-bg-tertiary);
+    .entry-logo-dual img {
+      max-width: 62px;
+      max-height: 62px;
+      object-fit: contain;
     }
 
-    .experience-item:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
+    .entry-logo-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--c-border);
     }
 
-    /* Profile section */
-    .profile-section {
-      background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      padding: 32px;
-      margin-bottom: 32px;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      position: relative;
-      overflow: hidden;
+    .entry-body {
+      flex: 1;
+      min-width: 0;
     }
 
-    /* 移除光晕装饰 - 用户不喜欢 */
-    /*
-    .profile-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, var(--color-primary-light) 0%, transparent 70%);
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    */
-
-    .section-header {
-      background: var(--color-bg-primary);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-sm);
-      padding: 16px 20px;
-      margin-bottom: 20px;
+    .entry-title {
+      font-family: var(--font-anthropic-serif);
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 2px;
     }
 
-    /* ===== Images ===== */
-    .image-container img {
-      transition: transform var(--transition-normal);
-      border-radius: 0;
-      /* 用户要求方形，避免裁剪 */
+    .entry-title a {
+      color: var(--c-text);
+      font-weight: 600;
     }
 
-    .image-container:hover img {
-      transform: scale(1.05);
+    .entry-title a:hover {
+      color: var(--c-accent);
+      text-decoration: none;
     }
 
-    .profile-section img {
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-normal);
+    .entry-detail {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--c-text-secondary);
     }
 
-    .profile-section img:hover {
-      box-shadow: var(--shadow-lg);
-      transform: scale(1.02);
+    .entry-detail a {
+      color: var(--c-accent);
     }
 
-    /* ===== Social Links ===== */
-    .profile-section p:last-child a {
-      display: inline-flex;
+    .entry-date {
+      font-size: 14px;
+      color: var(--c-text-muted);
+      font-family: var(--font-anthropic-serif);
+      letter-spacing: 0;
+      margin-top: 2px;
+    }
+
+    .entry-logo-wide img {
+      max-width: 140px;
+      max-height: 56px;
+    }
+
+    .entry-logo-wide-stack {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 6px;
-      padding: 8px 16px;
-      margin: 4px;
-      border-radius: var(--radius-full);
-      background: var(--color-bg-tertiary);
-      color: var(--color-text-secondary);
+    }
+
+    .entry-logo-wide-stack img:first-child {
+      max-width: 130px;
+    }
+
+    .entry-logo-wide-stack img:last-child {
+      max-width: 100px;
+    }
+
+    /* ===== Awards / Services / Misc ===== */
+    .text-block {
+      font-size: 18px;
+      line-height: 1.3;
+      color: var(--c-text-secondary);
+    }
+
+    .text-block p {
+      margin-bottom: var(--space-sm);
+    }
+
+    .text-block strong {
+      color: var(--c-text);
+      font-size: 20px;
+    }
+
+    .text-block ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .text-block li {
+      margin-bottom: var(--space-xs);
+    }
+
+    .awards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .awards-line {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-md);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--c-border-light);
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .awards-line:last-child {
+      border-bottom: none;
+    }
+
+    .awards-year {
+      flex-shrink: 0;
+      font-family: var(--font-anthropic-serif);
       font-size: 14px;
       font-weight: 500;
-      transition: all var(--transition-fast);
-      border: 1px solid transparent;
-      text-decoration: none !important;
-      /* 去除下划线 */
+      color: var(--c-text-muted);
+      min-width: 64px;
     }
 
-    .profile-section p:last-child a:hover {
-      background: #e2e8f0;
-      /* 更柔和的深灰色背景 (Slate-200) */
-      color: var(--color-text-primary);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
+    .awards-desc {
+      color: var(--c-text-secondary);
     }
 
-    .profile-section p:last-child a i {
+    .tooltip-inline {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted var(--c-text-muted);
+      color: var(--c-text);
+    }
+
+    .tooltip-inline::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--c-text);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: var(--font-anthropic-serif);
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease, visibility 0.15s ease;
+      pointer-events: none;
+    }
+
+    .tooltip-inline:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== Footer ===== */
+    .site-footer {
+      text-align: center;
+      padding: var(--space-xl) 0;
       font-size: 16px;
+      color: var(--c-text-muted);
+      border-top: 1px solid var(--c-border);
     }
 
-    /* 响应式布局 - 移动端优化 */
-    @media (max-width: 768px) {
+    .site-footer a {
+      color: var(--c-text-muted);
+    }
 
-      /* 基础盒模型设置 */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
+    .site-footer a:hover {
+      color: var(--c-accent);
+    }
+
+    .globe-widget {
+      margin: var(--space-lg) auto var(--space-md);
+      text-align: center;
+      max-width: 150px;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 700px) {
+      :root {
+        --space-2xl: 28px;
+        --space-3xl: 40px;
       }
 
-      body {
-        -webkit-text-size-adjust: 100%;
-        /* 防止 iOS 字体自动放大 */
-        padding: 10px;
+      html, body {
         overflow-x: hidden;
-        /* 防止水平滚动 */
       }
 
-      .main-container {
-        padding: 0 5px;
+      .container {
+        padding: 0 var(--space-md);
         max-width: 100%;
         overflow-x: hidden;
       }
 
-      /* 防止文字溢出 */
-      p,
-      a,
-      span,
-      papertitle,
-      strong,
-      em,
-      li {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        word-break: break-word;
-        hyphens: auto;
+      .nav-inner {
+        padding: 0 var(--space-md);
       }
 
-      /* 论文标题特殊处理 */
-      papertitle {
-        display: block;
-        font-size: 14px !important;
-        line-height: 1.4 !important;
-        word-spacing: 0 !important;
-      }
-
-      /* 链接特殊处理 - 防止长链接溢出 */
-      a {
-        word-spacing: 0 !important;
-        font-size: inherit;
-      }
-
-      .main-title {
-        font-size: 22px !important;
-      }
-
-      .profile-section,
-      .main-section,
-      .section-header {
-        padding: 12px;
-        overflow: hidden;
-      }
-
-      heading {
-        font-size: 18px;
-        display: block;
-      }
-
-      /* 基础字体大小调整 */
-      body {
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      /* 将表格驱动的双栏布局转换为灵活的单栏堆叠布局 */
-      .compact-table {
-        width: 100% !important;
-        table-layout: fixed;
-        /* 固定表格布局防止溢出 */
-      }
-
-      .profile-section .compact-table>tbody>tr,
-      .paper-row,
-      .experience-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* 水平居中 */
-      }
-
-      .profile-section .compact-table td,
-      .paper-row td,
-      .experience-item td {
-        width: 100% !important;
-        padding: 8px 5px !important;
-        max-width: 100%;
-        overflow: hidden;
-      }
-
-      /* --- 内容重新排序与对齐 --- */
-
-      /* 个人信息: 头像在上 */
-      .profile-section .compact-table td:first-child {
-        order: 2;
-      }
-
-      .profile-section .compact-table td:last-child {
-        order: 1;
-      }
-
-      .profile-section p {
-        text-align: justify !important;
-        font-size: 13px !important;
-        line-height: 1.6 !important;
-        padding: 0 5px;
-      }
-
-      .profile-section p[style*="text-align:center"] {
-        text-align: center !important;
-      }
-
-      /* 论文: 图片在上 */
-      .paper-row {
-        align-items: stretch;
-        /* 允许内容自适应宽度 */
-        padding: 10px 5px !important;
-      }
-
-      .paper-row td:first-child {
-        order: 1;
-        text-align: center !important;
-      }
-
-      .paper-row td:last-child {
-        order: 2;
-        text-align: left !important;
-        font-size: 13px;
-      }
-
-      .paper-row td:last-child,
-      .paper-row td:last-child * {
-        text-align: left !important;
-      }
-
-      /* 论文链接样式优化 */
-      .paper-row td:last-child a {
-        font-size: 12px;
-        display: inline-block;
-        margin: 2px 0;
-      }
-
-      /* 经历: Logo在上 */
-      .experience-item td:first-child {
-        order: 1;
-      }
-
-      .experience-item td:last-child {
-        order: 2;
-        text-align: center !important;
-        font-size: 13px;
-      }
-
-      .experience-item td:last-child,
-      .experience-item td:last-child * {
-        text-align: center !important;
-      }
-
-      .experience-item a[href] {
-        display: inline-block;
-      }
-
-      /* --- 图片尺寸调整 --- */
-      .profile-section img {
-        width: 140px !important;
-        max-width: 140px !important;
-      }
-
-      .paper-row img {
-        width: 70% !important;
-        max-width: 200px;
-      }
-
-      .experience-item img {
-        max-width: 90px !important;
-        height: auto !important;
-      }
-
-      /* 奖项和服务部分优化 */
-      .main-section p {
-        font-size: 13px;
-        line-height: 1.5;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-      }
-
-      .main-section ul {
-        padding-left: 15px;
-        font-size: 13px;
-      }
-
-      /* Tooltip 优化 */
-      .tooltip-text {
-        font-size: 12px;
-        max-width: 200px;
-        white-space: normal;
-      }
-
-      .highlight-tooltip {
-        font-size: 14px;
-      }
-
-      /* 社交链接移动端优化 - 防止溢出 */
-      .profile-section p:last-child {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 6px !important;
-        padding: 0 !important;
-        max-width: 100% !important;
-      }
-
-      .profile-section p:last-child a {
-        padding: 6px 12px !important;
-        margin: 2px !important;
-        font-size: 12px !important;
-        flex-shrink: 0;
-      }
-
-      /* 在小屏幕上隐藏地球访问统计 */
-      #clstr_globe {
-        display: none;
-      }
-
-      /* 页脚优化 */
-      table[style*="margin:10px auto 0"] p {
-        font-size: 11px !important;
-      }
-    }
-
-    /* 更小屏幕的额外优化 */
-    @media (max-width: 400px) {
-      body {
-        padding: 5px;
-      }
-
-      .main-title {
-        font-size: 20px !important;
-      }
-
-      papertitle {
-        font-size: 13px !important;
-      }
-
-      .profile-section p,
-      .paper-row td:last-child,
-      .experience-item td:last-child,
-      .main-section p {
-        font-size: 12px !important;
-      }
-
-      .main-section ul {
-        font-size: 12px;
-      }
-
-      heading {
+      .nav-name {
         font-size: 16px;
       }
 
-      .profile-section img {
-        width: 120px !important;
-        max-width: 120px !important;
+      .nav-links {
+        gap: 12px;
+      }
+
+      .nav-links a {
+        font-size: 13px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .section-label {
+        font-size: 26px;
+      }
+
+      .hero-inner {
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: var(--space-lg);
+        text-align: center;
+      }
+
+      .hero-photo {
+        width: 130px;
+      }
+
+      .hero-bio {
+        text-align: left;
+        font-size: 16px;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .hero-bio a {
+        word-break: break-word;
+      }
+
+      .hero-email {
+        font-size: 14px;
+      }
+
+      .hero-interests {
+        font-size: 15px;
+        text-align: left;
+      }
+
+      .hero-links {
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .hero-links a {
+        font-size: 13px;
+        padding: 6px 12px;
+      }
+
+      .hero-name-cn {
+        font-size: 28px;
+      }
+
+      /* Publications */
+      .section-note {
+        font-size: 15px;
+      }
+
+      .pub-entry {
+        flex-direction: column;
+        gap: var(--space-md);
+        padding: 16px;
+      }
+
+      .pub-thumb {
+        width: 80%;
+        max-width: 240px;
+        align-self: center;
+      }
+
+      .pub-title {
+        font-size: 17px;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .pub-authors {
+        font-size: 14px;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .pub-venue {
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .venue-tag {
+        font-size: 12px;
+        padding: 2px 8px;
+      }
+
+      .pub-links {
+        gap: 2px 8px;
+      }
+
+      .pub-links a {
+        font-size: 15px;
+      }
+
+      /* Education & Experience */
+      .entry-row {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-sm);
+        padding: 16px;
+      }
+
+      .entry-logo {
+        width: auto;
+      }
+
+      .entry-logo img {
+        max-width: 70px;
+        max-height: 70px;
+      }
+
+      .entry-title {
+        font-size: 18px;
+        word-break: break-word;
+      }
+
+      .entry-detail {
+        font-size: 15px;
+        word-break: break-word;
+      }
+
+      .entry-date {
+        font-size: 13px;
+      }
+
+      .entry-logo-wide img {
+        max-width: 100px;
+        max-height: 44px;
+      }
+
+      .entry-logo-wide-stack img:first-child {
+        max-width: 100px;
+      }
+
+      .entry-logo-wide-stack img:last-child {
+        max-width: 80px;
+      }
+
+      /* Awards */
+      .awards-line {
+        flex-direction: column;
+        gap: 2px;
+        font-size: 15px;
+      }
+
+      .awards-year {
+        min-width: auto;
+        font-size: 13px;
+      }
+
+      /* Text blocks */
+      .text-block {
+        font-size: 15px;
+        word-break: break-word;
+      }
+
+      .text-block strong {
+        font-size: 17px;
+      }
+
+      /* Footer */
+      .site-footer {
+        font-size: 14px;
+      }
+
+      .globe-widget {
+        display: none;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        padding: 0 12px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .hero-name-cn {
+        font-size: 24px;
+        display: block;
+        margin-left: 0;
+        margin-top: 4px;
+      }
+
+      .nav-links {
+        gap: 8px;
+      }
+
+      .nav-links a {
+        font-size: 12px;
+      }
+
+      .pub-title {
+        font-size: 16px;
+      }
+
+      .entry-title {
+        font-size: 16px;
+      }
+
+      .pub-thumb {
+        width: 100%;
+        max-width: 200px;
+      }
+    }
+
+    @media print {
+      body {
+        font-size: 14px;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .site-nav,
+      .globe-widget,
+      .site-footer {
+        display: none;
+      }
+
+      a {
+        color: var(--c-text) !important;
+      }
+
+      .pub-entry,
+      .entry-row {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      .pub-thumb {
+        width: 120px;
       }
     }
   </style>
-
-  <title> Huachen Gao's Homepage </title>
-  <meta name="author" content="Huachen Gao (高华辰)">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="preload" href="fonts/MapleMono-NF-CN-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <link rel="preload" href="fonts/MapleMono-NF-CN-SemiBold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-
-  <link rel="stylesheet" type="text/css" href="stylesheet.css">
-  <link rel=icon href=images/cat.jpg type=image/jpg>
-  <link rel=apple-touch-icon href=images/cat.jpg type=image/jpg>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 </head>
 
 <body>
-  <div class="main-container">
-    <!-- 个人信息部分 -->
-    <div class="profile-section">
-      <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-        <tbody>
-          <tr>
-            <td class="compact-td" style="width:65%;vertical-align:middle">
-              <p class="main-title" style="font-size: 28px;text-align:center;margin-bottom:12px">
-                Huachen Gao <span
-                  style="text-align: left; font-family: 'KaiTi', '楷体', STKaiti, '华文楷体', serif;">高华辰</span>
-              </p>
-              <p style="text-align:center;margin-bottom:20px">
-                <a href="mailto:gaohuachen712@gmail.com" style="color:grey;font-size:14px">
-                  <i class="fa-regular fa-envelope"></i> gaohuachen712 at gmail dot com
-                </a>
-              </p>
 
-              <p style="line-height: 1.5;font-size: 15px;text-align:justify;margin-bottom:12px">
-                I am a PhD student at <a href="http://www.inception3d.fun/">Inception3D Lab</a>,
-                <a href="https://westlake.edu.cn/">Westlake University</a> and <a
-                  href="https://www.zju.edu.cn/">Zhejiang University</a>, advised by Prof.
-                <a href="https://apchenstu.github.io/">Anpei Chen</a>. Prior to this, I obtained my MSc degree at
-                <a href="https://idm.pku.edu.cn">National Engineering Research Center for Visual Technology</a>,
-                <a href="https://www.pku.edu.cn">Peking University</a>, advised by Prof.
-                <a href="https://www.ece.pku.edu.cn/info/1046/2147.htm">Ronggang Wang</a>. I received my BEng from
-                <a href="https://www.sdu.edu.cn">Shandong University</a>.
-              </p>
-
-              <p style="line-height: 1.5;margin-bottom:15px">
-                My research interests include spatial intelligence, 3D content generation/reconstruction/representation,
-                neural rendering, and multi-view stereo.
-              </p>
-
-              <p style="text-align:center;margin-bottom:0">
-                <a href="https://scholar.google.com.hk/citations?user=x8zi_cEAAAAJ&hl=en"><i class="fab fa-google"></i>
-                  Google Scholar</a> &nbsp;/&nbsp;
-                <a href="https://github.com/GaoHchen"><i class="fab fa-github"></i> Github</a> &nbsp;/
-                <a href="images/wechat.JPG"><i class="fab fa-weixin"></i> WeChat</a> &nbsp;
-                <!-- <a href="https://blog.csdn.net/weixin_43537073?spm=1000.2115.3001.5343"><i class="fa-solid fa-book"></i>
-                  Blog</a> -->
-              </p>
-            </td>
-
-            <td class="compact-td" style="width:35%;text-align:center;vertical-align:middle">
-              <img style="width:60%;max-width:200px;border-radius:8px" alt="profile photo" src="images/mylife.JPG">
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- ===== Navigation ===== -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-name" id="nav-name-toggle">Homepage</a>
+      <ul class="nav-links">
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#awards">Awards</a></li>
+      </ul>
     </div>
-    <div class="main-section">
-      <!-- 研究部分 -->
-      <div class="main-section">
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr>
-              <td class="compact-td" style="width:100%;vertical-align:middle">
-                <heading>Research</heading>
-                <br>
-                <p style="margin-bottom:12px">
-                  Published papers are listed below. (<i class="fa-solid fa-asterisk"
-                    style="font-size:0.85em; color: #333;" title="Equal contribution"></i>&nbsp;Equal contribution,
-                  #&nbsp;Corresponding author)
-                </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  </nav>
 
-        <!-- 论文列表 -->
+  <div class="container">
 
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
+    <!-- ===== Hero / Profile ===== -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-info">
+          <h1 class="hero-name">
+            Huachen Gao<span class="hero-name-cn">高华辰</span>
+          </h1>
+          <p class="hero-email">
+            <a href="mailto:gaohuachen712@gmail.com">gaohuachen712@gmail.com</a>
+          </p>
+          <p class="hero-bio">
+            I am a PhD student at <a href="http://www.inception3d.fun/">Inception3D Lab</a>,
+            <a href="https://westlake.edu.cn/">Westlake University</a> and
+            <a href="https://www.zju.edu.cn/">Zhejiang University</a>,
+            advised by Prof. <a href="https://apchenstu.github.io/">Anpei Chen</a>.
+            Prior to this, I obtained my MSc degree at the
+            <a href="https://idm.pku.edu.cn">National Engineering Research Center for Visual Technology</a>,
+            <a href="https://www.pku.edu.cn">Peking University</a>,
+            advised by Prof. <a href="https://www.ece.pku.edu.cn/info/1046/2147.htm">Ronggang Wang</a>.
+            I received my BEng from <a href="https://www.sdu.edu.cn">Shandong University</a>.
+          </p>
+          <p class="hero-interests">
+            My research interests include spatial intelligence, 3D content generation / reconstruction / representation,
+            neural rendering, and multi-view stereo.
+          </p>
+          <div class="hero-links">
+            <a href="https://scholar.google.com.hk/citations?user=x8zi_cEAAAAJ&hl=en"><i class="fab fa-google"></i>
+              Scholar</a>
+            <a href="https://github.com/GaoHchen"><i class="fab fa-github"></i> GitHub</a>
+            <a href="images/wechat.JPG"><i class="fab fa-weixin"></i> WeChat</a>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <img src="images/mylife.JPG" alt="Huachen Gao">
+        </div>
+      </div>
+    </section>
 
-            <!-- CVPR 2025 -->
-            <tr class="paper-row">
-              <td class="compact-td" style="width:25%;vertical-align:middle">
-                <div class="image-container">
-                  <img style="width:100%" src="images/see3d.jpg" alt="see3d">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:top">
-                <a
-                  href="https://openaccess.thecvf.com/content/CVPR2025/papers/Ma_You_See_it_You_Got_it_Learning_3D_Creation_on_CVPR_2025_paper.pdf">
-                  <papertitle style="color:rgb(7, 125, 165);"><span style="color:rgb(226,131,82);"><i
-                        class="fa-solid fa-star"></i></span> You See it, You Got it: Learning 3D Creation on Pose-Free
-                    Videos at Scale</papertitle>
-                </a>
-                <br>
-                Baorui Ma<i class="fa-solid fa-asterisk" style="font-size:0.85em; color: #333;"
-                  title="Equal contribution"></i>, <strong>Huachen Gao<i class="fa-solid fa-asterisk"
-                    style="font-size:0.85em; color: #333;" title="Equal contribution"></i></strong>, Haoge Deng<i
-                  class="fa-solid fa-asterisk" style="font-size:0.85em; color: #333;" title="Equal contribution"></i>,
-                Zhengxiong Luo, Tiejun Huang, Lulu Tang#, Xinlong Wang#
-                <br>
-                <em><a href="https://cvpr.thecvf.com/Conferences/2025" class="conf-badge badge-cvpr">CVPR 2025</a></em>
-                <span class="badge badge-highlight highlight-tooltip">✨ Highlight
-                  <span class="tooltip-text">3% Acceptance Rate</span>
-                </span>
-                <br>
-                <a
-                  href="https://openaccess.thecvf.com/content/CVPR2025/papers/Ma_You_See_it_You_Got_it_Learning_3D_Creation_on_CVPR_2025_paper.pdf">[paper]</a>&nbsp;<a
-                  href="https://vision.baai.ac.cn/see3d/">[project]</a>&nbsp;<a
-                  href="https://github.com/baaivision/See3D">[code]</a>&nbsp;<a
-                  href="https://github.com/baaivision/See3D">[dataset]</a>&nbsp;<a
-                  href="https://mp.weixin.qq.com/s/tP_YOkL6kAdeoHf-44Ls5Q">[post]</a>
-              </td>
-            </tr>
+    <!-- ===== Publications ===== -->
+    <section class="section" id="publications">
+      <div class="section-label">Publications</div>
+      <p class="section-note">
+        <i class="fa-solid fa-asterisk" style="font-size:0.7em;color:#aaa;"></i>&thinsp;Equal contribution &ensp;
+        #&thinsp;Corresponding author
+      </p>
 
-            <!-- ACMMM 2024 -->
-            <tr class="paper-row">
-              <td class="compact-td" style="width:25%;vertical-align:middle">
-                <div class="image-container">
-                  <img style="width:100%" src="images/mm.jpg" alt="Point-to-Gaussian">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:top">
-                <a href="https://arxiv.org/abs/2408.10935">
-                  <papertitle style="color:rgb(7, 125, 165);">Large Point-to-Gaussian Model for Image-to-3D Generation
-                  </papertitle>
-                </a>
-                <br>
-                Longfei Lu<i class="fa-solid fa-asterisk" style="font-size:0.85em; color: #333;"
-                  title="Equal contribution"></i>, <strong>Huachen Gao<i class="fa-solid fa-asterisk"
-                    style="font-size:0.85em; color: #333;" title="Equal contribution"></i></strong>, Tao Dai, Yaohua
-                Zha, Zhi Hou, Junta Wu, Shutao Xia#
-                <br>
-                <em><a href="https://2024.acmmm.org/" class="conf-badge badge-acmmm">ACM MM 2024</a></em>
-                <br>
-                <a href="https://arxiv.org/abs/2408.10935">[arxiv]</a>
-              </td>
-            </tr>
+      <div class="pub-list">
 
-            <!-- ECCV2024 -->
-            <tr class="paper-row">
-              <td class="compact-td" style="width:25%;vertical-align:middle">
-                <div class="image-container">
-                  <img style="width:100%" src="images/eccv_digarr.jpg" alt="DiGRR">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:top">
-                <a href="https://arxiv.org/abs/2409.15715">
-                  <papertitle style="color:rgb(7, 125, 165);">Disentangled Generation and Aggregation for Robust
-                    Radiance Fields</papertitle>
-                </a>
-                <br>
-                <strong>Huachen Gao<i class="fa-solid fa-asterisk" style="font-size:0.85em; color: #333;"
-                    title="Equal contribution"></i></strong>, Shihe Shen<i class="fa-solid fa-asterisk"
-                  style="font-size:0.85em; color: #333;" title="Equal contribution"></i>, Wangze Xu, Rui Peng, Luyang
-                Tang, Kaiqiang Xiong, Jianbo Jiao, Ronggang Wang#
-                <br>
-                <em><a href="https://eccv2024.ecva.net/" class="conf-badge badge-eccv">ECCV 2024</a></em>
-                <br>
-                <a href="https://arxiv.org/abs/2409.15715">[arxiv]</a>&nbsp;<a
-                  href="https://gaohchen.github.io/DiGARR/">[project]</a>&nbsp;<a
-                  href="https://github.com/GaoHchen/DiGARR">[code]</a>
-              </td>
-            </tr>
-
-            <!-- ECCV2024 -->
-            <tr class="paper-row">
-              <td class="compact-td" style="width:25%;vertical-align:middle">
-                <div class="image-container">
-                  <img style="width:100%" src="images/eccv_gs.jpg" alt="Gaussian Splatting">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:top">
-                <a href="https://arxiv.org/abs/2409.14316">
-                  <papertitle style="color:rgb(7, 125, 165);">MVPGS: Excavating Multi-view Priors for Gaussian Splatting
-                    from Sparse Input Views</papertitle>
-                </a>
-                <br>
-                Wangze Xu, <strong>Huachen Gao</strong>, Shihe Shen, Rui Peng, Jianbo Jiao, Ronggang Wang#
-                <br>
-                <em><a href="https://eccv2024.ecva.net/" class="conf-badge badge-eccv">ECCV 2024</a></em>
-                <br>
-                <a href="https://arxiv.org/abs/2409.14316">[arxiv]</a>&nbsp;<a
-                  href="https://zezeaaa.github.io/projects/MVPGS/">[project]</a>&nbsp;<a
-                  href="https://github.com/zezeaaa/MVPGS">[code]</a>
-              </td>
-            </tr>
-
-            <!-- ECCV2024 -->
-            <tr class="paper-row">
-              <td class="compact-td" style="width:25%;vertical-align:middle">
-                <div class="image-container">
-                  <img style="width:100%" src="images/eccv_surf.jpg" alt="SURF">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:top">
-                <a href="https://arxiv.org/abs/2409.03634">
-                  <papertitle style="color:rgb(7, 125, 165);">Surface-Centric Modeling for High-Fidelity Generalizable
-                    Neural Surface Reconstruction</papertitle>
-                </a>
-                <br>
-                Rui Peng, Shihe Shen, Kaiqiang Xiong, <strong>Huachen Gao</strong>, Jianbo Jiao, Xiaodong Gu, Ronggang
-                Wang#
-                <br>
-                <em><a href="https://eccv2024.ecva.net/" class="conf-badge badge-eccv">ECCV 2024</a></em>
-                <br>
-                <a href="https://arxiv.org/abs/2409.03634">[arxiv]</a>&nbsp;<a
-                  href="https://github.com/prstrive/SuRF">[code]</a>
-              </td>
-            </tr>
-
-            <!-- ICASSP24 -->
-            <tr class="paper-row">
-              <td class="compact-td" style="width:25%;vertical-align:middle">
-                <div class="image-container">
-                  <img style="width:100%" src="images/icassp24.jpg" alt="FDCNeRF">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:top">
-                <a href="https://ieeexplore.ieee.org/document/10446550">
-                  <papertitle style="color:rgb(7, 125, 165);"><span style="color:rgb(226,131,82);"><i
-                        class="fa-solid fa-star"></i></span> FDC-NeRF: Learning Pose-Free Neural Radiance Fields With
-                    Flow-Depth Consistency</papertitle>
-                </a>
-                <br>
-                <strong>Huachen Gao</strong>, Shihe Shen, Zhe Zhang, Kaiqiang Xiong, Rui Peng, Zhirui Gao, Qi Wang,
-                Yugui Xie, Ronggang Wang#
-                <br>
-                <em><a href="https://2024.ieeeicassp.org" class="conf-badge badge-icassp">ICASSP 2024</a></em>
-                <span class="badge badge-oral highlight-tooltip">🎤 Oral
-                  <span class="tooltip-text">8% Acceptance Rate</span>
-                </span>
-                <br>
-                <a href="data/icassp24.pdf">[paper]</a>&nbsp;<a href="data/icassp24_pre.pdf">[slide]</a>
-              </td>
-            </tr>
-
-            <!-- ICASSP23 -->
-            <!-- <tr class="paper-row">
-          <td class="compact-td" style="width:25%;vertical-align:middle">
-            <div class="image-container">
-              <img style="width:100%" src="images/icassp.jpg" alt="N2MVSNet">
+        <div class="pub-entry">
+          <div class="pub-thumb">
+            <img src="images/see3d.jpg" alt="See3D">
+          </div>
+          <div class="pub-body">
+            <div class="pub-title">
+              <span class="pub-star"><i class="fa-solid fa-star"></i></span>
+              <a
+                href="https://openaccess.thecvf.com/content/CVPR2025/papers/Ma_You_See_it_You_Got_it_Learning_3D_Creation_on_CVPR_2025_paper.pdf">
+                You See it, You Got it: Learning 3D Creation on Pose-Free Videos at Scale
+              </a>
             </div>
-          </td>
-          <td class="compact-td" style="width:75%;vertical-align:top">
-            <a href="https://ieeexplore.ieee.org/abstract/document/10095299">
-              <papertitle style="color:rgb(7, 125, 165);">N2MVSNet: Non-Local Neighbors Aware Multi-View Stereo Network</papertitle>
-            </a>
-            <br>
-            Zhe Zhang, <strong>Huachen Gao</strong>, Yuxi Hu, Ronggang Wang#
-            <br>
-            <em><a href="https://2023.ieeeicassp.org">IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)</a></em>, 2023
-            <br>
-            <a href="data/icassp23.pdf">[paper]</a>
-          </td>
-        </tr> -->
+            <div class="pub-authors">
+              Baorui Ma<span class="fn-mark">*</span>,
+              <strong>Huachen Gao</strong><span class="fn-mark">*</span>,
+              Haoge Deng<span class="fn-mark">*</span>,
+              Zhengxiong Luo, Tiejun Huang, Lulu Tang<sup>#</sup>, Xinlong Wang<sup>#</sup>
+            </div>
+            <div class="pub-venue">
+              <a href="https://cvpr.thecvf.com/Conferences/2025" class="venue-tag">CVPR 2025</a>
+              <span class="venue-tag badge-highlight">Highlight<span class="badge-tooltip">3% Acceptance
+                  Rate</span></span>
+            </div>
+            <div class="pub-links">
+              <a
+                href="https://openaccess.thecvf.com/content/CVPR2025/papers/Ma_You_See_it_You_Got_it_Learning_3D_Creation_on_CVPR_2025_paper.pdf">[paper]</a>
+              <a href="https://vision.baai.ac.cn/see3d/">[project]</a>
+              <a href="https://github.com/baaivision/See3D">[code]</a>
+              <a href="https://github.com/baaivision/See3D">[dataset]</a>
+              <a href="https://mp.weixin.qq.com/s/tP_YOkL6kAdeoHf-44Ls5Q">[post]</a>
+            </div>
+          </div>
+        </div>
 
-            <!-- Applied Sciences -->
-            <!-- <tr class="paper-row no-bottom-margin">
-              <td class="compact-td" style="width:25%;vertical-align:middle">
-                <div class="image-container">
-                  <img style="width:100%" src="images/applsci.jpg" alt="Unsup_Depth_est">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:top">
-                <a href="https://www.mdpi.com/2076-3417/11/12/5383">
-                  <papertitle style="color:rgb(7, 125, 165);">PDANet: Self-Supervised Monocular Depth Estimation Using
-                    Perceptual and Data Augmentation Consistency</papertitle>
-                </a>
-                <br>
-                <strong>Huachen Gao<i class="fa-solid fa-clover" style="font-size:0.85em; color: #333;"
-                    title="Equal contribution"></i></strong>, Xiaoyu Liu<i class="fa-solid fa-clover"
-                  style="font-size:0.85em; color: #333;" title="Equal contribution"></i>, Meixia Qu#, Shijie Huang
-                <br>
-                <em><a href="https://www.mdpi.com/journal/applsci">Applied Sciences</a></em>, 2021, SCI, JCR-Q2
-                <br>
-                <a href="data/applsci-11-05383.pdf">[paper]</a>
-              </td>
-            </tr> -->
-          </tbody>
-        </table>
+        <div class="pub-entry">
+          <div class="pub-thumb">
+            <img src="images/mm.jpg" alt="Point-to-Gaussian">
+          </div>
+          <div class="pub-body">
+            <div class="pub-title">
+              <a href="https://arxiv.org/abs/2408.10935">
+                Large Point-to-Gaussian Model for Image-to-3D Generation
+              </a>
+            </div>
+            <div class="pub-authors">
+              Longfei Lu<span class="fn-mark">*</span>,
+              <strong>Huachen Gao</strong><span class="fn-mark">*</span>,
+              Tao Dai, Yaohua Zha, Zhi Hou, Junta Wu, Shutao Xia<sup>#</sup>
+            </div>
+            <div class="pub-venue">
+              <a href="https://2024.acmmm.org/" class="venue-tag">ACM MM 2024</a>
+            </div>
+            <div class="pub-links">
+              <a href="https://arxiv.org/abs/2408.10935">[arxiv]</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-entry">
+          <div class="pub-thumb">
+            <img src="images/eccv_digarr.jpg" alt="DiGARR">
+          </div>
+          <div class="pub-body">
+            <div class="pub-title">
+              <a href="https://arxiv.org/abs/2409.15715">
+                Disentangled Generation and Aggregation for Robust Radiance Fields
+              </a>
+            </div>
+            <div class="pub-authors">
+              <strong>Huachen Gao</strong><span class="fn-mark">*</span>,
+              Shihe Shen<span class="fn-mark">*</span>,
+              Wangze Xu, Rui Peng, Luyang Tang, Kaiqiang Xiong, Jianbo Jiao, Ronggang Wang<sup>#</sup>
+            </div>
+            <div class="pub-venue">
+              <a href="https://eccv2024.ecva.net/" class="venue-tag">ECCV 2024</a>
+            </div>
+            <div class="pub-links">
+              <a href="https://arxiv.org/abs/2409.15715">[arxiv]</a>
+              <a href="https://gaohchen.github.io/DiGARR/">[project]</a>
+              <a href="https://github.com/GaoHchen/DiGARR">[code]</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-entry">
+          <div class="pub-thumb">
+            <img src="images/eccv_gs.jpg" alt="MVPGS">
+          </div>
+          <div class="pub-body">
+            <div class="pub-title">
+              <a href="https://arxiv.org/abs/2409.14316">
+                MVPGS: Excavating Multi-view Priors for Gaussian Splatting from Sparse Input Views
+              </a>
+            </div>
+            <div class="pub-authors">
+              Wangze Xu, <strong>Huachen Gao</strong>, Shihe Shen, Rui Peng, Jianbo Jiao, Ronggang Wang<sup>#</sup>
+            </div>
+            <div class="pub-venue">
+              <a href="https://eccv2024.ecva.net/" class="venue-tag">ECCV 2024</a>
+            </div>
+            <div class="pub-links">
+              <a href="https://arxiv.org/abs/2409.14316">[arxiv]</a>
+              <a href="https://zezeaaa.github.io/projects/MVPGS/">[project]</a>
+              <a href="https://github.com/zezeaaa/MVPGS">[code]</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-entry">
+          <div class="pub-thumb">
+            <img src="images/eccv_surf.jpg" alt="SuRF">
+          </div>
+          <div class="pub-body">
+            <div class="pub-title">
+              <a href="https://arxiv.org/abs/2409.03634">
+                Surface-Centric Modeling for High-Fidelity Generalizable Neural Surface Reconstruction
+              </a>
+            </div>
+            <div class="pub-authors">
+              Rui Peng, Shihe Shen, Kaiqiang Xiong, <strong>Huachen Gao</strong>, Jianbo Jiao, Xiaodong Gu, Ronggang
+              Wang<sup>#</sup>
+            </div>
+            <div class="pub-venue">
+              <a href="https://eccv2024.ecva.net/" class="venue-tag">ECCV 2024</a>
+            </div>
+            <div class="pub-links">
+              <a href="https://arxiv.org/abs/2409.03634">[arxiv]</a>
+              <a href="https://github.com/prstrive/SuRF">[code]</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-entry">
+          <div class="pub-thumb">
+            <img src="images/icassp24.jpg" alt="FDC-NeRF">
+          </div>
+          <div class="pub-body">
+            <div class="pub-title">
+              <span class="pub-star"><i class="fa-solid fa-star"></i></span>
+              <a href="https://ieeexplore.ieee.org/document/10446550">
+                FDC-NeRF: Learning Pose-Free Neural Radiance Fields With Flow-Depth Consistency
+              </a>
+            </div>
+            <div class="pub-authors">
+              <strong>Huachen Gao</strong>, Shihe Shen, Zhe Zhang, Kaiqiang Xiong, Rui Peng, Zhirui Gao, Qi Wang, Yugui
+              Xie, Ronggang Wang<sup>#</sup>
+            </div>
+            <div class="pub-venue">
+              <a href="https://2024.ieeeicassp.org" class="venue-tag">ICASSP 2024</a>
+              <span class="venue-tag badge-oral">Oral<span class="badge-tooltip">8% Acceptance Rate</span></span>
+            </div>
+            <div class="pub-links">
+              <a href="data/icassp24.pdf">[paper]</a>
+              <a href="data/icassp24_pre.pdf">[slide]</a>
+            </div>
+          </div>
+        </div>
+
       </div>
+    </section>
 
-      <!-- 教育经历部分 -->
-      <div class="main-section">
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr>
-              <td class="compact-td">
-                <heading>Education</heading>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- ===== Education ===== -->
+    <section class="section" id="education">
+      <div class="section-label">Education</div>
 
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr class="experience-item">
-              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
-                <div class="image-container" style="display:flex;justify-content:center;align-items:center;gap:10px">
-                  <img style="width:65px;height:65px;object-fit:contain" src="images/zju.png" alt="ZJU">
-                  <div style="width:1px;height:50px;background-color:#cbd5e1;"></div>
-                  <img style="width:60px;height:60px;object-fit:contain" src="images/westlake.png" alt="Westlake">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:center">
-                <a href="https://www.zju.edu.cn/">
-                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Zhejiang University</papertitle>
-                </a> &
-                <a href="https://westlake.edu.cn/">
-                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Westlake University</papertitle>
-                </a>
-                <br>
-                Joint PhD Program in Computer Science
-                <br>
-                Advised by <a href="https://apchenstu.github.io/">Prof. Anpei Chen</a>
-                <br>
-                2025 ~ Present
-              </td>
-            </tr>
+      <div class="entry-list">
 
-            <tr class="experience-item">
-              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
-                <div class="image-container">
-                  <img style="width:80px;height:80px;object-fit:contain" src="images/pku_logo_red.jpg" alt="PKU">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:center">
-                <a href="https://www.pku.edu.cn">
-                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Peking University</papertitle>
-                </a>
-                <br>
-                Master of Science in Computer Science
-                <br>
-                Advised by <a href="https://www.ece.pku.edu.cn/info/1046/2147.htm">Prof. Ronggang
-                  Wang</a>
-                <br>
-                Sept. 2022 ~ July. 2025
-              </td>
-            </tr>
+        <!-- <div class="entry-row">
+          <div class="entry-logo">
+            <div class="entry-logo-dual">
+              <img src="images/zju.png" alt="ZJU">
+              <div class="entry-logo-divider"></div>
+              <img src="images/westlake.png" alt="Westlake">
+            </div>
+          </div>
+          <div class="entry-body">
+            <div class="entry-title">
+              <a href="https://www.zju.edu.cn/">Zhejiang University</a> &amp; <a href="https://westlake.edu.cn/">Westlake University</a>
+            </div>
+            <div class="entry-detail">
+              Joint PhD Program in Computer Science<br>
+              Advised by <a href="https://apchenstu.github.io/">Prof. Anpei Chen</a>
+            </div>
+            <div class="entry-date">2025 &ndash; Present</div>
+          </div>
+        </div> -->
 
-            <tr class="experience-item">
-              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
-                <div class="image-container">
-                  <img style="width:80px;height:80px;object-fit:contain" src="images/sdu.jpg" alt="SDU">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:center">
-                <a href="https://www.sdu.edu.cn">
-                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Shandong University</papertitle>
-                </a>
-                <br>
-                Bachelor of Engineering in Computer Science (with honor)
-                <br>
-                Outstanding Graduate of Shandong Province
-                <br>
-                Sept. 2018 ~ July. 2022
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="entry-row">
+          <div class="entry-logo">
+            <img src="images/pku_logo_red.jpg" alt="PKU">
+          </div>
+          <div class="entry-body">
+            <div class="entry-title">
+              <a href="https://www.pku.edu.cn">Peking University</a>
+            </div>
+            <div class="entry-detail">
+              Master of Science in Computer Science<br>
+              Advised by <a href="https://www.ece.pku.edu.cn/info/1046/2147.htm">Prof. Ronggang Wang</a>
+            </div>
+            <div class="entry-date">Sept. 2022 &ndash; July 2025</div>
+          </div>
+        </div>
+
+        <div class="entry-row">
+          <div class="entry-logo">
+            <img src="images/sdu.jpg" alt="SDU">
+          </div>
+          <div class="entry-body">
+            <div class="entry-title">
+              <a href="https://www.sdu.edu.cn">Shandong University</a>
+            </div>
+            <div class="entry-detail">
+              Bachelor of Engineering in Computer Science (with honor)<br>
+              Outstanding Graduate of Shandong Province
+            </div>
+            <div class="entry-date">Sept. 2018 &ndash; July 2022</div>
+          </div>
+        </div>
+
       </div>
+    </section>
 
-      <!-- 工作经历部分 -->
-      <div class="main-section">
+    <!-- ===== Experience ===== -->
+    <section class="section" id="experience">
+      <div class="section-label">Experience</div>
 
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr>
-              <td class="compact-td">
-                <heading>Experiences</heading>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="entry-list">
 
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr class="experience-item">
-              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
-                <div class="image-container">
-                  <img style="width:125px;height:auto;object-fit:contain" src="images/lixiang.svg" alt="Li Auto">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:center">
-                <a href="https://www.lixiang.com/">
-                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Li Auto</papertitle>
-                </a>
-                <br>
-                Research Intern
-                <br>
-                Research on Spatial Reasoning and Representation, World Models
-                <br>
-                Apr. 2025 ~ Aug. 2025
-              </td>
-            </tr>
+        <div class="entry-row">
+          <div class="entry-logo entry-logo-wide">
+            <img src="images/lixiang.svg" alt="Li Auto" style="max-width:100px;">
+          </div>
+          <div class="entry-body">
+            <div class="entry-title">
+              <a href="https://www.lixiang.com/">Li Auto</a>
+            </div>
+            <div class="entry-detail">
+              Research Intern<br>
+              Spatial Reasoning and Representation, World Models
+            </div>
+            <div class="entry-date">Apr. 2025 &ndash; Aug. 2025</div>
+          </div>
+        </div>
 
-            <tr class="experience-item">
-              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
-                <div class="image-container">
-                  <img style="width:110px;height:auto;object-fit:contain" src="images/baai.svg" alt="BAAI">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:center">
-                <a href="https://baai.ac.cn/en/">
-                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Beijing Academy of Artificial
-                    Intelligence
-                  </papertitle>
-                </a>
-                <br>
-                Research Intern at <a href="https://github.com/baaivision">BAAI-Vision</a>
-                <br>
-                Research on 3D content generation
-                <br>
-                Advised by <a href="https://mabaorui.github.io/">Dr. Baorui Ma</a> and <a
-                  href="https://www.xloong.wang/">Dr. Xinlong Wang</a>
-                <br>
-                Apr. 2024 ~ Apr. 2025
-              </td>
-            </tr>
+        <div class="entry-row">
+          <div class="entry-logo entry-logo-wide">
+            <img src="images/baai.svg" alt="BAAI" style="max-width:90px;">
+          </div>
+          <div class="entry-body">
+            <div class="entry-title">
+              <a href="https://baai.ac.cn/en/">Beijing Academy of Artificial Intelligence</a>
+            </div>
+            <div class="entry-detail">
+              Research Intern at <a href="https://github.com/baaivision">BAAI-Vision</a><br>
+              3D content generation &ensp;|&ensp; Advised by <a href="https://mabaorui.github.io/">Dr. Baorui Ma</a> and
+              <a href="https://www.xloong.wang/">Dr. Xinlong Wang</a>
+            </div>
+            <div class="entry-date">Apr. 2024 &ndash; Apr. 2025</div>
+          </div>
+        </div>
 
-            <tr class="experience-item">
-              <td class="compact-td" style="width:25%;vertical-align:middle;text-align:center;">
-                <div class="image-container">
-                  <img style="width:140px;height:auto;object-fit:contain;margin-bottom:5px"
-                    src="images/tencent_logo.jpg" alt="Tencent">
-                  <br>
-                  <img style="width:110px;height:auto;object-fit:contain" src="images/hunyuan.jpg" alt="Hunyuan">
-                </div>
-              </td>
-              <td class="compact-td" style="width:75%;vertical-align:center">
-                <a href="https://www.tencent.com/">
-                  <papertitle style="font-size: 16px;color:rgb(7, 125, 165);">Tencent</papertitle>
-                </a>
-                <br>
-                Research Intern at <a href="https://hunyuan.tencent.com">Hunyuan</a>
-                <br>
-                Research and develop <a href="https://3d.hunyuan.tencent.com/">Hunyuan3D-1.0</a>
-                <br>
-                Aug. 2023 ~ Jan. 2024
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="entry-row">
+          <div class="entry-logo entry-logo-wide">
+            <img src="images/tencent_logo.jpg" alt="Tencent">
+          </div>
+          <div class="entry-body">
+            <div class="entry-title">
+              <a href="https://www.tencent.com/">Tencent</a>
+            </div>
+            <div class="entry-detail">
+              Research Intern at <a href="https://hunyuan.tencent.com">Hunyuan</a><br>
+              R&amp;D on <a href="https://3d.hunyuan.tencent.com/">Hunyuan3D-1.0</a>
+            </div>
+            <div class="entry-date">Aug. 2023 &ndash; Jan. 2024</div>
+          </div>
+        </div>
+
       </div>
+    </section>
 
-      <!-- 奖项部分 -->
-      <div class="main-section">
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr>
-              <td class="compact-td" style="width:100%;vertical-align:middle">
-                <heading>Awards</heading>
-                <p style="margin-bottom:4px;line-height:1.6">
-                  <strong>2022.06</strong>: Honors Bachelor of Engineering in Shandong University<br>
-                  <strong>2022.04</strong>: Outstanding Graduate of Shandong Province<br>
-                  <strong>2021.04</strong>: Honorable Mention Award of MCM/ICM<br>
-                  <strong>2020.11</strong>: <strong><span class="highlight-tooltip"> National First Prize
-                      <span class="tooltip-text">Top 0.6% in China</span>
-                    </span></strong> in Undergraduate Mathematical Contest in Modelling<br>
-                  <strong>2020.02</strong>: National Second prize of 2020 China Engineering Robotics Competition
-                </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- ===== Awards ===== -->
+    <section class="section" id="awards">
+      <div class="section-label">Awards</div>
+
+      <div class="awards-list">
+        <div class="awards-line">
+          <span class="awards-year">2022.06</span>
+          <span class="awards-desc">Honors Bachelor of Engineering, Shandong University</span>
+        </div>
+        <div class="awards-line">
+          <span class="awards-year">2022.04</span>
+          <span class="awards-desc">Outstanding Graduate of Shandong Province</span>
+        </div>
+        <div class="awards-line">
+          <span class="awards-year">2021.04</span>
+          <span class="awards-desc">Honorable Mention Award of MCM/ICM</span>
+        </div>
+        <div class="awards-line">
+          <span class="awards-year">2020.11</span>
+          <span class="awards-desc">
+            <strong class="tooltip-inline" data-tip="Top 0.6% in China">National First Prize</strong>
+            in Undergraduate Mathematical Contest in Modelling
+          </span>
+        </div>
+        <div class="awards-line">
+          <span class="awards-year">2020.02</span>
+          <span class="awards-desc">National Second Prize, China Engineering Robotics Competition</span>
+        </div>
       </div>
+    </section>
 
-      <!-- 服务部分 -->
-      <div class="main-section">
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr>
-              <td class="compact-td" style="width:100%;vertical-align:middle">
-                <heading>Services</heading>
-                <p style="margin-bottom:4px">
-                  <strong>Reviewer:</strong>
-                </p>
-                <ul style="margin:0;padding-left:20px;line-height:1.4">
-                  <li>Conference: CVPR, ECCV, ACM MM, ICASSP, IJCNN</li>
-                  <li>Journal: TCSVT, ISPRS</li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- ===== Services ===== -->
+    <section class="section">
+      <div class="section-label">Services</div>
+
+      <div class="text-block">
+        <p><strong>Reviewer:</strong></p>
+        <ul>
+          <li>Conference: CVPR, ECCV, NeurIPS, SIGGRAPH Asia, ACM MM, BMVC, ICASSP, IJCNN</li>
+          <li>Journal: TCSVT, ISPRS</li>
+        </ul>
       </div>
+    </section>
 
-      <!-- 其他信息部分 -->
-      <div class="main-section">
-        <table class="compact-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;">
-          <tbody>
-            <tr>
-              <td class="compact-td" style="width:100%;vertical-align:middle">
-                <heading>Misc</heading>
-                <p style="margin-bottom:4px;line-height:1.6">
-                  <strong>Skills:</strong><br>
-                  Language: Chinese, English<br>
-                  Programming: Python, C/C++, Java, Blender
-                </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
-      <!-- 访问统计 -->
-      <table style="width:15%;border:0px;border-spacing:0px;border-collapse:separate;margin:10px auto;">
-        <tbody>
-          <tr>
-            <td style="padding:0px;text-align:center">
-              <script type="text/javascript" id="clstr_globe"
-                src="//clustrmaps.com/globe.js?d=PwjjvLebRlp69fj1vBhyESyC_30LOpGhRYXgzWfYAx4"></script>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- 页脚 -->
-      <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin:10px auto 0;">
-        <tbody>
-          <tr>
-            <td style="padding:0px">
-              <p style="text-align:right;font-size:small;margin:0">
-                Last update: June 2025. / <a href="https://github.com/jonbarron/jonbarron_website">Thanks for the
-                  awesome template</a>.
-              </p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
+    <!-- ===== Footer ===== -->
+    <div class="globe-widget">
+      <script type="text/javascript" id="clstr_globe"
+        src="//clustrmaps.com/globe.js?d=PwjjvLebRlp69fj1vBhyESyC_30LOpGhRYXgzWfYAx4"></script>
     </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const shinyElements = document.querySelectorAll('.main-title, .badge-highlight, .badge-oral');
+    <footer class="site-footer">
+      Last update: June 2025 &ensp;/&ensp;
+      <a href="https://github.com/jonbarron/jonbarron_website">Thanks for the template</a>
+    </footer>
 
-        shinyElements.forEach(el => {
-          el.addEventListener('mousemove', (e) => {
-            const rect = el.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            el.style.setProperty('--x', `${x}px`);
-            el.style.setProperty('--y', `${y}px`);
-          });
-
-          // Optional: Reset light when leaving
-          el.addEventListener('mouseleave', () => {
-            el.style.setProperty('--x', '-100%');
-            el.style.setProperty('--y', '-100%');
-          });
-        });
-      });
-    </script>
+  </div>
 </body>
 
 </html>
+<script>
+  (function() {
+    const navName = document.getElementById('nav-name-toggle');
+    const heroName = document.querySelector('.hero-name');
+    if (!navName || !heroName) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          navName.style.opacity = '0';
+          setTimeout(() => {
+            navName.textContent = 'Homepage';
+            navName.style.opacity = '1';
+          }, 150);
+        } else {
+          navName.style.opacity = '0';
+          setTimeout(() => {
+            navName.textContent = 'Huachen Gao';
+            navName.style.opacity = '1';
+          }, 150);
+        }
+      },
+      { threshold: 0, rootMargin: '-60px 0px 0px 0px' }
+    );
+
+    navName.style.transition = 'opacity 0.15s ease';
+    observer.observe(heroName);
+  })();
+</script>
