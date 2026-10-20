@@ -395,6 +395,8 @@
       min-height: 300px; background: #494949;
     }
     .viewer-stage video, .viewer-stage img { width: 100%; height: auto; }
+    [data-result-group="obj"] .viewer-stage video {aspect-ratio:1}
+    [data-result-group="scene"] .viewer-stage video {aspect-ratio:910/518}
     .viewer-badge {
       position: absolute; top: 13px; left: 13px; z-index: 2; padding: 4px 8px;
       border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px;
@@ -517,6 +519,7 @@
     :focus-visible {outline:3px solid #d78238;outline-offset:4px}
     .section__sub {max-width:760px;line-height:1.6}.section__head{margin-bottom:26px}
     .abstract-copy{max-width:820px;margin:auto;font-size:1.02rem;line-height:1.7}
+    .abstract-copy .key-sentence{padding:.04em .2em;border-radius:3px;font-weight:650;-webkit-box-decoration-break:clone;box-decoration-break:clone}
     .figure {box-shadow:none}.figure figcaption{padding:14px 20px;text-align:center;font-size:.84rem;color:var(--text-soft)}
     .method-summary {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;list-style:none;counter-reset:step;padding:0;margin:28px 0 18px}
     .method-summary li {counter-increment:step;border-top:1px solid var(--border);padding-top:18px}
@@ -556,17 +559,17 @@
           <h1 class="hero__title"><span class="hero__title-mark">HRoPE</span>: Homography Relative Positional Encoding</h1>
           <div class="hero__authors" aria-label="Authors">
             <div class="author-line">
-              <span class="author">Huachen Gao<sup>1,2,*</sup></span>
-              <span class="author">Yang Yang<sup>3,*</sup></span>
-              <span class="author">Xiaoqian Liang<sup>2</sup></span>
-              <span class="author">Xingyu Chen<sup>1,2</sup></span>
+              <span class="author"><a href="https://gaohchen.github.io/" target="_blank" rel="noopener">Huachen Gao</a><sup>1,2,*</sup></span>
+              <span class="author"><a href="#">Yang Yang</a><sup>3,*</sup></span>
+              <span class="author"><a href="https://github.com/Yubel426/" target="_blank" rel="noopener">Xiaoqian Liang</a><sup>2</sup></span>
+              <span class="author"><a href="https://rover-xingyu.github.io/" target="_blank" rel="noopener">Xingyu Chen</a><sup>1,2</sup></span>
             </div>
             <div class="author-line">
-              <span class="author">Youjia Zhang<sup>3</sup></span>
-              <span class="author">Qi Zhang<sup>4</sup></span>
-              <span class="author">Baorui Ma<sup>5</sup></span>
-              <span class="author">Anpei Chen<sup>2,†</sup></span>
-              <span class="author">Wei Yang<sup>3,†</sup></span>
+              <span class="author"><a href="https://youjiazhang.github.io/" target="_blank" rel="noopener">Youjia Zhang</a><sup>3</sup></span>
+              <span class="author"><a href="https://qzhang-cv.github.io/" target="_blank" rel="noopener">Qi Zhang</a><sup>4</sup></span>
+              <span class="author"><a href="https://mabaorui.github.io/" target="_blank" rel="noopener">Baorui Ma</a><sup>5</sup></span>
+              <span class="author"><a href="https://apchenstu.github.io/" target="_blank" rel="noopener">Anpei Chen</a><sup>2,†</sup></span>
+              <span class="author"><a href="https://weiyang-hust.github.io/" target="_blank" rel="noopener">Wei Yang</a><sup>3,†</sup></span>
             </div>
           </div>
           <div class="hero__affil" aria-label="Affiliations">
@@ -600,9 +603,9 @@
           </div>
         </div>
         <div class="hero-video" id="video-overview">
-          <video id="overview-video" controls playsinline preload="metadata" poster="assets/video/hrope-demo-poster.jpg?v=11" aria-label="HRoPE research overview, narrated in English with subtitles">
-            <source src="assets/video/hrope-demo-4k.mp4?v=11" type="video/mp4">
-            <a href="assets/video/hrope-demo-4k.mp4?v=11">Watch the HRoPE video</a>
+          <video id="overview-video" controls playsinline preload="none" poster="assets/video/hrope-demo-poster.jpg?v=11" aria-label="HRoPE research overview, narrated in English with subtitles">
+            <source src="assets/video/hrope-demo-web.mp4?v=12" type="video/mp4">
+            <a href="assets/video/hrope-demo-web.mp4?v=12">Watch the HRoPE video</a>
           </video>
         </div>
       </div>
@@ -611,11 +614,10 @@
       <div class="container">
         <header class="section__head section__head--center"><h2 class="section__title">Abstract</h2></header>
         <div class="prose abstract-copy">
-          <p>Camera and ray encodings describe where a patch is observed. <strong>HRoPE encodes the local scene geometry it depicts.</strong> Each patch receives a homography-structured transform that captures both position and orientation, making attention depend on the relative geometry of patch pairs.</p>
-          <p>A lightweight head predicts these transforms from image features, learned from scratch or supplied by a pretrained model. The same encoding supports novel view synthesis, multi-view generation, and spatial reasoning.</p>
+          <p>Geometric Relative Positional Encoding has become the primary mechanism for injecting spatial inductive biases into multi-view transformers. Existing designs condition attention on camera-level frustums or ray-marched depth, associating cross-view tokens through the sensor geometry. Such sensor-centric formulations, however, describe only where a token is observed from, leaving the rich surface geometry of the scene region depicted by the token. In this paper, we advocate a shift toward <mark class="key-sentence">surface-aware positional encoding</mark> that explicitly grounds patch tokens in the geometry of physical surfaces. We introduce <strong>HRoPE</strong>, which represents the local geometry of each patch as a <mark class="key-sentence">slanted 3D plane</mark>, following the slanted support-window assumption of classical multi-view stereo. We inject token-level, <mark class="key-sentence">plane-induced homographies</mark> into attention as relative transformations. This explicitly enables the transformer to <mark class="key-sentence">rectify perspective distortions</mark> and align patch features across viewpoints rather than having to learn this alignment implicitly from data. Our encoding requires no ground-truth geometry: the plane parameters can be predicted end-to-end under a view-synthesis objective alone, or derived from foundation models. Extensive experiments on RealEstate10K, CO3Dv2, and DL3DV show that our best variant of HRoPE consistently outperforms the evaluated geometric positional encodings for novel view synthesis. Extensive ablations and analysis show the effectiveness of the proposed encoding.</p>
         </div>
         <figure class="figure figure--spaced" id="idea">
-          <img src="assets/figs/schematic_diagram.png" alt="PRoPE uses a camera transform, RayRoPE encodes a point, and HRoPE models a local plane with position and orientation." loading="lazy">
+          <img data-src="assets/figs/schematic_diagram.png" width="2028" height="766" alt="PRoPE uses a camera transform, RayRoPE encodes a point, and HRoPE models a local plane with position and orientation." loading="lazy" decoding="async">
           <figcaption><strong>From observations to scene geometry.</strong> Camera → point → local plane.</figcaption>
         </figure>
       </div>
@@ -627,7 +629,7 @@
           <p class="section__sub">Predict a transform for each patch. Compare patches through their relative transforms.</p>
         </header>
         <figure class="figure">
-          <img src="assets/figs/pipeline.png" alt="HRoPE pipeline: predict per-patch parameters, construct homographies, and modulate attention alongside 2D RoPE." loading="lazy">
+          <img data-src="assets/figs/pipeline.png" width="2690" height="875" alt="HRoPE pipeline: predict per-patch parameters, construct homographies, and modulate attention alongside 2D RoPE." loading="lazy" decoding="async">
           <figcaption>Features → per-patch homographies → geometry-conditioned attention.</figcaption>
         </figure>
         <ol class="method-summary">
@@ -638,7 +640,7 @@
         <p class="method-note">Geometric channels encode local scene structure; the remaining channels retain 2D RoPE.</p>
         <div class="interactive-block" id="interactive-hrope">
           <div class="demo-heading"><div><h3>A local plane for each patch</h3><p>Tilt the plane. Its center stays fixed, but its appearance changes across views.</p></div></div>
-          <iframe id="geometry-demo" title="Interactive local-plane animation from slide 4" src="demo/index.html?embed=1" loading="lazy"></iframe>
+          <iframe id="geometry-demo" title="Interactive local-plane animation from slide 4" data-src="demo/index.html?embed=1" loading="lazy"></iframe>
           <p class="demo-note">Ideal shared-plane illustration. HRoPE learns per-patch transforms to modulate features; it does not warp image pixels.</p>
         </div>
       </div>
@@ -888,9 +890,37 @@
       if(e.source !== demoFrame.contentWindow || (location.protocol !== 'file:' && e.origin !== location.origin)) return;
       if(e.data?.type === 'hrope-demo-height' && Number.isFinite(e.data.height)) demoFrame.style.height = Math.min(2200, Math.max(400,e.data.height))+'px';
     });
+    // Images and the embedded demo load shortly before entering the viewport.
+    const assetObserver = new IntersectionObserver(entries => {
+      entries.forEach(({target,isIntersecting}) => {
+        if(!isIntersecting) return;
+        target.src = target.dataset.src;
+        delete target.dataset.src;
+        assetObserver.unobserve(target);
+      });
+    }, {rootMargin:'160px 0px',threshold:0});
+    const observeAssets = root => root.querySelectorAll('img[data-src],iframe[data-src]').forEach(asset => assetObserver.observe(asset));
+    observeAssets(document);
+
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const releaseTimers = new WeakMap();
+    const releaseVideo = video => {
+      clearTimeout(releaseTimers.get(video));
+      video.pause();
+      if(video.hasAttribute('src')){
+        video.removeAttribute('src');
+        video.preload = 'none';
+        video.load();
+      }
+    };
     const loadAndPlay = video => {
-      if(video.dataset.src && video.getAttribute('src') !== video.dataset.src){video.src=video.dataset.src;video.load()}
+      clearTimeout(releaseTimers.get(video));
+      if(document.hidden) return;
+      if(video.dataset.src && video.getAttribute('src') !== video.dataset.src){
+        video.preload = reducedMotion.matches ? 'metadata' : 'auto';
+        video.src = video.dataset.src;
+        video.load();
+      }
       if(!reducedMotion.matches) video.play().catch(()=>{});
     };
 
@@ -933,10 +963,11 @@
         const src = `assets/qualitative/${scene}/${method.file}`;
         item.innerHTML = method.isVideo
           ? `<video data-src="${src}" loop muted playsinline preload="none" aria-label="${method.name} novel view sequence"></video>`
-          : `<img src="${src}" alt="${method.name}" loading="lazy">`;
+          : `<img data-src="${src}" alt="${method.name}" loading="lazy" decoding="async" width="256" height="256">`;
         row.appendChild(item);
       });
       qualitativeGrid.appendChild(row);
+      observeAssets(row);
     });
 
     /* ---------- result switchers ---------- */
@@ -1000,12 +1031,14 @@
 
       const render = () => {
         const scene = config.scenes[index];
+        releaseVideo(video);
         video.dataset.src = config.video(scene);
-        video.removeAttribute("src");
         if (video.dataset.visible === "true") loadAndPlay(video);
+        inputs.querySelectorAll('img[data-src]').forEach(img => assetObserver.unobserve(img));
         inputs.innerHTML = config.inputs(scene)
-          .map((src, i) => `<img src="${src}" alt="Input view ${i}" loading="lazy">`)
+          .map((src, i) => `<img data-src="${src}" alt="Input view ${i}" loading="lazy" decoding="async">`)
           .join("");
+        observeAssets(inputs);
         badge.textContent = `${label} ${pad(index + 1)}`;
         counter.textContent = `${label} ${pad(index + 1)} / ${pad(total)}`;
         status.textContent = `${label} ${index + 1} of ${total} displayed.`;
@@ -1022,13 +1055,25 @@
 
       render();
     });
-    // Load only visible qualitative clips; the top video retains manual playback.
-    const resultObserver = new IntersectionObserver(entries => entries.forEach(({target,isIntersecting}) => {
-      target.dataset.visible = String(isIntersecting);
-      if(isIntersecting) loadAndPlay(target); else target.pause();
-    }), {threshold:.05});
-    document.querySelectorAll('video[data-src]').forEach(v => {v.controls=reducedMotion.matches; resultObserver.observe(v)});
-    reducedMotion.addEventListener('change',()=>document.querySelectorAll('video[data-src]').forEach(v=>{v.controls=reducedMotion.matches;if(reducedMotion.matches)v.pause();else if(v.dataset.visible==='true')loadAndPlay(v)}));
+    // Case videos load only while visible; leaving the viewport cancels pending
+    // downloads and releases their decoders after a short scroll debounce.
+    const resultObserver = new IntersectionObserver(entries => entries.forEach(({target,isIntersecting,intersectionRatio}) => {
+      const visible = isIntersecting && intersectionRatio >= .15;
+      target.dataset.visible = String(visible);
+      if(visible) loadAndPlay(target);
+      else {
+        target.pause();
+        clearTimeout(releaseTimers.get(target));
+        releaseTimers.set(target,setTimeout(() => releaseVideo(target),1500));
+      }
+    }), {threshold:.15});
+    const caseVideos = [...document.querySelectorAll('video[data-src]')];
+    caseVideos.forEach(v => {v.controls=reducedMotion.matches; resultObserver.observe(v)});
+    reducedMotion.addEventListener('change',()=>caseVideos.forEach(v=>{v.controls=reducedMotion.matches;if(reducedMotion.matches)v.pause();else if(v.dataset.visible==='true')loadAndPlay(v)}));
+    document.addEventListener('visibilitychange',()=>caseVideos.forEach(v=>{
+      if(document.hidden) releaseVideo(v);
+      else if(v.dataset.visible==='true') loadAndPlay(v);
+    }));
   })();
   </script>
 </body>

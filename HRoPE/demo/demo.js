@@ -44,7 +44,6 @@ function draw(){const g=geometry();ctx.clearRect(0,0,1280,560);ctx.fillStyle='#f
  arrow([961,237],[939,237],C.ink,2);text('Hᵢ Hⱼ⁻¹',950,415,31,C.green,600,'center');text(state.plane?'The plane determines the cross-view warp.':'Position alone leaves this warp unspecified.',950,454,21,C.ink,400,'center');
  if(!window.captureClean)text(state.plane?'Orientation changes the patch footprint.':'The patch center stays fixed as slant changes.',30,491,21,C.ink,400);
  text('Ideal shared-plane illustration',30,530,15,C.muted);text('HRoPE learns per-patch transforms from image features.',670,530,17,C.muted);
- const q=[.7,-.3,1],k=[.2,.5,1];document.getElementById('score').textContent=dot(q,mv(g.G,k)).toFixed(3);document.getElementById('matrix').textContent='Relative homography Hᵢ Hⱼ⁻¹\n'+g.G.map(r=>'[ '+r.map(v=>v.toFixed(3).padStart(7)).join('  ')+' ]').join('\n');
  for(const name of ['slant','distance','baseline']){document.getElementById(name).value=state[name];document.getElementById(name+'Val').textContent=name==='slant'?Math.round(state[name])+'°':state[name].toFixed(1)}
  present();window.lastGeometry=g;
 }
