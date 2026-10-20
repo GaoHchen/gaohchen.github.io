@@ -348,22 +348,7 @@
       overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius);
       background: var(--surface); box-shadow: 0 4px 18px rgba(22, 35, 26, 0.05);
     }
-    .qual-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
-    .qual-grid__label {
-      padding: 9px 6px; color: var(--text-soft); background: var(--surface-strong);
-      font-size: 0.68rem; font-weight: 850; letter-spacing: 0.05em;
-      text-transform: uppercase; text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .qual-grid__label.is-ours { color: var(--accent-dark); background: var(--accent-soft); }
-    .qual-cell { position: relative; aspect-ratio: 1; overflow: hidden; background: #eef1ef; }
-    .qual-cell img, .qual-cell video {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .qual-cell.is-ours::after {
-      content: ""; position: absolute; inset: 0;
-      box-shadow: inset 0 0 0 2px var(--accent); pointer-events: none;
-    }
+    .qual-card video {display:block;width:100%;height:auto;background:#eef1ef}
 
     /* ---------- result viewer ---------- */
     .viewer-switcher {
@@ -473,8 +458,6 @@
       .viewer-card { display: block; }
       .viewer-switcher { justify-content: center; }
       .viewer-stage { min-height: 200px; }
-      .qual-grid { grid-template-columns: repeat(7, minmax(58px, 1fr)); }
-      .qual-card { overflow-x: auto; }
       .site-footer__inner { display: block; text-align: center; }
       .site-footer__inner p + p { margin-top: 7px; }
     }
@@ -723,8 +706,7 @@
           </header>
 
           <div class="qual-card">
-            <div class="qual-grid" id="qual-labels"></div>
-            <div id="qualitative-grid"></div>
+            <video id="qualitative-video" data-src="assets/video/hrope-nvs-comparison.mp4?v=1" data-poster="assets/video/hrope-nvs-comparison-poster.jpg?v=1" width="2352" height="2088" loop muted playsinline preload="none" aria-label="Synchronized novel view synthesis comparison across six scenes. Columns: Reference 0, Reference 1, LVSM, PRoPE, RayRoPE, HRoPE (ours), and ground truth."></video>
           </div>
         </div>
       </div>
@@ -916,6 +898,7 @@
     const loadAndPlay = video => {
       clearTimeout(releaseTimers.get(video));
       if(document.hidden) return;
+      if(video.dataset.poster && !video.hasAttribute('poster')) video.poster = video.dataset.poster;
       if(video.dataset.src && video.getAttribute('src') !== video.dataset.src){
         video.preload = reducedMotion.matches ? 'metadata' : 'auto';
         video.src = video.dataset.src;
@@ -924,51 +907,6 @@
       if(!reducedMotion.matches) video.play().catch(()=>{});
     };
 
-
-    /* ---------- qualitative comparison ---------- */
-    const qualitativeScenes = [
-      '0bf152ef84195293',
-      '0a45b99f42fb0ecb',
-      '0aa8646901d156e4',
-      '0ac6adb37a92f549',
-      '0e241f40ce0cd802',
-      '0b3674ffb90b641a'
-    ];
-
-    const methods = [
-      { name: 'Ref 0',    file: 'ref0.jpg',    isVideo: false },
-      { name: 'Ref 1',    file: 'ref1.jpg',    isVideo: false },
-      { name: 'LVSM',     file: 'lvsm.mp4',    isVideo: true },
-      { name: 'PRoPE',    file: 'prope.mp4',   isVideo: true },
-      { name: 'RayRoPE',  file: 'rayrope.mp4', isVideo: true },
-      { name: 'HRoPE',    file: 'hrope.mp4',   isVideo: true, isOurs: true },
-      { name: 'GT',       file: 'gt.mp4',      isVideo: true }
-    ];
-
-    const labelRow = document.getElementById("qual-labels");
-    methods.forEach((m) => {
-      const cell = document.createElement("div");
-      cell.className = "qual-grid__label" + (m.isOurs ? " is-ours" : "");
-      cell.textContent = m.isOurs ? m.name + " (ours)" : m.name;
-      labelRow.appendChild(cell);
-    });
-
-    const qualitativeGrid = document.getElementById("qualitative-grid");
-    qualitativeScenes.forEach((scene) => {
-      const row = document.createElement("div");
-      row.className = "qual-grid";
-      methods.forEach((method) => {
-        const item = document.createElement("div");
-        item.className = "qual-cell" + (method.isOurs ? " is-ours" : "");
-        const src = `assets/qualitative/${scene}/${method.file}`;
-        item.innerHTML = method.isVideo
-          ? `<video data-src="${src}" loop muted playsinline preload="none" aria-label="${method.name} novel view sequence"></video>`
-          : `<img data-src="${src}" alt="${method.name}" loading="lazy" decoding="async" width="256" height="256">`;
-        row.appendChild(item);
-      });
-      qualitativeGrid.appendChild(row);
-      observeAssets(row);
-    });
 
     /* ---------- result switchers ---------- */
     const objScenes = [
