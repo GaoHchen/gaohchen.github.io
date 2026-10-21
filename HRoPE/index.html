@@ -485,7 +485,8 @@
     .hero__tagline {margin:16px 0 0;color:var(--text-soft);font-size:1.05rem}
     .hero__resources {display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:18px auto 0}
     .resource-entry {position:relative;display:inline-flex}
-    .resource-button {display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:42px;padding:9px 17px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);color:var(--text);font:inherit;line-height:1;opacity:1;cursor:default}
+    .resource-button {display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:42px;padding:9px 17px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);color:var(--text);font:inherit;line-height:1;opacity:1;cursor:pointer;text-decoration:none}
+    .resource-button:hover {text-decoration:none;border-color:var(--accent)}
     .resource-button__label {display:inline-flex;align-items:center;gap:8px;font-size:.91rem;font-weight:750}
     .resource-button__label i {width:1em;color:var(--accent);font-size:.92em;text-align:center}
     .resource-tooltip {position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:2;padding:7px 10px;border-radius:5px;background:var(--text);color:#fff;white-space:nowrap;font-size:.75rem;line-height:1.3;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .15s ease}
@@ -572,16 +573,14 @@
           <p class="hero__tagline">Scene-centric positional encoding for multi-view transformers.</p>
           <div class="hero__resources" aria-label="Paper and code">
             <span class="resource-entry">
-              <button class="resource-button" type="button" aria-disabled="true" aria-label="arXiv paper" aria-describedby="paper-coming-soon">
+              <a class="resource-button" href="https://arxiv.org/abs/2610.28284" target="_blank" rel="noopener noreferrer" aria-label="arXiv paper">
                 <span class="resource-button__label" aria-hidden="true"><i class="fa-solid fa-file-lines"></i>arXiv</span>
-              </button>
-              <span class="resource-tooltip" role="tooltip" id="paper-coming-soon">Coming soon</span>
+              </a>
             </span>
             <span class="resource-entry">
-              <button class="resource-button" type="button" aria-disabled="true" aria-label="GitHub code" aria-describedby="code-coming-soon">
+              <a class="resource-button" href="https://github.com/Inception3D/HRoPE" target="_blank" rel="noopener noreferrer" aria-label="GitHub code">
                 <span class="resource-button__label" aria-hidden="true"><i class="fa-solid fa-code"></i>GitHub</span>
-              </button>
-              <span class="resource-tooltip" role="tooltip" id="code-coming-soon">Coming soon</span>
+              </a>
             </span>
           </div>
         </div>
@@ -775,14 +774,14 @@
           <h2 class="section__title">Citation</h2>
           <button class="citation-copy" id="copy-citation" type="button" aria-label="Copy BibTeX citation"><i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span></button>
         </header>
-        <pre class="citation-code"><code id="citation-bibtex">@article{gao_hrope,
-  title   = {{HRoPE}: Homography Relative Positional Encoding},
-  author  = {Gao, Huachen and Yang, Yang and Liang, Xiaoqian
-             and Chen, Xingyu and Zhang, Youjia and Zhang, Qi
-             and Ma, Baorui and Chen, Anpei and Yang, Wei},
-  journal = {},
-  year    = {},
-  pages   = {},
+        <pre class="citation-code"><code id="citation-bibtex">@misc{gao2026hropehomographyrelativepositional,
+  title={HRoPE: Homography Relative Positional Encoding},
+  author={Huachen Gao and Yang Yang and Xiaoqian Liang and Xingyu Chen and Youjia Zhang and Qi Zhang and Baorui Ma and Anpei Chen and Wei Yang},
+  year={2026},
+  eprint={2610.28284},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2610.28284},
 }</code></pre>
         <p class="sr-only" id="citation-status" role="status" aria-live="polite"></p>
       </div>
