@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="ALBUM retrieves reusable 3D assets from multi-view images, places them in a shared scene, and works with new asset libraries.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#f4f3ef">
+  <title>ALBUM | Asset Localization By Unified Matching</title>
+  <link rel="icon" href="assets/mark.png">
+  <link rel="stylesheet" href="style.css?v=square-trajectory">
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
+  <script src="assets/review-data.js" defer></script>
+  <script src="scene-viewer.js?v=spatial-gallery" defer></script>
+  <script src="pbr-viewer.js?v=objects-only" defer></script>
+  <script src="query-viewer.js?v=objects-only" defer></script>
+  <script src="site.js?v=moving-drop-rgb" defer></script>
+  <script src="research.js?v=square-trajectory" defer></script>
+</head>
+<body>
+  <div id="film-shade" aria-hidden="true"></div>
+  <a class="skip" href="#overview">Skip to content</a>
+  <header class="masthead over-hero">
+    <div class="masthead-inner">
+      <a class="wordmark" href="#top" aria-label="ALBUM home"><img src="assets/album-wordmark.png" alt="ALBUM" width="2160" height="677"></a>
+      <nav class="top-nav" aria-label="Project">
+        <a href="#results">Demos</a>
+        <a href="#method">Method</a>
+        <a href="#dataset">Dataset</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top" aria-labelledby="title">
+      <div class="hero-media">
+        <picture>
+          <source media="(max-aspect-ratio: 1/1)" srcset="assets/hero-portrait.jpg?v=moving-drop-rgb">
+          <img src="assets/hero-cover.jpg?v=moving-drop-rgb" alt="" width="2560" height="1440" fetchpriority="high">
+        </picture>
+        <video id="reel" data-rgb-tail="0.5" muted playsinline loop preload="metadata" aria-label="Original RGB footage of the lounge sweeps into its registered point cloud. The camera circles as nine retrieved assets drop into place, then the assembled room wipes back to the RGB recording.">
+          <source src="assets/hero-portrait.mp4?v=moving-drop-rgb" media="(max-aspect-ratio: 1/1)" type="video/mp4">
+          <source src="assets/hero-1080.mp4?v=moving-drop-rgb" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero-layout">
+        <div class="hero-header">
+          <h1 id="title"><img src="assets/album-wordmark.png" alt="ALBUM" width="2160" height="677"></h1>
+          <h2>Asset Localization By<br class="desktop-break"> Unified Matching</h2>
+          <p class="hero-byline">Anonymous Authors</p>
+          <p>Find reusable 3D assets in a few views of a room and place them in the scene.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#film"><span class="play-icon" aria-hidden="true"></span>Watch film</a>
+            <a class="button secondary" href="#results">Explore scenes</a>
+          </div>
+        </div>
+        <nav class="hero-controls" aria-label="Cover film">
+          <button type="button" class="hero-step-arrow" data-direction="-1" aria-label="Previous stage"><span aria-hidden="true">‹</span></button>
+          <div class="hero-stages" id="hero-stages" role="group" aria-label="Reconstruction stages">
+            <button type="button" data-start="0" data-seek="0" aria-pressed="true"><small aria-hidden="true">01</small>RGB video</button>
+            <button type="button" data-start="1.3" data-seek="2.6" aria-pressed="false"><small aria-hidden="true">02</small>Point cloud</button>
+            <button type="button" data-start="5.85" data-seek="11.5" aria-pressed="false"><small aria-hidden="true">03</small>Placed assets</button>
+            <input id="hero-scrub" type="range" min="0" max="3000" step="1" value="0" aria-label="Seek cover film" aria-valuetext="0:00">
+          </div>
+          <button type="button" class="hero-step-arrow" data-direction="1" aria-label="Next stage"><span aria-hidden="true">›</span></button>
+          <button class="reel-toggle" type="button" aria-label="Play preview" hidden></button>
+        </nav>
+      </div>
+    </section>
+
+    <div class="reader">
+      <aside class="chapter-rail">
+        <nav id="chapters" aria-label="Contents">
+          <a href="#overview" aria-current="location">Overview</a>
+          <a href="#results">Scene gallery</a>
+          <a href="#retrieve">Point prompts</a>
+          <a href="#method">Method</a>
+          <a href="#dataset">Dataset</a>
+        </nav>
+      </aside>
+
+      <div class="chapters-content">
+        <section class="chapter" id="overview" aria-labelledby="overview-title">
+          <header class="chapter-heading">
+            <h2 id="overview-title">From a room to reusable objects</h2>
+            <p>ALBUM uses multi-view RGB images, a point prompt, and a library of reference assets. It retrieves a matching asset and estimates its translation, rotation, and scale in the shared scene.</p>
+          </header>
+          <figure class="overview-film" id="film">
+            <video id="intro-film" controls playsinline preload="metadata" poster="assets/overview-poster.jpg" aria-label="ALBUM introduction film">
+              <source src="assets/intro.mp4?v=lounge-drop" type="video/mp4">
+              <track kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=articulated-assets">
+            </video>
+            <div class="choices film-chapters" role="group" aria-label="Jump to a film chapter">
+              <button type="button" data-film-start="0" aria-pressed="true">Room reveal</button>
+              <button type="button" data-film-start="16" aria-pressed="false">Method</button>
+              <button type="button" data-film-start="49" aria-pressed="false">Results</button>
+              <button type="button" data-film-start="122" aria-pressed="false">Overhead views</button>
+              <button type="button" data-film-start="132" aria-pressed="false">Asset library</button>
+              <button type="button" data-film-start="142" aria-pressed="false">Training data</button>
+            </div>
+          </figure>
+        </section>
+
+        <section class="chapter" id="results" aria-labelledby="results-title">
+          <header class="chapter-heading" id="explore">
+            <h2 id="results-title">Scene gallery</h2>
+            <p>Explore saved 3D placements across ScanNet++, Replica and ALBUM-Bench. Choose a room to see its input views and the library that supplied its objects.</p>
+          </header>
+          <div class="case-filters">
+            <div class="choices" id="case-groups" role="group" aria-label="Filter reconstructions"></div>
+            <div class="case-filter-summary">
+              <p id="case-count" role="status"></p>
+              <div class="case-paging" aria-label="Scroll scene previews" role="group">
+                <button type="button" id="case-prev" aria-label="Previous scene previews" aria-controls="case-tabs">←</button>
+                <button type="button" id="case-next" aria-label="Next scene previews" aria-controls="case-tabs">→</button>
+              </div>
+            </div>
+          </div>
+          <div class="case-browser" id="case-browser-region">
+            <div class="case-picker" id="case-tabs" role="group" aria-label="Choose a scene"></div>
+            <figure class="case-figure" id="case-figure" hidden>
+              <div class="pane-title"><h3 id="case-title"></h3><span id="case-source"></span></div>
+              <p class="case-library">Asset library <strong id="case-library"></strong></p>
+              <div id="case-live" class="case-live" hidden>
+                <div class="gallery-tools" id="gallery-tools" hidden>
+                  <div class="gallery-angles" role="group" aria-label="Frame the reconstructed room">
+                    <button type="button" data-gallery-angle="corner">Corner</button>
+                    <button type="button" data-gallery-angle="side">Side</button>
+                    <button type="button" data-gallery-angle="overhead">Overhead</button>
+                  </div>
+                  <div class="gallery-options">
+                    <button type="button" id="case-dense" aria-pressed="false" aria-controls="case-stage" title="Show colored points from the registered room" hidden>Dense background</button>
+                    <button type="button" id="case-map" aria-pressed="false" hidden>Camera positions</button>
+                    <button type="button" id="case-compare" aria-pressed="false" aria-controls="case-current-view" hidden>Compare input</button>
+                  </div>
+                </div>
+                <div class="gallery-workspace" id="gallery-workspace">
+                  <div class="scene-view case-stage" id="case-stage">
+                    <canvas id="case-canvas" aria-label="3D scene. Drag or use arrow keys to orbit. Use plus and minus to zoom." hidden></canvas>
+                    <canvas id="case-pbr-canvas" aria-label="Textured 3D scene. Drag to look around or use W, A, S and D to move." hidden></canvas>
+                    <p id="case-stage-status" class="case-stage-status" role="status"></p>
+                    <p class="camera-map-hint">Select a numbered camera to compare its input.</p>
+                    <button type="button" id="case-ground-truth" class="case-gt-toggle" aria-pressed="false" aria-controls="case-stage" title="Overlay the registered ground truth in teal" disabled hidden><span aria-hidden="true"></span>Ground truth</button>
+                    <div id="case-camera" class="case-camera" hidden>
+                      <button type="button" id="case-zoom-out" aria-label="Zoom out">−</button>
+                      <button type="button" id="case-zoom-in" aria-label="Zoom in">+</button>
+                      <button type="button" id="case-reset">Reset</button>
+                      <button type="button" id="case-expand" aria-label="Enter fullscreen" title="Enter fullscreen" hidden>⛶</button>
+                    </div>
+                  </div>
+                  <div class="case-current-view" id="case-current-view" hidden>
+                    <div class="gallery-photo-head"><span>Input view</span><span id="case-photo-info"></span></div>
+                    <a id="case-photo-link" target="_blank" rel="noopener" title="Open full-size input"><img id="case-input-image" alt="" decoding="async"></a>
+                    <a id="case-model-input" target="_blank" rel="noopener" hidden>Saved input</a>
+                  </div>
+                </div>
+                <div class="case-geometry" id="case-geometry" hidden>
+                  <div class="choices mode-switch" role="group" aria-label="3D display options">
+                    <button type="button" data-case-layer="assembly" aria-pressed="true">Placed assets</button>
+                    <button type="button" data-case-layer="instance" aria-pressed="false">Isolate object</button>
+                    <button type="button" id="case-joints" aria-pressed="false" hidden>Play joint motion</button>
+                    <button type="button" id="case-instance-colors" aria-pressed="false">Instance colors</button>
+                  </div>
+                  <label id="case-picker-label" hidden>Asset <select id="case-picker"></select></label>
+                </div>
+                <p class="case-gt-key" id="case-gt-key" role="status" hidden>Teal surfaces show the registered ground truth.</p>
+                <p class="caption" id="case-dense-status" role="status" hidden>The room points could not load. Select Dense background to retry.</p>
+                <div class="gallery-contact" id="case-inputs" hidden>
+                  <h4>Input cameras <span id="case-view-count"></span></h4>
+                  <div class="case-input-strip" id="case-input-views" role="group" aria-label="Input camera views"></div>
+                </div>
+                <p class="caption" id="case-model-note"></p>
+              </div>
+              <a id="case-query-link" href="#retrieve" hidden>Explore point prompts for this room</a>
+              <figcaption class="caption" id="case-description"></figcaption>
+            </figure>
+          </div>
+          <dl class="metrics results-metrics">
+            <div><dt>63.50%</dt><dd>Joint retrieval and layout success on ALBUM-Bench</dd></div>
+            <div><dt>48.4%</dt><dd>Instance-averaged alignment accuracy on Scan2CAD</dd></div>
+            <div><dt>98.12%</dt><dd>Exact-CAD Top-5 on Scan2CAD with scene-specific candidates</dd></div>
+          </dl>
+        </section>
+
+        <section class="chapter retrieval" id="retrieve" aria-labelledby="retrieve-title">
+          <header class="chapter-heading">
+            <h2 id="retrieve-title">Point to an object</h2>
+            <p>Click an object in the 3D room or a numbered point in the image to highlight its placement. For recorded queries, choose a Top-5 match to try it in the room.</p>
+          </header>
+          <div class="choices scene-options" id="query-scenes" role="group" aria-label="Query scene"></div>
+          <div class="retrieval-grid">
+            <figure class="query-figure">
+              <div class="pane-title"><h3>Input</h3><span>Recorded point prompts</span></div>
+              <div class="query-picture" id="query-picture">
+                <img id="query-image" alt="Input frame with recorded query points" width="224" height="224" hidden>
+                <div id="query-points"></div>
+              </div>
+              <figcaption class="caption query-metadata">
+                <span id="query-source">Cached inference</span>
+                <span class="case-library">Asset library <strong id="query-library"></strong></span>
+              </figcaption>
+            </figure>
+            <div class="rank-panel">
+              <div class="pane-title"><h3>Output</h3><span>Cached Top-5 retrieval</span></div>
+              <h4 id="query-title">Select a point</h4>
+              <div class="query-result">
+                <figure class="query-placement" id="query-placement">
+                  <div class="scene-view">
+                    <canvas id="query-placement-canvas" aria-label="All objects at their saved placements. Click an object to highlight it, or use the instance list. Drag to orbit." aria-describedby="query-placement-caption" hidden></canvas>
+                    <p class="case-stage-status" id="query-placement-status" role="status">Loading room…</p>
+                    <div class="case-camera" id="query-placement-controls" hidden>
+                      <button type="button" id="query-zoom-out" aria-label="Zoom out">−</button>
+                      <button type="button" id="query-zoom-in" aria-label="Zoom in">+</button>
+                      <button type="button" id="query-focus" hidden>Focus asset</button>
+                      <button type="button" id="query-reset">Reset view</button>
+                    </div>
+                  </div>
+                  <figcaption class="caption placement-caption" id="query-placement-caption">
+                    <span id="query-placement-asset"></span>
+                    <span id="query-placement-source"></span>
+                  </figcaption>
+                </figure>
+                <div class="query-options">
+                  <button type="button" id="query-clear" hidden>All instances</button>
+                  <div id="query-instances" aria-label="Room instances" role="group"></div>
+                  <ol class="ranks" id="query-ranks" aria-labelledby="query-title"></ol>
+                </div>
+              </div>
+              <p class="rank-detail" id="rank-detail" role="status">Each marker replays a saved point prompt.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter" id="method" aria-labelledby="method-title">
+          <header class="chapter-heading">
+            <h2 id="method-title">Unified matching</h2>
+            <p>Asset matching and layout estimation read the same instance memory.</p>
+          </header>
+          <figure class="method-pipeline">
+            <img src="assets/album-pipeline.webp" width="1372" height="405" loading="lazy" decoding="async"
+                 alt="A point query and RGB views produce instance tokens. The matching decoder ranks reference assets, and the layout decoder predicts the selected asset’s translation, scale, and rotation.">
+          </figure>
+        </section>
+
+        <section class="chapter" id="dataset" aria-labelledby="dataset-title">
+          <header class="chapter-heading">
+            <h2 id="dataset-title">Dataset</h2>
+          </header>
+          <section class="dataset-part" id="library" aria-labelledby="library-title">
+            <h3 id="library-title">Asset library</h3>
+            <p>Explore 25 ASE assets and seven articulated Artiverse models in their original materials. Watch the doors, drawers, and lids move as each model turns.</p>
+            <video class="library-board" id="library-board" width="2048" height="1362" controls autoplay muted loop playsinline preload="metadata"
+                   src="assets/curation/asset-library-board.mp4?v=native-faces-96" poster="assets/curation/asset-library-board.jpg?v=native-faces-96"
+                   aria-label="Rotating ASE and Artiverse assets with animated hinges and drawers"></video>
+          </section>
+          <section class="dataset-part" id="training-rooms" aria-labelledby="training-rooms-title">
+            <h3 id="training-rooms-title">Furnished rooms</h3>
+            <p>Follow the render cameras through ALBUM-Train. Each furnished layout records which assets appear in the room and where they were placed.</p>
+            <dl class="metrics">
+              <div><dt>100,414</dt><dd>Furnished layouts constructed</dd></div>
+            </dl>
+            <div class="research-browser" id="dataset-gallery"></div>
+          </section>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <template id="research-template">
+    <div class="evidence-tabs" role="group"></div>
+    <div class="evidence-panel">
+      <figure class="evidence-main">
+        <div class="pane-title"><h3 class="evidence-title"></h3><span class="evidence-source"></span></div>
+        <div class="evidence-screen">
+          <img class="evidence-image" alt="" loading="lazy">
+          <video class="evidence-video" controls playsinline preload="metadata" hidden></video>
+        </div>
+        <figcaption class="caption evidence-caption"></figcaption>
+      </figure>
+    </div>
+  </template>
+
+  <footer><div class="footer-row"><a class="wordmark" href="#top" aria-label="ALBUM home"><img src="assets/album-wordmark.png" alt="ALBUM" width="2160" height="677"></a></div></footer>
+</body>
+</html>

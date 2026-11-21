@@ -1,0 +1,64 @@
+WEBVTT
+
+00:00:00.350 --> 00:00:03.600
+ALBUM. Asset localization by unified matching.
+
+00:00:04.200 --> 00:00:12.700
+We reconstruct the lounge from video using Gaussian splatting. Glowing outlines show the retrieved assets in their saved positions.
+
+00:00:13.150 --> 00:00:15.950
+Each matched object is a reusable 3D asset.
+
+00:00:16.200 --> 00:00:21.800
+Here we query the foreground cane chair with a point in one of four input views.
+
+00:00:22.200 --> 00:00:28.900
+SAM appearance and Depth Anything Three geometry are combined across views into shared instance tokens.
+
+00:00:29.150 --> 00:00:38.650
+The matcher compares those tokens with reference views from the library. The recorded top five lead with the cane chair.
+
+00:00:39.150 --> 00:00:48.350
+The selected asset contributes its canonical surface geometry. The layout decoder uses the same instance tokens to estimate translation, rotation, and scale.
+
+00:00:49.250 --> 00:00:54.050
+In ScanNet Plus Plus, the input views reveal a dense color point cloud of each room.
+
+00:00:54.400 --> 00:01:02.650
+Watch the coffee table drawer slide out. In the kitchen, the refrigerator doors and wall cabinet open using the joints supplied with the assets.
+
+00:01:04.250 --> 00:01:10.700
+The office cabinet doors swing open and the desk drawers slide along their original rails.
+
+00:01:12.250 --> 00:01:18.800
+In this second office, the saved layout comes from checkpoint one hundred forty-seven K.
+
+00:01:23.550 --> 00:01:28.650
+In the lab kitchenette, the refrigerator and cabinets articulate in the room.
+
+00:01:33.450 --> 00:01:39.350
+With six views from Replica, ALBUM places assets across an open-plan room.
+
+00:01:44.250 --> 00:01:50.250
+At the window bar, the retrieved pendant lights and bar furniture sit in the original capture.
+
+00:01:55.300 --> 00:02:01.450
+We rigged the front door of this retrieved wardrobe to slide across the other panel.
+
+00:02:02.350 --> 00:02:11.550
+From above, the saved layouts show how objects are arranged in the captured rooms and in the held-out benchmark scenes.
+
+00:02:12.350 --> 00:02:19.550
+The curated library includes textured and articulated meshes. Canonical renders of each asset are cached for matching.
+
+00:02:22.150 --> 00:02:27.750
+For training, the same camera follows an empty room as assets appear in their recorded poses.
+
+00:02:28.350 --> 00:02:36.650
+The camera moves inside two furnished apartments. Each rendered view shares the asset identities and three-dimensional layout of its room.
+
+00:02:37.350 --> 00:02:43.050
+Here are three more training rooms, viewed from their original panoramic cameras.
+
+00:02:43.650 --> 00:02:51.600
+Each highlighted instance links the image pixels to a library asset and a known position. These are the targets for learning to match and place objects.
