@@ -10,8 +10,8 @@
   const assetLibrary = {
     'ScanNet++': 'ALBUM curated assets',
     'ALBUM-Bench': 'ALBUM curated assets',
-    'Replica': 'Replica ground-truth scanned assets',
-    'In-house captures': 'Agent-generated assets for this room',
+    'Replica': 'Replica ground-truth asset library',
+    'In-house captures': 'Agent-created library for this room',
   };
   const featuredScenes = new Set([
     // Saved ScanNet++ v6 layouts.
@@ -44,16 +44,11 @@
   const toggle = (button, selected) => button.setAttribute('aria-pressed', String(selected));
 
   const hero = $('top');
-  const masthead = document.querySelector('.masthead');
   const reel = $('reel');
   const reelButton = document.querySelector('.reel-toggle');
-  const stageControls = $('hero-stages');
-  const stages = Array.from(stageControls.querySelectorAll('button'));
-  const scrub = $('hero-scrub');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   let previewVisible = true;
   let runPreview = !reduce.matches;
-  let initialSeek = Number(stages[0].dataset.seek);
   function updatePreview() {
     if (reel.readyState === 0) return;
     if (runPreview && previewVisible && !document.hidden) reel.play().catch(() => {});
@@ -64,84 +59,20 @@
     reelButton.dataset.playing = String(!reel.paused);
     reelButton.setAttribute('aria-label', `${action} preview`);
   }
-  function markPreviewStage() {
-    if (!Number.isFinite(reel.duration)) return;
-    const t = reel.currentTime;
-    const returningToRgb = t >= reel.duration - Number(reel.dataset.rgbTail || 0);
-    let position = 0;
-    stages.forEach((button, i) => {
-      const start = Number(button.dataset.start);
-      const end = stages[i + 1] ? Number(stages[i + 1].dataset.start) : reel.duration;
-      const fraction = Math.max(0, Math.min(1, (t - start) / (end - start)));
-      const fill = fraction.toFixed(4);
-      if (button.style.getPropertyValue('--progress') !== fill) button.style.setProperty('--progress', fill);
-      const active = returningToRgb ? i === 0 : t >= start && (t < end || i === stages.length - 1);
-      if (button.getAttribute('aria-pressed') !== String(active)) toggle(button, active);
-      position += fraction;
-    });
-    scrub.value = Math.round(position * 1000);
-    const spokenTime = Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
-    if (scrub.getAttribute('aria-valuetext') !== spokenTime) scrub.setAttribute('aria-valuetext', spokenTime);
-  }
-  function seekPreview(time) {
-    if (reel.readyState === 0) initialSeek = time;
-    else reel.currentTime = time;
-    markPreviewStage();
-  }
-  scrub.addEventListener('input', () => {
-    if (!Number.isFinite(reel.duration)) return;
-    const pos = Number(scrub.value) / 1000;
-    const i = Math.min(Math.floor(pos), stages.length - 1);
-    const start = Number(stages[i].dataset.start);
-    const end = stages[i + 1] ? Number(stages[i + 1].dataset.start) : reel.duration;
-    seekPreview(Math.min(reel.duration - .02, start + (end - start) * (pos - i)));
-  });
-  scrub.addEventListener('keydown', event => {
-    if (!Number.isFinite(reel.duration) || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault();
-    const target = event.key === 'Home' ? 0 : event.key === 'End' ? reel.duration : reel.currentTime + (event.key === 'ArrowRight' ? 1 : -1);
-    seekPreview(Math.min(reel.duration - .02, Math.max(0, target)));
-  });
-  document.querySelectorAll('.hero-step-arrow').forEach(arrow => arrow.addEventListener('click', () => {
-    const current = stages.findIndex(button => button.getAttribute('aria-pressed') === 'true');
-    const next = (current + Number(arrow.dataset.direction) + stages.length) % stages.length;
-    seekPreview(Number(stages[next].dataset.seek));
-  }));
   function showPreview() {
     if (reel.readyState >= 2 && !reel.seeking) reel.classList.add('is-ready');
   }
   function preparePreview() {
-    if (initialSeek !== null) {
-      reel.currentTime = initialSeek;
-      initialSeek = null;
-    }
     reelButton.hidden = false;
-    markPreviewStage();
     updatePreview();
   }
   reel.addEventListener('loadeddata', showPreview);
   reel.addEventListener('canplay', showPreview);
-  reel.addEventListener('seeked', showPreview);
   reel.addEventListener('playing', () => {
     showPreview();
     labelPreview();
-    stageControls.classList.add('is-playing');
-    markPreviewStage();
   });
-  reel.addEventListener('pause', () => {
-    stageControls.classList.remove('is-playing');
-    markPreviewStage();
-    labelPreview();
-  });
-  reel.addEventListener('seeked', markPreviewStage);
-  reel.addEventListener('timeupdate', markPreviewStage);
-  for (const node of stages) {
-    node.addEventListener('click', () => {
-      seekPreview(Number(node.dataset.seek));
-      stages.forEach(stage => toggle(stage, stage === node));
-      updatePreview();
-    });
-  }
+  reel.addEventListener('pause', labelPreview);
   reel.addEventListener('loadedmetadata', preparePreview);
   reelButton.addEventListener('click', () => {
     runPreview = reel.paused;
@@ -157,9 +88,6 @@
       previewVisible = entry.intersectionRatio >= .15;
       updatePreview();
     }, { threshold: [.15] }).observe(hero);
-    new IntersectionObserver(([entry]) => {
-      masthead.classList.toggle('over-hero', entry.isIntersecting);
-    }, { rootMargin: `-${masthead.offsetHeight}px 0px 0px` }).observe(hero);
   }
   if (reel.readyState > 0) preparePreview();
   document.querySelector('a[href="#film"]').addEventListener('click', () => {
@@ -248,7 +176,7 @@
   function showRanks(query, point) {
     $('query-title').textContent = point.label;
     const hasScores = point.ranks.some(rank => Number.isFinite(rank.score));
-    $('rank-detail').textContent = point.description || (hasScores ? 'Model rank order with raw retrieval logits.' : 'Five reference assets in model rank order.');
+    $('rank-detail').textContent = point.description || (hasScores ? 'Candidates are ranked by the shared matcher’s compatibility score (raw logit).' : 'Candidates are shown in the model’s saved rank order.');
     queryRanks.replaceChildren(...point.ranks.map((rank, index) => {
       const li = document.createElement('li');
       const place = document.createElement('span');
@@ -332,7 +260,8 @@
     updatePlacement();
   }
   clearSelection.addEventListener('click', () => {
-    overview();
+    if (currentQuery.id === roomForQuery(currentQuery.id)) overview();
+    else queryButtons.get(roomForQuery(currentQuery.id)).click();
     placementViewer.reset();
   });
   queryCanvas.addEventListener('album-instance-pick', event => {
@@ -341,7 +270,7 @@
 
   function setQuery(query, showRoom = true) {
     currentQuery = query;
-    pressOnly(queryScenes, queryButtons.get(query.id));
+    pressOnly(queryScenes, queryButtons.get(roomForQuery(query.id)));
     queryImage.alt = query.alt || `Model input for ${query.title}`;
     queryImage.src = query.image;
     queryImage.hidden = false;
@@ -368,7 +297,7 @@
     }));
     if (showRoom) overview();
   }
-  queries.filter(query => query.points?.length).forEach(query => {
+  queries.filter(query => query.points?.length && query.id === roomForQuery(query.id)).forEach(query => {
     const button = makeButton(query.title, () => setQuery(query));
     queryButtons.set(query.id, button);
     queryScenes.append(button);

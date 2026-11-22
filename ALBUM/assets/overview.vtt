@@ -1,64 +1,239 @@
 WEBVTT
 
-00:00:00.350 --> 00:00:03.600
-ALBUM. Asset localization by unified matching.
+00:00:00.210 --> 00:00:03.389 line:94%,end align:center
+ALBUM — Asset Localization By Unified Matching
 
-00:00:04.200 --> 00:00:12.700
-We reconstruct the lounge from video using Gaussian splatting. Glowing outlines show the retrieved assets in their saved positions.
+00:00:04.210 --> 00:00:06.790 line:94%,end align:center
+ALBUM takes unposed RGB views,
 
-00:00:13.150 --> 00:00:15.950
-Each matched object is a reusable 3D asset.
+00:00:06.790 --> 00:00:09.842 line:94%,end align:center
+point prompts, and a user-supplied asset library.
 
-00:00:16.200 --> 00:00:21.800
-Here we query the foreground cane chair with a point in one of four input views.
+00:00:10.442 --> 00:00:13.172 line:94%,end align:center
+It retrieves the target assets and estimates
 
-00:00:22.200 --> 00:00:28.900
-SAM appearance and Depth Anything Three geometry are combined across views into shared instance tokens.
+00:00:13.172 --> 00:00:15.583 line:94%,end align:center
+their 3D layouts in a single forward pass.
 
-00:00:29.150 --> 00:00:38.650
-The matcher compares those tokens with reference views from the library. The recorded top five lead with the cane chair.
+00:00:16.210 --> 00:00:18.290 line:94%,end align:center
+How do we go from a point in an image
 
-00:00:39.150 --> 00:00:48.350
-The selected asset contributes its canonical surface geometry. The layout decoder uses the same instance tokens to estimate translation, rotation, and scale.
+00:00:18.290 --> 00:00:20.135 line:94%,end align:center
+to a 3D object in the room?
 
-00:00:49.250 --> 00:00:54.050
-In ScanNet Plus Plus, the input views reveal a dense color point cloud of each room.
+00:00:20.475 --> 00:00:23.270 line:94%,end align:center
+Take the wooden coffee table in front of the sofa.
 
-00:00:54.400 --> 00:01:02.650
-Watch the coffee table drawer slide out. In the kitchen, the refrigerator doors and wall cabinet open using the joints supplied with the assets.
+00:00:23.610 --> 00:00:25.780 line:94%,end align:center
+A click identifies it in one view.
 
-00:01:04.250 --> 00:01:10.700
-The office cabinet doors swing open and the desk drawers slide along their original rails.
+00:00:25.780 --> 00:00:28.250 line:94%,end align:center
+The other views reveal parts of the table
 
-00:01:12.250 --> 00:01:18.800
-In this second office, the saved layout comes from checkpoint one hundred forty-seven K.
+00:00:28.250 --> 00:00:29.818 line:94%,end align:center
+that are hard to see from here.
 
-00:01:23.550 --> 00:01:28.650
-In the lab kitchenette, the refrigerator and cabinets articulate in the room.
+00:00:30.543 --> 00:00:33.403 line:94%,end align:center
+The encoder combines appearance features from SAM
 
-00:01:33.450 --> 00:01:39.350
-With six views from Replica, ALBUM places assets across an open-plan room.
+00:00:33.403 --> 00:00:36.431 line:94%,end align:center
+with geometric features from Depth Anything 3.
 
-00:01:44.250 --> 00:01:50.250
-At the window bar, the retrieved pendant lights and bar furniture sit in the original capture.
+00:00:36.771 --> 00:00:38.951 line:94%,end align:center
+The prompt carries the camera information
 
-00:01:55.300 --> 00:02:01.450
-We rigged the front door of this retrieved wardrobe to slide across the other panel.
+00:00:38.951 --> 00:00:41.315 line:94%,end align:center
+and local geometry at the clicked pixel.
 
-00:02:02.350 --> 00:02:11.550
-From above, the saved layouts show how objects are arranged in the captured rooms and in the held-out benchmark scenes.
+00:00:41.655 --> 00:00:44.155 line:94%,end align:center
+Attention gathers evidence about the table
 
-00:02:12.350 --> 00:02:19.550
-The curated library includes textured and articulated meshes. Canonical renders of each asset are cached for matching.
+00:00:44.155 --> 00:00:46.861 line:94%,end align:center
+across views into a set of instance tokens.
 
-00:02:22.150 --> 00:02:27.750
-For training, the same camera follows an empty room as assets appear in their recorded poses.
+00:00:47.585 --> 00:00:50.422 line:94%,end align:center
+Now we need to identify the table in the library.
 
-00:02:28.350 --> 00:02:36.650
-The camera moves inside two furnished apartments. Each rendered view shares the asset identities and three-dimensional layout of its room.
+00:00:50.762 --> 00:00:54.902 line:94%,end align:center
+DINOv3 encodes canonical views of each candidate.
 
-00:02:37.350 --> 00:02:43.050
-Here are three more training rooms, viewed from their original panoramic cameras.
+00:00:54.902 --> 00:00:57.888 line:94%,end align:center
+Each reference also carries its viewing direction.
 
-00:02:43.650 --> 00:02:51.600
-Each highlighted instance links the image pixels to a library asset and a known position. These are the targets for learning to match and place objects.
+00:00:58.228 --> 00:01:00.648 line:94%,end align:center
+The same matcher compares every candidate
+
+00:01:00.648 --> 00:01:02.708 line:94%,end align:center
+with the table’s instance tokens.
+
+00:01:02.708 --> 00:01:05.374 line:94%,end align:center
+The highest score selects the reference asset.
+
+00:01:06.085 --> 00:01:08.295 line:94%,end align:center
+Which way does the selected table face,
+
+00:01:08.295 --> 00:01:09.434 line:94%,end align:center
+and where does it belong?
+
+00:01:09.774 --> 00:01:13.064 line:94%,end align:center
+The layout decoder reads the same instance tokens,
+
+00:01:13.064 --> 00:01:16.153 line:94%,end align:center
+this time alongside the selected asset’s geometry.
+
+00:01:16.493 --> 00:01:19.393 line:94%,end align:center
+Three canonical views supply surface positions
+
+00:01:19.393 --> 00:01:20.674 line:94%,end align:center
+and viewing directions.
+
+00:01:21.014 --> 00:01:23.714 line:94%,end align:center
+The decoder predicts translation, rotation,
+
+00:01:23.714 --> 00:01:24.897 line:94%,end align:center
+and uniform scale.
+
+00:01:25.543 --> 00:01:28.103 line:94%,end align:center
+This transform places the complete table,
+
+00:01:28.103 --> 00:01:29.653 line:94%,end align:center
+including its white drawer,
+
+00:01:29.653 --> 00:01:32.050 line:94%,end align:center
+in the coordinate frame of the first camera.
+
+00:01:32.960 --> 00:01:34.752 line:78%,end align:center
+What if the exact table is missing?
+
+00:01:35.352 --> 00:01:38.242 line:78%,end align:center
+You can supply our asset library or your own.
+
+00:01:38.242 --> 00:01:41.352 line:78%,end align:center
+ALBUM selects the available asset it scores highest
+
+00:01:41.352 --> 00:01:42.883 line:78%,end align:center
+and estimates where it fits.
+
+00:01:46.960 --> 00:01:50.060 line:78%,end align:center
+On ScanNet++, these substitutes can match
+
+00:01:50.060 --> 00:01:51.450 line:78%,end align:center
+in appearance or in meaning.
+
+00:01:51.450 --> 00:01:54.409 line:78%,end align:center
+Each keeps its original geometry and materials.
+
+00:01:54.960 --> 00:01:57.940 line:78%,end align:center
+Even surfaces hidden from the cameras are preserved.
+
+00:01:57.940 --> 00:02:00.635 line:78%,end align:center
+The colored scan gives context for the placement.
+
+00:02:02.960 --> 00:02:05.320 line:78%,end align:center
+Retrieval also preserves the moving parts
+
+00:02:05.320 --> 00:02:06.740 line:78%,end align:center
+of the source asset.
+
+00:02:06.740 --> 00:02:08.930 line:78%,end align:center
+A drawer can slide or a door can swing
+
+00:02:08.930 --> 00:02:10.917 line:78%,end align:center
+using its original joint.
+
+00:02:12.960 --> 00:02:16.420 line:78%,end align:center
+Replica supplies its own ground-truth asset libraries.
+
+00:02:16.420 --> 00:02:19.701 line:78%,end align:center
+Both the rooms and their assets were unseen in training.
+
+00:02:20.301 --> 00:02:22.029 line:78%,end align:center
+We use the same network weights.
+
+00:02:23.960 --> 00:02:26.260 line:78%,end align:center
+The retrieved meshes can also be edited.
+
+00:02:26.260 --> 00:02:28.260 line:78%,end align:center
+For this wardrobe, we rigged the front door
+
+00:02:28.260 --> 00:02:30.381 line:78%,end align:center
+to slide across the other panel.
+
+00:02:34.960 --> 00:02:37.360 line:97%,end align:center
+ALBUM retrieves and places several objects
+
+00:02:37.360 --> 00:02:38.757 line:97%,end align:center
+in one forward pass.
+
+00:02:39.357 --> 00:02:41.437 line:97%,end align:center
+Their point prompts share scene features,
+
+00:02:41.437 --> 00:02:43.773 line:97%,end align:center
+and all layouts use the same camera frame.
+
+00:02:44.960 --> 00:02:47.008 line:94%,end align:center
+Where do these library assets come from?
+
+00:02:47.335 --> 00:02:51.555 line:94%,end align:center
+ALBUM brings together 6,961 textured assets
+
+00:02:51.555 --> 00:02:53.735 line:94%,end align:center
+across 97 indoor categories.
+
+00:02:54.063 --> 00:02:59.113 line:94%,end align:center
+Our own collection contributes 2,289 high-quality models
+
+00:02:59.113 --> 00:03:01.167 line:94%,end align:center
+created by artists and designers.
+
+00:03:01.494 --> 00:03:05.274 line:94%,end align:center
+A further 2,865 come from Artiverse
+
+00:03:05.274 --> 00:03:08.300 line:94%,end align:center
+and 1,807 from InternScenes.
+
+00:03:08.627 --> 00:03:11.467 line:94%,end align:center
+We checked for duplicates, defective geometry,
+
+00:03:11.467 --> 00:03:12.915 line:94%,end align:center
+and implausible dimensions.
+
+00:03:13.242 --> 00:03:17.472 line:94%,end align:center
+The library includes 4,236 static assets
+
+00:03:17.472 --> 00:03:21.132 line:94%,end align:center
+and 2,725 articulated assets
+
+00:03:21.132 --> 00:03:22.992 line:94%,end align:center
+with part and joint metadata.
+
+00:03:23.502 --> 00:03:25.762 line:78%,end align:center
+We use these assets to furnish rooms.
+
+00:03:25.762 --> 00:03:27.822 line:78%,end align:center
+Support furniture goes in first,
+
+00:03:27.822 --> 00:03:31.246 line:78%,end align:center
+then smaller objects are placed on compatible surfaces.
+
+00:03:31.846 --> 00:03:34.636 line:78%,end align:center
+Collision and support checks help us construct
+
+00:03:34.636 --> 00:03:37.798 line:78%,end align:center
+100,414 furnished layouts.
+
+00:03:38.502 --> 00:03:40.982 line:97%,end align:center
+We render multiple views along a camera path
+
+00:03:40.982 --> 00:03:42.320 line:97%,end align:center
+through each furnished room.
+
+00:03:42.920 --> 00:03:45.920 line:97%,end align:center
+Each instance mask links what the camera sees
+
+00:03:45.920 --> 00:03:48.620 line:97%,end align:center
+to the exact source asset and its 3D layout.
+
+00:03:48.620 --> 00:03:50.878 line:97%,end align:center
+These links supervise both decoders.
+

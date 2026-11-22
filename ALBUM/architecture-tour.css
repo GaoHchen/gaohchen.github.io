@@ -1,0 +1,24 @@
+.architecture-tour { margin: 0; }
+.arch-stage { position: relative; aspect-ratio: 2.04; overflow: hidden; background: var(--dots) center / 18px 18px; }
+.arch-stage canvas, .arch-stage>img { position: absolute; inset: 0; display:block; width: 100%; height:100%; object-fit:contain; }
+.arch-stage canvas { opacity:0; }
+.architecture-tour.ready canvas {opacity:1;}
+.architecture-tour.ready .arch-stage>img {visibility:hidden;}
+.arch-controls {display:flex; align-items:center; gap: .9rem; margin: .75rem 0 1rem; }
+.arch-play {min-width:4.2rem;}
+.arch-controls input {flex:1;min-width:30px;accent-color:var(--ink); cursor:pointer;}
+.arch-title {font-size:clamp(1.15rem,1.8vw,1.65rem); margin:1.1rem 0 .3rem;letter-spacing:-.035em;}
+.arch-copy,.arch-status {color:var(--muted);max-width:78ch;line-height:1.6;margin:0;}
+.architecture-tour button:focus-visible,.architecture-tour input:focus-visible {outline:2px solid var(--accent);outline-offset:3px;}
+.method-detail {margin:auto;width:min(96vw,95rem);max-width:96vw;padding:0;border:1px solid #c9cfc9;border-radius:.7rem;color:var(--ink);background:var(--page);}
+.method-detail::backdrop {background:#10221fd6;}
+.method-detail-heading {display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;}
+.method-detail-heading h3 {font-size:1.1rem;margin:0;}
+.method-detail-scroll {overflow:auto;max-height:76vh;padding:.75rem 1rem 1rem;}
+.method-detail-scroll img {display:block;width:max(100%,75rem);max-width:none;height:auto;}
+@media(max-width:650px) {
+ .arch-stage {aspect-ratio:1.31;}
+ .arch-controls {gap:.45rem;}
+}
+
+.architecture-tour.ready canvas { touch-action: pan-y; cursor: ew-resize; }

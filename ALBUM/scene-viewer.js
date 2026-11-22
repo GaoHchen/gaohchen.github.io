@@ -36,7 +36,7 @@
 
   function createViewer(canvas) {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-    const gl = canvas.getContext('webgl', { antialias: true, alpha: false });
+    const gl = canvas.getContext('webgl', { antialias: true, alpha: true });
     const uintIndices = gl?.getExtension('OES_element_index_uint');
     const add = (a, b) => a.map((v, i) => v + b[i]);
     const sub = (a, b) => a.map((v, i) => v - b[i]);
@@ -133,10 +133,10 @@
         uniform float opacity;
         void main() { gl_FragColor = vec4(rgb, opacity); }
         `, ['xyz', 'normal', 'color'], ['view', 'projection', 'orthographic', 'position', 'jointPose', 'jointNormal', 'opacity', 'instanceTint', 'instanceMix']);
-      gl.clearColor(0.063, 0.089, 0.086, 1);
+      gl.clearColor(0, 0, 0, 0);
       gl.enable(gl.DEPTH_TEST);
       gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     }
 
     function readBytes(encoded) {
@@ -382,11 +382,6 @@
         gl.viewport(0, 0, width, height);
       }
       const m = matrices();
-      if (current.roomView || (current.lightAssets && !dataset.background && !dataset.observation)) {
-        gl.clearColor(.89, .88, .85, 1);
-      } else {
-        gl.clearColor(.063, .089, .086, 1);
-      }
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       drawMeshes(m, now);
       const roomPoints = current.singlePlacement ? dataset.roomPoints || dataset.observation || dataset.background

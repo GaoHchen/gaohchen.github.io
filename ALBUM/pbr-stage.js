@@ -33,7 +33,7 @@ class ReviewLoader extends GLTFLoader {
 }
 export function createStage(canvas, { filmPlate = false } = {}) {
   const stage = new Scene();
-  const renderer = new WebGLRenderer({ canvas, alpha: filmPlate, antialias: true, preserveDrawingBuffer: filmPlate });
+  const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: filmPlate });
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = NoToneMapping;
   const view = new PerspectiveCamera(49, 1, .026, 125);
@@ -64,12 +64,23 @@ export function createStage(canvas, { filmPlate = false } = {}) {
   let selectedRoot, replacement, selectionVersion = 0;
   const walls = [];
   const cameraWorld = new Vector3();
+  const cameraForward = new Vector3();
   const beforeRender = stage.onBeforeRender;
   stage.onBeforeRender = function (...args) {
     beforeRender.apply(this, args);
     if (!walls.length) return;
     args[2].getWorldPosition(cameraWorld);
-    for (const { node, nx, nz, distance, inside, ceiling } of walls) {
+    args[2].getWorldDirection(cameraForward);
+    for (const { node, nx, nz, distance, inside, ceiling, datasetWall } of walls) {
+      if (datasetWall) {
+        // ASE planes point into the adjacent floor. At grazing angles keep
+        // the previous state within a small band to avoid flicker on drag.
+        const facing = nx * cameraForward.x + nz * cameraForward.z;
+        const offset = nx * cameraWorld.x + nz * cameraWorld.z - distance;
+        if (node.visible && offset < -.08 && facing > .08) node.visible = false;
+        else if (!node.visible && (offset > -.04 || facing < .045)) node.visible = true;
+        continue;
+      }
       node.visible = ceiling !== undefined ? cameraWorld.y < ceiling - .08
         : inside * (nx * cameraWorld.x + nz * cameraWorld.z - distance) > .12;
     }
@@ -459,6 +470,11 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       return null;
     }
     addPrediction(result.value.scene, model.matrix);
+    if (model.kind === 'dataset') prediction.traverse(node => {
+      if (!node.userData.cutawayPlane) return;
+      const [nx, nz, distance] = node.userData.cutawayPlane;
+      walls.push({ node, nx, nz, distance, datasetWall: true });
+    });
     if (model.kind === 'queryRoom') {
       const slots = new Map(prediction.children.map(root => [root.userData.prompt, root]));
       if (observation.value) prediction.add(observation.value.scene);
@@ -475,7 +491,8 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     }
     addRoomContext(shell.status === 'fulfilled' && shell.value?.scene || null);
     const room = ['room', 'dataset', 'placement', 'gallery', 'queryRoom'].includes(model.kind);
-    stage.background = filmPlate ? null : new Color(room ? '#d9d9d0' : '#e0e2df');
+    stage.background = null;
+    renderer.setClearAlpha(0);
     const clips = result.value.animations;
     if (clips.length) {
       mixer = new AnimationMixer(prediction);

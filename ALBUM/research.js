@@ -29,29 +29,79 @@
 
   if (location.hash === '#curation-pipeline') location.replace('#library');
 
-  const contents = Array.from($('chapters').querySelectorAll('a')).map(link => [
-    link, $(link.hash.slice(1)),
-  ]);
-  let expectedFrame = false;
-  function markChapter() {
-    expectedFrame = false;
-    let active = contents[0][0];
-    const line = Math.min(180, innerHeight * .32);
-    for (const [link, chapter] of contents) {
-      if (chapter.getBoundingClientRect().top <= line) active = link;
+  const route = document.querySelector('.reading-route');
+  const chapters = $('chapters');
+  const menu = route.querySelector('.route-toggle');
+  const compact = matchMedia('(max-width: 1050px)');
+  const stops = [...chapters.querySelectorAll('a')].map(link => ({
+    link, section: $(link.hash.slice(1)), item: link.closest('li'),
+  }));
+  function setMenu(open) {
+    route.classList.toggle('is-open', open);
+    menu.setAttribute('aria-expanded', String(open));
+  }
+  menu.addEventListener('click', () => setMenu(!route.classList.contains('is-open')));
+  chapters.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link || !compact.matches) return;
+    setMenu(false);
+    const section = $(link.hash.slice(1));
+    section.setAttribute('tabindex', '-1');
+    section.focus({ preventScroll: true });
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!route.contains(event.target)) setMenu(false);
+  });
+  route.addEventListener('focusout', event => {
+    if (event.relatedTarget && !route.contains(event.relatedTarget)) setMenu(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && route.classList.contains('is-open')) {
+      setMenu(false);
+      menu.focus();
     }
-    for (const [link] of contents) {
-      if (link === active && !link.hasAttribute('aria-current')) link.setAttribute('aria-current', 'location');
-      if (link !== active) link.removeAttribute('aria-current');
+  });
+  compact.addEventListener('change', () => setMenu(false));
+
+  let queued = false;
+  function markChapter() {
+    queued = false;
+    const readingLine = Math.min(170, innerHeight * .26);
+    const reading = stops[0].section.getBoundingClientRect().top <= readingLine;
+    route.classList.toggle('is-reading', reading);
+    let active = -1;
+    for (const [i, stop] of stops.entries()) {
+      if (stop.section.getBoundingClientRect().top <= readingLine) active = i;
+    }
+    // A short final section can reach the end before it reaches the reading line.
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = stops.length - 1;
+    const inDataset = active >= stops.findIndex(stop => stop.section.id === 'dataset');
+    route.classList.toggle('in-dataset', inDataset);
+    for (const [i, stop] of stops.entries()) {
+      if (i === active) stop.link.setAttribute('aria-current', 'location');
+      else stop.link.removeAttribute('aria-current');
+      stop.item.classList.toggle('passed', i < active);
+    }
+    if (!compact.matches && reading) {
+      const navTop = chapters.getBoundingClientRect().top;
+      const center = element => {
+        const rect = element.getBoundingClientRect();
+        return rect.top + rect.height / 2 - navTop;
+      };
+      const first = center(stops[0].link);
+      const last = center(stops[inDataset ? stops.length - 1 : stops.length - 3].link);
+      chapters.style.setProperty('--track-start', first + 'px');
+      chapters.style.setProperty('--track-height', (last - first) + 'px');
+      chapters.style.setProperty('--track-fill', (center(stops[active].link) - first) + 'px');
     }
   }
   function queueChapter() {
-    if (expectedFrame) return;
-    expectedFrame = true;
-    requestAnimationFrame(markChapter);
+    if (!queued) requestAnimationFrame(markChapter);
+    queued = true;
   }
   addEventListener('scroll', queueChapter, { passive: true });
   addEventListener('resize', queueChapter, { passive: true });
+  new ResizeObserver(queueChapter).observe(document.querySelector('.chapters-content'));
   queueChapter();
 
   const overview = $('intro-film');
