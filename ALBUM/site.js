@@ -315,6 +315,7 @@
   const highlightButton = $('case-instance-colors');
   const gtButton = $('case-ground-truth');
   const jointsButton = $('case-joints');
+  const contactButton = $('case-contact-layout');
   const inputs = $('case-inputs');
   const inputStrip = $('case-input-views');
   const inputImage = $('case-input-image');
@@ -346,7 +347,7 @@
   let modelRequested;
   let viewportNear = !('IntersectionObserver' in window);
   let viewRevision = 0;
-  let activeCase;
+  let activeCase = new URLSearchParams(location.search).get('scene');
   let activeLayer;
   let layerRevision = 0;
 
@@ -489,6 +490,21 @@
       }
     });
   }
+  contactButton.addEventListener('click', async () => {
+    const revision = viewRevision;
+    contactButton.disabled = true;
+    try {
+      const enabled = contactButton.getAttribute('aria-pressed') !== 'true';
+      const applied = await galleryPbr.setContactLayout(enabled);
+      if (revision !== viewRevision) return;
+      toggle(contactButton, Boolean(applied));
+      $('case-model-note').textContent = applied
+        ? 'Contact-corrected display. Turn off Collision correction to inspect the original predictions.'
+        : 'Original predicted poses with Replica’s scan colors.';
+    } finally {
+      if (revision === viewRevision) contactButton.disabled = false;
+    }
+  });
   overlayControl(gtButton, 'setGroundTruth');
   overlayControl(jointsButton, 'animateJoints');
 
@@ -499,6 +515,7 @@
     const assembly = layer === 'assembly';
     denseButton.hidden = !(assembly && galleryNative && denseBackgroundFor(activeCase));
     gtButton.hidden = !(assembly && galleryNative && immersive[activeCase]?.groundTruth);
+    contactButton.hidden = !(assembly && galleryNative && galleryDataset.hasContactLayout);
     jointsButton.hidden = !(assembly && (galleryNative ? galleryDataset.hasJoints : window.ALBUM_ROOM_RIGS?.[activeCase]));
     positionsButton.hidden = !(assembly && galleryNative && immersive[activeCase]?.cameraViews?.some(pose => pose?.eye && pose.target));
     if (!assembly) {
@@ -592,12 +609,16 @@
       });
       if (revision !== viewRevision || !opened) return;
       galleryDataset = opened;
+      contactButton.disabled = false;
+      toggle(contactButton, Boolean(opened.hasContactLayout));
       galleryNative = true;
       const materialNote = saved ? (id.startsWith('replica-')
         ? 'Saved placements with Replica’s original scan colors.' : 'Saved placements with original asset materials.')
         : 'Saved placements with archived vertex colors.';
       showGallery(assets.map(({ label, name }) => ({ label: label.replace(/^\d+\s+|\.\d{3}$/g, ''), value: name })),
-        [materialNote, collisionNote].filter(Boolean).join(' '), galleryPbrCanvas);
+        opened.hasContactLayout
+          ? 'Contact-corrected display. Turn off Collision correction to inspect the original predictions.'
+          : [materialNote, collisionNote].filter(Boolean).join(' '), galleryPbrCanvas);
       return;
     } catch (error) {
       if (revision !== viewRevision) return;
@@ -616,6 +637,7 @@
   function resetModel() {
     viewRevision++;
     denseRevision++;
+    contactButton.hidden = true;
     denseButton.hidden = denseStatus.hidden = true;
     denseButton.removeAttribute('aria-busy');
     toggle(denseButton, false);

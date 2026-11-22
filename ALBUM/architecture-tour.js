@@ -23,8 +23,8 @@
     {from:0,at:3.7,title:'Specify the target with a point',text:'A point in one input view specifies the wooden coffee table in front of the sofa. The other views provide additional evidence about the same instance.'},
     {from:5.8,at:9.6,title:'Encode the target across views',text:'The multiview encoder aggregates SAM appearance features and Depth Anything 3 geometric features into instance tokens. Both decoders attend to these tokens.'},
     {from:11.1,at:18.3,title:'Match the target to a library asset',text:'DINOv3 encodes canonical renders of each candidate. A shared matcher compares the reference tokens with the target’s instance tokens and selects the highest-scoring asset.'},
-    {from:19.5,at:25.6,title:'Estimate the selected asset’s 7-DoF layout',text:'Three orthographic RGB views show the selected asset at azimuths of 20°, 140°, and 260°, each at 30° elevation. Their surface-position and viewing-direction maps encode its canonical geometry. The layout decoder uses this geometry and the shared instance tokens to predict translation, rotation, and uniform scale.'},
-    {from:26.8,at:32.4,title:'Place the asset in the shared scene frame',text:'The predicted transform maps the canonical mesh into the camera frame of the first input image. Here it places the retrieved coffee table in front of the sofa.'}
+    {from:19.5,at:25.6,title:'Estimate the selected asset’s 7DoF layout',text:'Three canonical views at 30° elevation encode surface positions and viewing directions. The decoder combines these with the instance tokens to predict the table’s translation, rotation, and uniform scale.'},
+    {from:26.8,at:32.4,title:'Place the asset in the shared scene frame',text:'ALBUM retains DA3’s camera pose and depth predictions to reconstruct the room. The predicted 7DoF layout places the table in that room, in the first camera’s frame.'}
   ];
   const clamp=(x,lo=0,hi=1)=>Math.min(hi,Math.max(lo,x));
   const smooth=x=>{x=clamp(x);return x*x*(3-2*x);};
@@ -333,6 +333,7 @@
     c.save();c.scale(w/1600,h/900);
     c.fillStyle='#fcfbf8';c.fillRect(0,0,1600,900);
     label(c,stages[stage(t)].title,71,72,45,570,colors.ink,'left');
+    if (stage(t) === 4) label(c,'DA3 outputs camera poses and per-view depth maps.',71,109,24,460,colors.sub,'left');
     c.translate(0,119);drawMap(c,1600,740,t);c.restore();
   }
   window.albumArchitecture={ready, drawFilm};

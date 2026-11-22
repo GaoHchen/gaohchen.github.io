@@ -29,7 +29,7 @@ function mountViser(canvas) {
       else job.reject(Error(message.error || 'Viser could not display this scene.'));
     }, { signal: listener.signal });
   });
-  frame.src = new URL('vendor/viser/index.html?album=1&v=paper-stage', document.baseURI);
+  frame.src = new URL('vendor/viser/index.html?album=1&v=cloud-orbit', document.baseURI);
   canvas.after(frame);
 
   return {
@@ -92,7 +92,7 @@ window.albumPbrViewer = canvas => {
       }
     }
 
-    fallbackLoad ||= import('./pbr-stage.js?v=paper-stage').then(module => {
+    fallbackLoad ||= import('./pbr-stage.js?v=cloud-orbit').then(module => {
       fallback = module.createStage(canvas);
       return fallback;
     });
@@ -132,6 +132,7 @@ window.albumPbrViewer = canvas => {
     frameRoom(angle) { send('frameRoom', [angle]); },
     setCameraPositions(enabled) { return send('setCameraPositions', [enabled]); },
     showCamera(view) { send('showCamera', [view]); },
+    setContactLayout(enabled) { return send('setContactLayout', [enabled]); },
     setGroundTruth(enabled) { return send('setGroundTruth', [enabled]); },
     setDenseBackground(enabled) { return send('setDenseBackground', [enabled]); },
     animateJoints(enabled) { return send('animateJoints', [enabled]); },

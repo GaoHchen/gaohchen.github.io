@@ -8,15 +8,15 @@
   <meta name="theme-color" content="#f4f3ef">
   <title>ALBUM | Asset Localization By Unified Matching</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/vinyl-record.png">
-  <link rel="stylesheet" href="style.css?v=single-captions">
-  <link rel="stylesheet" href="architecture-tour.css?v=reading-route">
-  <script src="architecture-tour.js?v=canonical-ase-689" defer></script>
+  <link rel="stylesheet" href="style.css?v=dataset-hd-grid">
+  <link rel="stylesheet" href="architecture-tour.css?v=stage-rail">
+  <script src="architecture-tour.js?v=da3-outputs" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
-  <script src="assets/review-data.js?v=dataset-selection" defer></script>
+  <script src="assets/review-data.js?v=contact-layout" defer></script>
   <script src="scene-viewer.js?v=reading-route" defer></script>
-  <script src="pbr-viewer.js?v=reading-route" defer></script>
+  <script src="pbr-viewer.js?v=cloud-orbit" defer></script>
   <script src="query-viewer.js?v=objects-only" defer></script>
-  <script src="site.js?v=reading-route" defer></script>
+  <script src="site.js?v=contact-layout" defer></script>
   <script src="research.js?v=single-captions" defer></script>
 </head>
 <body>
@@ -29,9 +29,9 @@
     <nav id="chapters" aria-label="Sections">
       <ol>
         <li><a href="#overview"><span class="route-index" aria-hidden="true">01</span>Overview</a></li>
-        <li><a href="#results"><span class="route-index" aria-hidden="true">02</span>Scene gallery</a></li>
+        <li><a href="#method"><span class="route-index" aria-hidden="true">02</span>Method</a></li>
         <li><a href="#retrieve"><span class="route-index" aria-hidden="true">03</span>Point prompts</a></li>
-        <li><a href="#method"><span class="route-index" aria-hidden="true">04</span>Method</a></li>
+        <li><a href="#results"><span class="route-index" aria-hidden="true">04</span>Scene gallery</a></li>
         <li><a href="#dataset"><span class="route-index" aria-hidden="true">05</span>Dataset</a>
           <ol class="route-parts">
             <li><a href="#library">Asset library</a></li>
@@ -50,8 +50,8 @@
           <img src="assets/hero-cover.jpg?v=steady-rgb-v7" alt="" width="1920" height="1080" fetchpriority="high">
         </picture>
         <video id="reel" muted playsinline loop preload="metadata" aria-label="Point prompts select lounge furniture in RGB footage. Retrieved assets move into their saved positions as the dense room background is revealed.">
-          <source src="assets/hero-portrait.mp4?v=steady-rgb-v7" media="(max-aspect-ratio: 5/4)" type="video/mp4">
-          <source src="assets/hero-1080.mp4?v=steady-rgb-v7" type="video/mp4">
+          <source src="assets/hero-portrait.mp4?v=review200" media="(max-aspect-ratio: 5/4)" type="video/mp4">
+          <source src="assets/hero-1080.mp4?v=review200" type="video/mp4">
         </video>
       </div>
       <div class="hero-layout">
@@ -59,7 +59,7 @@
           <h1 id="title"><img src="assets/album-wordmark.png" alt="ALBUM" width="2160" height="677"></h1>
           <h2>Asset Localization By<br class="desktop-break"> Unified Matching</h2>
           <p class="hero-byline">Anonymous Authors</p>
-          <p>Given unposed multi-view RGB images and a point prompt, ALBUM retrieves the target asset from a user-supplied library and estimates its 7‑DoF layout in a single forward pass.</p>
+          <p>From unposed multi-view RGB images and a point prompt, ALBUM <strong>retrieves an asset from your library</strong> and <strong>estimates its 7DoF layout</strong> in a single forward pass.</p>
           <div class="hero-actions">
             <a class="button primary" href="#film"><span class="play-icon" aria-hidden="true"></span>Watch film</a>
             <a class="button secondary" href="#results">Explore scenes</a>
@@ -75,12 +75,12 @@
           <header class="chapter-heading">
             <div class="chapter-rule" aria-hidden="true">01</div>
             <h2 id="overview-title">Instance-level 3D reconstruction</h2>
-            <p>Each reconstructed object is a library asset placed in a shared scene frame by its predicted translation, rotation, and uniform scale. Retrieving the complete asset preserves its unobserved surfaces, materials, and any articulation joints. Users can replace or extend the library at inference time without retraining.</p>
+            <p>ALBUM places <strong class="text-match">complete library assets</strong> in a shared 3D scene. Each object keeps its unobserved surfaces, materials, and any articulation joints. You can <strong>swap the asset library</strong> at inference time without retraining.</p>
           </header>
           <figure class="overview-film" id="film">
             <video id="intro-film" controls playsinline preload="metadata" poster="assets/overview-poster.jpg?v=opening-title" aria-label="ALBUM introduction film, Asset Localization By Unified Matching">
-              <source src="assets/intro.mp4?v=artist-collection" type="video/mp4">
-              <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=artist-collection">
+              <source src="assets/intro.mp4?v=pose-review200" type="video/mp4">
+              <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=pose-review200">
             </video>
             <div id="film-captions" class="film-captions" hidden><span></span></div>
             <div class="choices film-chapters" role="group" aria-label="Jump to a film chapter">
@@ -95,11 +95,100 @@
           </figure>
         </section>
 
+        <section class="chapter" id="method" aria-labelledby="method-title">
+          <header class="chapter-heading">
+            <div class="chapter-rule" aria-hidden="true">02</div>
+            <h2 id="method-title">Unified matching</h2>
+            <p>Shared instance tokens guide <strong class="text-match">asset matching</strong> and <strong class="text-layout">3D placement</strong>.</p>
+          </header>
+          <figure class="architecture-tour">
+            <figcaption class="arch-guide">
+              <div class="arch-sequence" role="group" aria-label="Architecture stages">
+                <button type="button" data-station="0" aria-pressed="true" aria-controls="arch-screen arch-note"><span aria-hidden="true">01</span>Inputs</button>
+                <button type="button" data-station="1" aria-pressed="false" aria-controls="arch-screen arch-note"><span aria-hidden="true">02</span>Encode</button>
+                <button type="button" data-station="2" aria-pressed="false" aria-controls="arch-screen arch-note"><span aria-hidden="true">03</span>Match</button>
+                <button type="button" data-station="3" aria-pressed="false" aria-controls="arch-screen arch-note"><span aria-hidden="true">04</span>Layout</button>
+                <button type="button" data-station="4" aria-pressed="false" aria-controls="arch-screen arch-note"><span aria-hidden="true">05</span>Place</button>
+              </div>
+              <div class="arch-note" id="arch-note">
+                <h3 class="arch-title">Specify the target with a point</h3>
+                <p class="arch-copy">A point in one input view specifies the wooden coffee table in front of the sofa. The other views provide additional evidence about the same instance.</p>
+                <p class="arch-status" role="status"></p>
+              </div>
+            </figcaption>
+            <div class="arch-stage" id="arch-screen">
+              <img src="assets/album-pipeline.webp?v=author-slide" width="4690" height="1385" alt="ALBUM architecture from RGB views to a placed mesh">
+              <canvas aria-label="Animated coffee-table example showing the input views, instance tokens, reference matching, layout and placed mesh" aria-describedby="arch-note"></canvas>
+            </div>
+            <div class="arch-controls">
+              <button type="button" class="arch-play">Play</button>
+              <input type="range" min="0" max="33" step=".05" value="0" aria-label="Method animation position">
+              <button type="button" class="arch-enlarge" aria-haspopup="dialog">Full diagram</button>
+            </div>
+          </figure>
+        </section>
+
+        <dialog class="method-detail" aria-labelledby="method-detail-title">
+          <div class="method-detail-heading"><h3 id="method-detail-title">Unified matching</h3><form method="dialog"><button autofocus>Close</button></form></div>
+          <div class="method-detail-scroll" tabindex="0" aria-label="Scrollable original method diagram"><img src="assets/album-pipeline.webp" width="4690" height="1385" loading="lazy" alt="Multiview encoder, shared instance tokens, matching and layout decoders, and the final placed mesh."></div>
+        </dialog>
+
+        <section class="chapter retrieval" id="retrieve" aria-labelledby="retrieve-title">
+          <header class="chapter-heading">
+            <div class="chapter-rule" aria-hidden="true">03</div>
+            <h2 id="retrieve-title">Point to an object</h2>
+            <p><strong>Click a numbered point</strong> to see its <strong class="text-match">five best matches</strong>. Choose a candidate to inspect its <strong class="text-layout">placement in 3D</strong>. You can also select an object directly in the room.</p>
+          </header>
+          <div class="choices scene-options" id="query-scenes" role="group" aria-label="Query scene"></div>
+          <div class="retrieval-grid">
+            <figure class="query-figure">
+              <div class="pane-title"><h3>Input</h3><span>Recorded point prompts</span></div>
+              <div class="query-picture" id="query-picture">
+                <img id="query-image" alt="Input frame with recorded query points" width="224" height="224" hidden>
+                <div id="query-points"></div>
+              </div>
+              <figcaption class="caption query-metadata">
+                <span id="query-source">Cached inference</span>
+                <span class="case-library">Asset library <strong id="query-library"></strong></span>
+              </figcaption>
+            </figure>
+            <div class="rank-panel">
+              <div class="pane-title"><h3>Output</h3><span>Cached Top-5 retrieval</span></div>
+              <h4 id="query-title">Select a point</h4>
+              <div class="query-result">
+                <figure class="query-placement" id="query-placement">
+                  <div class="scene-view">
+                    <canvas id="query-placement-canvas" aria-label="All objects at their saved placements. Click an object to highlight it, or use the instance list. Drag to orbit." aria-describedby="query-placement-caption" hidden></canvas>
+                    <p class="case-stage-status" id="query-placement-status" role="status">Loading room…</p>
+                    <div class="case-camera" id="query-placement-controls" hidden>
+                      <button type="button" id="query-zoom-out" aria-label="Zoom out">−</button>
+                      <button type="button" id="query-zoom-in" aria-label="Zoom in">+</button>
+                      <button type="button" id="query-focus" hidden>Focus asset</button>
+                      <button type="button" id="query-reset">Reset view</button>
+                    </div>
+                  </div>
+                  <figcaption class="caption placement-caption" id="query-placement-caption">
+                    <span id="query-placement-asset"></span>
+                    <span id="query-placement-source"></span>
+                  </figcaption>
+                </figure>
+                <div class="query-options">
+                  <button type="button" id="query-clear" hidden>All instances</button>
+                  <div id="query-instances" aria-label="Room instances" role="group"></div>
+                  <p class="rank-guide">Match score <span>(raw logit, higher is better)</span></p>
+                  <ol class="ranks" id="query-ranks" aria-labelledby="query-title"></ol>
+                </div>
+              </div>
+              <p class="rank-detail" id="rank-detail" role="status">Each marker replays a saved point prompt.</p>
+            </div>
+          </div>
+        </section>
+
         <section class="chapter" id="results" aria-labelledby="results-title">
           <header class="chapter-heading" id="explore">
-            <div class="chapter-rule" aria-hidden="true">02</div>
+            <div class="chapter-rule" aria-hidden="true">04</div>
             <h2 id="results-title">Scene gallery</h2>
-            <p>Explore reconstructions with substitute assets on ScanNet++, unseen ground-truth asset libraries on Replica, and agent-created libraries for the captured rooms. The gallery also includes held-out scenes from ALBUM-Bench.</p>
+            <p>Compare rooms reconstructed with different libraries. <strong>ScanNet++</strong> uses substitute assets, <strong>Replica</strong> uses each scene’s ground-truth assets, and <strong>our captures</strong> use agent-created assets. Explore held-out <strong>ALBUM-Bench</strong> rooms alongside them.</p>
           </header>
           <div class="case-filters">
             <div class="choices" id="case-groups" role="group" aria-label="Filter reconstructions"></div>
@@ -154,6 +243,7 @@
                     <button type="button" data-case-layer="assembly" aria-pressed="true">Placed assets</button>
                     <button type="button" data-case-layer="instance" aria-pressed="false">Isolate object</button>
                     <button type="button" id="case-joints" aria-pressed="false" hidden>Play joint motion</button>
+                    <button type="button" id="case-contact-layout" aria-pressed="false" hidden>Collision correction</button>
                     <button type="button" id="case-instance-colors" aria-pressed="false">Instance colors</button>
                   </div>
                   <label id="case-picker-label" hidden>Asset <select id="case-picker"></select></label>
@@ -170,99 +260,32 @@
               <figcaption class="caption" id="case-description"></figcaption>
             </figure>
           </div>
-          <dl class="metrics results-metrics">
-            <div><dt>63.50%</dt><dd>Joint success across all 1,600 ALBUM-Bench targets</dd></div>
-            <div><dt>48.4%</dt><dd>Instance-averaged alignment accuracy on Scan2CAD</dd></div>
-            <div><dt>98.12%</dt><dd>Top-5 exact-CAD retrieval on Scan2CAD</dd></div>
-          </dl>
-          <p class="caption">ALBUM-Bench requires exact asset identity and diameter-normalized ADD-S below 0.1. Both Scan2CAD results use four RGB views, ground-truth point prompts, and scene-specific CAD candidates. Alignment requires the correct category and errors within 20 cm, 20° and 20% scale.</p>
-        </section>
-
-        <section class="chapter retrieval" id="retrieve" aria-labelledby="retrieve-title">
-          <header class="chapter-heading">
-            <div class="chapter-rule" aria-hidden="true">03</div>
-            <h2 id="retrieve-title">Point to an object</h2>
-            <p>A point in one input view specifies the target. Select a numbered point to replay its five highest-scoring library candidates, then choose a candidate to inspect its saved placement. You can also select an instance directly in the 3D room.</p>
-          </header>
-          <div class="choices scene-options" id="query-scenes" role="group" aria-label="Query scene"></div>
-          <div class="retrieval-grid">
-            <figure class="query-figure">
-              <div class="pane-title"><h3>Input</h3><span>Recorded point prompts</span></div>
-              <div class="query-picture" id="query-picture">
-                <img id="query-image" alt="Input frame with recorded query points" width="224" height="224" hidden>
-                <div id="query-points"></div>
+          <section class="benchmarks" id="benchmarks" aria-labelledby="benchmarks-title">
+            <h3 id="benchmarks-title">Benchmark results</h3>
+            <dl class="benchmark-list">
+              <div class="measure-joint">
+                <dt>Exact asset and placement</dt>
+                <dd><strong class="benchmark-value">63.50<span>%</span></strong><span class="benchmark-source">ALBUM-Bench</span></dd>
+                <dd>ALBUM identified and correctly placed <strong>1,016 of 1,600 targets</strong>.</dd>
               </div>
-              <figcaption class="caption query-metadata">
-                <span id="query-source">Cached inference</span>
-                <span class="case-library">Asset library <strong id="query-library"></strong></span>
-              </figcaption>
-            </figure>
-            <div class="rank-panel">
-              <div class="pane-title"><h3>Output</h3><span>Cached Top-5 retrieval</span></div>
-              <h4 id="query-title">Select a point</h4>
-              <div class="query-result">
-                <figure class="query-placement" id="query-placement">
-                  <div class="scene-view">
-                    <canvas id="query-placement-canvas" aria-label="All objects at their saved placements. Click an object to highlight it, or use the instance list. Drag to orbit." aria-describedby="query-placement-caption" hidden></canvas>
-                    <p class="case-stage-status" id="query-placement-status" role="status">Loading room…</p>
-                    <div class="case-camera" id="query-placement-controls" hidden>
-                      <button type="button" id="query-zoom-out" aria-label="Zoom out">−</button>
-                      <button type="button" id="query-zoom-in" aria-label="Zoom in">+</button>
-                      <button type="button" id="query-focus" hidden>Focus asset</button>
-                      <button type="button" id="query-reset">Reset view</button>
-                    </div>
-                  </div>
-                  <figcaption class="caption placement-caption" id="query-placement-caption">
-                    <span id="query-placement-asset"></span>
-                    <span id="query-placement-source"></span>
-                  </figcaption>
-                </figure>
-                <div class="query-options">
-                  <button type="button" id="query-clear" hidden>All instances</button>
-                  <div id="query-instances" aria-label="Room instances" role="group"></div>
-                  <ol class="ranks" id="query-ranks" aria-labelledby="query-title"></ol>
-                </div>
+              <div class="measure-layout">
+                <dt>3D alignment accuracy</dt>
+                <dd><strong class="benchmark-value">48.4<span>%</span></strong><span class="benchmark-source">Scan2CAD</span></dd>
+                <dd>Instances with the correct category and <strong>translation, rotation, and scale</strong> within tolerance.</dd>
               </div>
-              <p class="rank-detail" id="rank-detail" role="status">Each marker replays a saved point prompt.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="chapter" id="method" aria-labelledby="method-title">
-          <header class="chapter-heading">
-            <div class="chapter-rule" aria-hidden="true">04</div>
-            <h2 id="method-title">Unified matching</h2>
-            <p>Follow the coffee table through asset matching and layout estimation. Both decoders attend to the same instance tokens. The candidate references identify the asset, and the selected asset’s canonical geometry conditions its layout.</p>
-          </header>
-          <figure class="architecture-tour">
-            <div class="arch-stage">
-              <img src="assets/album-pipeline.webp?v=author-slide" width="4690" height="1385" alt="ALBUM architecture from RGB views to a placed mesh">
-              <canvas aria-label="Animated coffee-table example showing the input views, instance tokens, reference matching, layout and placed mesh"></canvas>
-            </div>
-            <div class="arch-controls">
-              <button type="button" class="arch-play">Play</button>
-              <input type="range" min="0" max="33" step=".05" value="0" aria-label="Method animation position">
-              <button type="button" class="arch-enlarge" aria-haspopup="dialog">Full diagram</button>
-            </div>
-            <figcaption>
-              <div class="arch-stops" role="group" aria-label="Architecture stages">
-                <button type="button" data-station="0" aria-pressed="true">Input views</button>
-                <button type="button" data-station="1" aria-pressed="false">Encoding</button>
-                <button type="button" data-station="2" aria-pressed="false">Matching</button>
-                <button type="button" data-station="3" aria-pressed="false">Layout</button>
-                <button type="button" data-station="4" aria-pressed="false">Placement</button>
+              <div class="measure-match">
+                <dt>Top-5 exact-CAD retrieval</dt>
+                <dd><strong class="benchmark-value">98.12<span>%</span></strong><span class="benchmark-source">Scan2CAD</span></dd>
+                <dd>The exact CAD model ranked among the <strong>five best matches</strong> in the scene’s library.</dd>
               </div>
-              <h3 class="arch-title">Specify the target with a point</h3>
-              <p class="arch-copy">A point in one input view specifies the wooden coffee table in front of the sofa. The other views provide additional evidence about the same instance.</p>
-              <p class="arch-status" role="status"></p>
-            </figcaption>
-          </figure>
+            </dl>
+            <details class="eval-protocol">
+              <summary>Evaluation details</summary>
+              <p><strong>ALBUM-Bench.</strong> Joint success requires the exact asset identity and a diameter-normalized ADD-S error below 0.1.</p>
+              <p><strong>Scan2CAD.</strong> Both metrics use four RGB views, ground-truth point prompts, and scene-specific CAD candidates. Alignment allows up to 20 cm of translation error, 20° of symmetry-aware rotation error, and 20% scale error.</p>
+            </details>
+          </section>
         </section>
-
-        <dialog class="method-detail" aria-labelledby="method-detail-title">
-          <div class="method-detail-heading"><h3 id="method-detail-title">Unified matching</h3><form method="dialog"><button autofocus>Close</button></form></div>
-          <div class="method-detail-scroll" tabindex="0" aria-label="Scrollable original method diagram"><img src="assets/album-pipeline.webp" width="4690" height="1385" loading="lazy" alt="Multiview encoder, shared instance tokens, matching and layout decoders, and the final placed mesh."></div>
-        </dialog>
 
         <section class="chapter" id="dataset" aria-labelledby="dataset-title">
           <header class="chapter-heading">
@@ -271,17 +294,21 @@
           </header>
           <section class="dataset-part" id="library" aria-labelledby="library-title">
             <h3 id="library-title">Asset library</h3>
-            <p>We collected over 2,000 3D assets created by artists and designers. The full ALBUM library contains 6,961 textured assets across 97 categories, with 4,236 static models and 2,725 articulated models.</p>
+            <p>Our collection includes <strong>over 2,000 assets</strong> made by artists and designers.</p>
+            <dl class="library-totals" aria-label="ALBUM asset library">
+              <div><dt>Textured assets</dt><dd>6,961</dd></div>
+              <div><dt>Categories</dt><dd>97</dd></div>
+              <div><dt>Static assets</dt><dd>4,236</dd></div>
+              <div><dt>Articulated assets</dt><dd>2,725</dd></div>
+            </dl>
             <video class="library-board" id="library-board" width="2048" height="1362" controls autoplay muted loop playsinline preload="metadata"
-                   src="assets/curation/asset-library-board.mp4?v=native-faces-96" poster="assets/curation/asset-library-board.jpg?v=native-faces-96"
+                   src="assets/curation/asset-library-board.mp4?v=review200" poster="assets/curation/asset-library-board.jpg?v=native-faces-96"
                    aria-label="Static and articulated 3D assets rotating, with doors and drawers opening"></video>
           </section>
           <section class="dataset-part" id="training-rooms" aria-labelledby="training-rooms-title">
             <h3 id="training-rooms-title">Furnished rooms</h3>
-            <p>We construct ALBUM-Train using base layouts and camera trajectories from Aria Synthetic Environments (ASE). Each rendered view links instance masks to exact asset identities and spatial layouts.</p>
-            <dl class="metrics">
-              <div><dt>100,414</dt><dd>Furnished layouts constructed</dd></div>
-            </dl>
+            <p class="layout-total"><strong>100,414</strong> furnished layouts</p>
+            <p>Built from Aria Synthetic Environments, <strong>ALBUM-Train</strong> pairs each view with instance masks, asset identities, and 3D layouts.</p>
             <div class="research-browser" id="dataset-gallery"></div>
           </section>
         </section>

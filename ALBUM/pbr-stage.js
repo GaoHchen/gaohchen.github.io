@@ -1,6 +1,6 @@
 import { DRACOLoader } from './vendor/three/addons/loaders/DRACOLoader.js';
 import {
-  AnimationMixer, Box3, BufferGeometry, CanvasTexture, Color, DirectionalLight, Group, HemisphereLight, NoToneMapping,
+  AnimationMixer, Box3, BufferGeometry, CanvasTexture, Color, DataTexture, DirectionalLight, EquirectangularReflectionMapping, Float32BufferAttribute, Group, HalfFloatType, HemisphereLight, LinearFilter, LinearSRGBColorSpace, NeutralToneMapping, NoToneMapping, PCFShadowMap, RGBAFormat,
   LineBasicMaterial, LineSegments, Matrix4, MeshBasicMaterial, PerspectiveCamera, PropertyBinding, Scene, Raycaster, Sprite, SpriteMaterial, SRGBColorSpace, Vector3, WebGLRenderer,
 } from 'three';
 import { GLTFLoader } from './vendor/three/addons/loaders/GLTFLoader.js';
@@ -47,7 +47,111 @@ export function createStage(canvas, { filmPlate = false } = {}) {
   sun.position.set(2, 5, 3);
   const fill = new DirectionalLight(0xffffff, .45);
   fill.position.set(-3, 2, -4);
-  stage.add(sky, sun, fill);
+  stage.add(sky, sun, fill, sun.target);
+  const keyDirection = new Vector3(-.82, 1.7, .66).normalize();
+  const lightingRequest = new AbortController();
+  let environmentJob, reflectionMap;
+  if (!filmPlate) {
+    renderer.toneMapping = NeutralToneMapping;
+    renderer.toneMappingExposure = 1.04;
+    renderer.shadowMap.type = PCFShadowMap;
+    sky.color.setHex(0xf8faff);
+    sky.groundColor.setHex(0xe1d8cc);
+    sky.intensity = .72;
+    sun.color.setHex(0xfff2e3);
+    sun.intensity = 2.05;
+    sun.position.copy(keyDirection);
+    fill.color.setHex(0xeef4ff);
+    fill.intensity = .32;
+    stage.environmentIntensity = .84;
+    sun.shadow.autoUpdate = false;
+    const side = matchMedia('(max-width: 700px)').matches ? 1024 : 2048;
+    sun.shadow.mapSize.set(side, side);
+    sun.shadow.radius = 1.4;
+    sun.shadow.intensity = .81;
+  }
+
+  function loadEnvironment() {
+    if (filmPlate) return;
+    if (!environmentJob) {
+      // Linear radiance from Blender's CC0 indoor studio light, kept independent
+      // of the visible backdrop and the original GLB texture color spaces.
+      const url = new URL('assets/lighting/interior.rgba16f', document.baseURI);
+      environmentJob = fetch(url, { signal: lightingRequest.signal }).then(async response => {
+        if (!response.ok) throw Error('Indoor light probe: HTTP ' + response.status);
+        const pixels = new Uint16Array(await response.arrayBuffer());
+        if (pixels.length !== 256 * 128 * 4) throw Error('Invalid indoor light probe');
+        if (lightingRequest.signal.aborted) return;
+        reflectionMap = new DataTexture(pixels, 256, 128, RGBAFormat, HalfFloatType);
+        reflectionMap.mapping = EquirectangularReflectionMapping;
+        reflectionMap.colorSpace = LinearSRGBColorSpace;
+        reflectionMap.minFilter = reflectionMap.magFilter = LinearFilter;
+        reflectionMap.flipY = true;
+        reflectionMap.needsUpdate = true;
+        stage.environment = reflectionMap;
+      }).catch(error => {
+        environmentJob = null;
+        if (!lightingRequest.signal.aborted) console.warn('Indoor reflections unavailable.', error);
+      });
+    }
+    return environmentJob;
+  }
+
+  function lightRoom(model) {
+    if (filmPlate) return;
+    const dataset = model.kind === 'dataset';
+    sun.castShadow = renderer.shadowMap.enabled = dataset;
+    const sharpness = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+    prediction.traverse(mesh => {
+      if (!mesh.isMesh) return;
+      const surfaces = [mesh.material].flat();
+      for (const surface of surfaces) {
+        for (const map of [surface.map, surface.normalMap, surface.roughnessMap]) {
+          if (map) map.anisotropy = sharpness;
+        }
+      }
+      if (dataset) {
+        const floor = surfaces.some(m => m.name === 'm_floor');
+        if (floor && !mesh.geometry.getAttribute('uv') && surfaces.some(m => m.map)) {
+          // The ASE floor shader feeds Blender world XY to its Mapping node.
+          // GLTFLoader already applies that node's KHR_texture_transform.
+          mesh.updateWorldMatrix(true, false);
+          const vertices = mesh.geometry.getAttribute('position');
+          const uv = new Float32Array(vertices.count * 2);
+          const world = new Vector3();
+          for (let i = 0; i < vertices.count; i++) {
+            world.fromBufferAttribute(vertices, i).applyMatrix4(mesh.matrixWorld);
+            uv[2 * i] = world.x;
+            uv[2 * i + 1] = 1 + world.z;
+          }
+          mesh.geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+        }
+        // The display plinth is immediately beneath the native floor.
+        const foundation = surfaces.some(m => m.name.startsWith('Foundation '));
+        mesh.castShadow = !floor && !foundation && surfaces.some(m =>
+          (!m.transparent && !(m.transmission > .2)) || m.alphaTest > 0);
+        mesh.receiveShadow = true;
+      }
+    });
+    if (!dataset) {
+      sun.target.position.set(0, 0, 0);
+      sun.position.copy(keyDirection);
+      return;
+    }
+    const box = new Box3().setFromObject(prediction);
+    const center = box.getCenter(sun.target.position);
+    const radius = Math.max(.5, box.getSize(new Vector3()).length() * .51);
+    sun.position.copy(center).addScaledVector(keyDirection, 2.4 * radius);
+    const camera = sun.shadow.camera;
+    camera.left = camera.bottom = -radius;
+    camera.right = camera.top = radius;
+    camera.near = radius;
+    camera.far = 3.8 * radius;
+    camera.updateProjectionMatrix();
+    sun.shadow.bias = -.00024;
+    sun.shadow.normalBias = radius * .00055;
+    sun.shadow.needsUpdate = true;
+  }
   const draco = new DRACOLoader().setDecoderPath(new URL('vendor/draco/', document.baseURI).href).setWorkerLimit(2);
   const loader = new ReviewLoader().setDRACOLoader(draco);
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -77,8 +181,10 @@ export function createStage(canvas, { filmPlate = false } = {}) {
         // the previous state within a small band to avoid flicker on drag.
         const facing = nx * cameraForward.x + nz * cameraForward.z;
         const offset = nx * cameraWorld.x + nz * cameraWorld.z - distance;
+        const wasVisible = node.visible;
         if (node.visible && offset < -.08 && facing > .08) node.visible = false;
         else if (!node.visible && (offset > -.04 || facing < .045)) node.visible = true;
+        if (wasVisible !== node.visible) sun.shadow.needsUpdate = true;
         continue;
       }
       node.visible = ceiling !== undefined ? cameraWorld.y < ceiling - .08
@@ -278,6 +384,20 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       new Vector3(1, room ? .82 : .48, 1.42).normalize(), room ? 1.36 : 1.52);
     look(home.eye, home.target);
   }
+  // Each correction is in the same local frame as the archived prediction.
+  // Keep original transforms so switching modes preserves the current camera.
+  const contactPoses = new Map();
+  function setContactLayout(enabled) {
+    if (!contactPoses.size) return false;
+    for (const [node, poses] of contactPoses) {
+      const matrix = enabled ? poses.corrected : poses.original;
+      matrix.decompose(node.position, node.quaternion, node.scale);
+      node.updateMatrix();
+    }
+    prediction.updateMatrixWorld(true);
+    redraw();
+    return enabled;
+  }
   function addPrediction(object, transform) {
     prediction = object;
     if (transform) prediction.applyMatrix4(new Matrix4().fromArray(transform));
@@ -354,11 +474,9 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     if (!denseJob) {
       denseJob = loader.loadAsync(descriptor.denseBackground).then(({scene: cloud}) => {
         if (opened !== serial) { release(cloud); return; }
-        const bounds = new Box3().setFromObject(prediction);
-        const center = bounds.getCenter(new Vector3());
-        const halfExtent = bounds.getSize(new Vector3()).multiplyScalar(.5);
-        const floor = cloud.userData.floorHeight ?? new Box3().setFromObject(cloud).min.y;
+        const center = new Box3().setFromObject(prediction).getCenter(new Vector3());
         cloud.traverse(node => {
+          // Only authored wall and ceiling groups participate in the room cutaway.
           registerCutaway(node, center);
           if (!node.isPoints) return;
           const material = node.material;
@@ -366,22 +484,8 @@ export function createStage(canvas, { filmPlate = false } = {}) {
           material.sizeAttenuation = true;
           material.toneMapped = false;
           material.onBeforeCompile = shader => {
-            shader.uniforms.roomCenter = {value: center};
-            shader.uniforms.roomHalfExtent = {value: halfExtent};
-            shader.uniforms.roomFloor = {value: floor};
-            shader.vertexShader = `uniform vec3 roomCenter, roomHalfExtent;
-              uniform float roomFloor;
-            ` + shader.vertexShader.replace('#include <logdepthbuf_vertex>', `
+            shader.vertexShader = shader.vertexShader.replace('#include <logdepthbuf_vertex>', `
               gl_PointSize = clamp(gl_PointSize, 1.2 * size / 0.062, 4.0 * size / 0.062);
-              vec3 sampleWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;
-              vec2 eyeOffset = cameraPosition.xz - roomCenter.xz;
-              float eyeDistance = length(eyeOffset);
-              vec2 towardsEye = eyeOffset / max(eyeDistance, 0.001);
-              float extent = dot(abs(towardsEye), roomHalfExtent.xz);
-              float ahead = dot(sampleWorld.xz - roomCenter.xz, towardsEye);
-              // Outside the room, open the near side while keeping its floor.
-              if (eyeDistance > extent + 0.5 && ahead > 0.27 * extent + 0.1 && sampleWorld.y > roomFloor + 0.18)
-                gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
               #include <logdepthbuf_vertex>`);
             shader.fragmentShader = shader.fragmentShader.replace('#include <clipping_planes_fragment>', `
               if (distance(gl_PointCoord, vec2(0.5)) > 0.5) discard;
@@ -423,6 +527,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     selectionVersion++;
     restoreQueryInstance();
     queryRoots.clear();
+    contactPoses.clear();
     walls.length = 0;
     if (cameraPins) {
       // All sprites share Three's built-in quad. Only the frusta own geometry.
@@ -460,6 +565,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       loader.loadAsync(model.prediction),
       surroundings && loader.loadAsync(surroundings),
       model.observation && loader.loadAsync(model.observation),
+      loadEnvironment(),
     ]);
     const needsRoom = model.kind === 'placement' && !shell.value?.scene;
     if (opened !== serial || result.status === 'rejected' || needsRoom || observation.status === 'rejected') {
@@ -470,6 +576,16 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       return null;
     }
     addPrediction(result.value.scene, model.matrix);
+    if (model.kind === 'gallery') {
+      prediction.traverse(node => {
+        const correction = node.userData.contactLayout;
+        if (!correction) return;
+        node.updateMatrix();
+        contactPoses.set(node, {original: node.matrix.clone(), corrected: new Matrix4().fromArray(correction)});
+      });
+      setContactLayout(true);
+    }
+    lightRoom(model);
     if (model.kind === 'dataset') prediction.traverse(node => {
       if (!node.userData.cutawayPlane) return;
       const [nx, nz, distance] = node.userData.cutawayPlane;
@@ -499,7 +615,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       actions = clips.map(clip => mixer.clipAction(clip));
     }
     setHome(model, room);
-    return { capture: Boolean(context), hasJoints: Boolean(mixer || model.motion), instanceCount: queryRoots.size };
+    return { capture: Boolean(context), hasContactLayout: contactPoses.size > 0, hasJoints: Boolean(mixer || model.motion), instanceCount: queryRoots.size };
   }
   function restoreQueryInstance() {
     const copies = new Set();
@@ -736,7 +852,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
   return {
     open, place, clear, focusPlacement, selectInstance,
     focus(name) { const result = focus(name); if (context && !name) context.visible = true; return result; },
-    reset, zoom, redraw, frameRoom, setCameraPositions, setGroundTruth, setDenseBackground, animateJoints, setInstanceHighlight,
+    reset, zoom, redraw, frameRoom, setCameraPositions, setGroundTruth, setContactLayout, setDenseBackground, animateJoints, setInstanceHighlight,
     showCamera(position) {
       if (home && position?.eye && position?.target) look(new Vector3(...position.eye), new Vector3(...position.target), true);
     },
@@ -755,6 +871,11 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       draco.dispose();
       clear();
       stage.onBeforeRender = beforeRender;
+      lightingRequest.abort();
+      stage.environment = null;
+      reflectionMap?.dispose();
+      sun.shadow.dispose();
+      stage.remove(sun.target);
       picking.abort();
       resize.disconnect();
       document.removeEventListener('visibilitychange', redraw);

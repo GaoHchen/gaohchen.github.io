@@ -1,14 +1,46 @@
-.architecture-tour { margin: 0; }
-.arch-stage { position: relative; aspect-ratio: 2.04; overflow: hidden; background: var(--dots) center / 18px 18px; }
+#method { container-type: inline-size; }
+.architecture-tour {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(14rem, 23%, 18rem);
+  grid-template-areas: "screen guide" "controls guide";
+  align-content: start;
+  align-items: start;
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(1rem, 2vw, 2.15rem);
+  margin: 0;
+}
+.arch-guide {
+  grid-area: guide; min-width: 0;
+  padding-left: clamp(.9rem, 1.6vw, 1.5rem);
+  border-left: 1px solid var(--line);
+}
+.arch-sequence { display: grid; }
+.arch-sequence button {
+  position: relative; display: flex; align-items: baseline; gap: .8rem;
+  width: 100%; min-height: 2.45rem; padding: .44rem .4rem;
+  border: 0; background: transparent; color: var(--muted);
+  font-size: 1rem; line-height: 1.4; text-align: left;
+}
+.arch-sequence button span { font: 500 .76rem/1 var(--mono); }
+.arch-sequence button:hover { color: var(--ink); }
+.arch-sequence button[aria-pressed="true"] { color: var(--step-ink, var(--ink)); font-weight: 700; }
+.arch-sequence button[aria-pressed="true"]::before {
+  content: ""; position: absolute; inset-block: .45rem; left: -.45rem; width: 3px;
+  background: currentColor;
+}
+.arch-sequence [data-station="2"] { --step-ink: var(--match); }
+.arch-sequence [data-station="3"], .arch-sequence [data-station="4"] { --step-ink: var(--layout); }
+.arch-note { margin-top: .8rem; padding-top: .85rem; border-top: 1px solid var(--line); }
+.arch-stage { grid-area: screen; position: relative; aspect-ratio: 2.04; width: 100%; overflow: hidden; background: var(--dots) center / 18px 18px; }
 .arch-stage canvas, .arch-stage>img { position: absolute; inset: 0; display:block; width: 100%; height:100%; object-fit:contain; }
 .arch-stage canvas { opacity:0; }
 .architecture-tour.ready canvas {opacity:1;}
 .architecture-tour.ready .arch-stage>img {visibility:hidden;}
-.arch-controls {display:flex; align-items:center; gap: .9rem; margin: .75rem 0 1rem; }
+.arch-controls {grid-area: controls; display:flex; align-items:center; gap: .9rem; margin-top: .65rem; }
 .arch-play {min-width:4.2rem;}
 .arch-controls input {flex:1;min-width:30px;accent-color:var(--ink); cursor:pointer;}
-.arch-title {font-size:clamp(1.15rem,1.8vw,1.65rem); margin:1.1rem 0 .3rem;letter-spacing:-.035em;}
-.arch-copy,.arch-status {color:var(--muted);max-width:78ch;line-height:1.6;margin:0;}
+.arch-title {font-size:clamp(1.1rem,1.45vw,1.4rem); margin:0 0 .4rem;letter-spacing:-.025em;line-height:1.2;}
+.arch-copy,.arch-status {color:var(--muted);font-size:.96rem;line-height:1.48;margin:0;}
 .architecture-tour button:focus-visible,.architecture-tour input:focus-visible {outline:2px solid var(--accent);outline-offset:3px;}
 .method-detail {margin:auto;width:min(96vw,95rem);max-width:96vw;padding:0;border:1px solid #c9cfc9;border-radius:.7rem;color:var(--ink);background:var(--page);}
 .method-detail::backdrop {background:#10221fd6;}
@@ -16,9 +48,26 @@
 .method-detail-heading h3 {font-size:1.1rem;margin:0;}
 .method-detail-scroll {overflow:auto;max-height:76vh;padding:.75rem 1rem 1rem;}
 .method-detail-scroll img {display:block;width:max(100%,75rem);max-width:none;height:auto;}
-@media(max-width:650px) {
- .arch-stage {aspect-ratio:1.31;}
- .arch-controls {gap:.45rem;}
+@container (max-width: 54rem) {
+  .architecture-tour {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: "steps" "screen" "controls" "note";
+  }
+  .arch-guide { display: contents; }
+  .arch-sequence { grid-area: steps; grid-template-columns: repeat(5,minmax(0,1fr)); }
+  .arch-sequence button {
+    flex-direction: column; align-items: center; justify-content: center; gap: .18rem;
+    padding: .35rem .08rem; min-height: 2.9rem; font-size: .88rem; text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .arch-sequence button span { font-size: .68rem; }
+  .arch-sequence button[aria-pressed="true"]::before { inset: auto 0 -1px; width: auto; height: 3px; }
+  .arch-note { grid-area: note; margin: .7rem 0 0; padding: 0; border: 0; max-width: 68ch; }
+}
+@container (max-width: 37rem) {
+  .arch-stage { aspect-ratio: 1.31; }
+  .arch-controls { gap: .45rem; }
 }
 
 .architecture-tour.ready canvas { touch-action: pan-y; cursor: ew-resize; }
