@@ -1,239 +1,238 @@
 WEBVTT
 
-00:00:00.210 --> 00:00:03.389 line:94%,end align:center
-ALBUM — Asset Localization By Unified Matching
+00:00:00.210 --> 00:00:03.389 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>ALBUM — Asset Localization By Unified Matching</c>&nbsp;&nbsp;
 
-00:00:04.210 --> 00:00:06.790 line:94%,end align:center
-ALBUM takes unposed RGB views,
+00:00:04.210 --> 00:00:06.790 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>ALBUM takes unposed RGB views,</c>&nbsp;&nbsp;
 
-00:00:06.790 --> 00:00:09.842 line:94%,end align:center
-point prompts, and a user-supplied asset library.
+00:00:06.790 --> 00:00:09.842 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>point prompts, and a user-supplied asset library.</c>&nbsp;&nbsp;
 
-00:00:10.442 --> 00:00:13.172 line:94%,end align:center
-It retrieves the target assets and estimates
+00:00:10.442 --> 00:00:13.172 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>It retrieves the target assets and estimates</c>&nbsp;&nbsp;
 
-00:00:13.172 --> 00:00:15.583 line:94%,end align:center
-their 3D layouts in a single forward pass.
+00:00:13.172 --> 00:00:15.583 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>their 3D layouts in a single forward pass.</c>&nbsp;&nbsp;
 
-00:00:16.210 --> 00:00:18.290 line:94%,end align:center
-How do we go from a point in an image
+00:00:16.210 --> 00:00:18.290 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>How do we go from a point in an image</c>&nbsp;&nbsp;
 
-00:00:18.290 --> 00:00:20.135 line:94%,end align:center
-to a 3D object in the room?
+00:00:18.290 --> 00:00:20.135 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>to a 3D object in the room?</c>&nbsp;&nbsp;
 
-00:00:20.475 --> 00:00:23.270 line:94%,end align:center
-Take the wooden coffee table in front of the sofa.
+00:00:20.475 --> 00:00:23.270 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Take the wooden coffee table in front of the sofa.</c>&nbsp;&nbsp;
 
-00:00:23.610 --> 00:00:25.780 line:94%,end align:center
-A click identifies it in one view.
+00:00:23.610 --> 00:00:25.780 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>A click identifies it in one view.</c>&nbsp;&nbsp;
 
-00:00:25.780 --> 00:00:28.250 line:94%,end align:center
-The other views reveal parts of the table
+00:00:25.780 --> 00:00:28.250 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The other views reveal parts of the table</c>&nbsp;&nbsp;
 
-00:00:28.250 --> 00:00:29.818 line:94%,end align:center
-that are hard to see from here.
+00:00:28.250 --> 00:00:29.818 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>that are hard to see from here.</c>&nbsp;&nbsp;
 
-00:00:30.543 --> 00:00:33.403 line:94%,end align:center
-The encoder combines appearance features from SAM
+00:00:30.543 --> 00:00:33.403 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The encoder combines appearance features from SAM</c>&nbsp;&nbsp;
 
-00:00:33.403 --> 00:00:36.431 line:94%,end align:center
-with geometric features from Depth Anything 3.
+00:00:33.403 --> 00:00:36.431 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>with geometric features from Depth Anything 3.</c>&nbsp;&nbsp;
 
-00:00:36.771 --> 00:00:38.951 line:94%,end align:center
-The prompt carries the camera information
+00:00:36.771 --> 00:00:38.951 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The prompt carries the camera information</c>&nbsp;&nbsp;
 
-00:00:38.951 --> 00:00:41.315 line:94%,end align:center
-and local geometry at the clicked pixel.
+00:00:38.951 --> 00:00:41.315 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and local geometry at the clicked pixel.</c>&nbsp;&nbsp;
 
-00:00:41.655 --> 00:00:44.155 line:94%,end align:center
-Attention gathers evidence about the table
+00:00:41.655 --> 00:00:44.155 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Attention gathers evidence about the table</c>&nbsp;&nbsp;
 
-00:00:44.155 --> 00:00:46.861 line:94%,end align:center
-across views into a set of instance tokens.
+00:00:44.155 --> 00:00:46.861 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>across views into a set of instance tokens.</c>&nbsp;&nbsp;
 
-00:00:47.585 --> 00:00:50.422 line:94%,end align:center
-Now we need to identify the table in the library.
+00:00:47.585 --> 00:00:50.422 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Now we need to identify the table in the library.</c>&nbsp;&nbsp;
 
-00:00:50.762 --> 00:00:54.902 line:94%,end align:center
-DINOv3 encodes canonical views of each candidate.
+00:00:50.762 --> 00:00:54.902 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>DINOv3 encodes canonical views of each candidate.</c>&nbsp;&nbsp;
 
-00:00:54.902 --> 00:00:57.888 line:94%,end align:center
-Each reference also carries its viewing direction.
+00:00:54.902 --> 00:00:57.888 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Each reference also carries its viewing direction.</c>&nbsp;&nbsp;
 
-00:00:58.228 --> 00:01:00.648 line:94%,end align:center
-The same matcher compares every candidate
+00:00:58.228 --> 00:01:00.648 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The same matcher compares every candidate</c>&nbsp;&nbsp;
 
-00:01:00.648 --> 00:01:02.708 line:94%,end align:center
-with the table’s instance tokens.
+00:01:00.648 --> 00:01:02.708 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>with the table’s instance tokens.</c>&nbsp;&nbsp;
 
-00:01:02.708 --> 00:01:05.374 line:94%,end align:center
-The highest score selects the reference asset.
+00:01:02.708 --> 00:01:05.374 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The highest score selects the reference asset.</c>&nbsp;&nbsp;
 
-00:01:06.085 --> 00:01:08.295 line:94%,end align:center
-Which way does the selected table face,
+00:01:06.085 --> 00:01:08.295 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Which way does the selected table face,</c>&nbsp;&nbsp;
 
-00:01:08.295 --> 00:01:09.434 line:94%,end align:center
-and where does it belong?
+00:01:08.295 --> 00:01:09.434 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and where does it belong?</c>&nbsp;&nbsp;
 
-00:01:09.774 --> 00:01:13.064 line:94%,end align:center
-The layout decoder reads the same instance tokens,
+00:01:09.774 --> 00:01:13.064 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The layout decoder reads the same instance tokens,</c>&nbsp;&nbsp;
 
-00:01:13.064 --> 00:01:16.153 line:94%,end align:center
-this time alongside the selected asset’s geometry.
+00:01:13.064 --> 00:01:16.153 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>this time alongside the selected asset’s geometry.</c>&nbsp;&nbsp;
 
-00:01:16.493 --> 00:01:19.393 line:94%,end align:center
-Three canonical views supply surface positions
+00:01:16.493 --> 00:01:19.393 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Three canonical views supply surface positions</c>&nbsp;&nbsp;
 
-00:01:19.393 --> 00:01:20.674 line:94%,end align:center
-and viewing directions.
+00:01:19.393 --> 00:01:20.674 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and viewing directions.</c>&nbsp;&nbsp;
 
-00:01:21.014 --> 00:01:23.714 line:94%,end align:center
-The decoder predicts translation, rotation,
+00:01:21.014 --> 00:01:23.714 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The decoder predicts translation, rotation,</c>&nbsp;&nbsp;
 
-00:01:23.714 --> 00:01:24.897 line:94%,end align:center
-and uniform scale.
+00:01:23.714 --> 00:01:24.897 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and uniform scale.</c>&nbsp;&nbsp;
 
-00:01:25.543 --> 00:01:28.103 line:94%,end align:center
-This transform places the complete table,
+00:01:25.543 --> 00:01:28.103 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>This transform places the complete table,</c>&nbsp;&nbsp;
 
-00:01:28.103 --> 00:01:29.653 line:94%,end align:center
-including its white drawer,
+00:01:28.103 --> 00:01:29.653 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>including its white drawer,</c>&nbsp;&nbsp;
 
-00:01:29.653 --> 00:01:32.050 line:94%,end align:center
-in the coordinate frame of the first camera.
+00:01:29.653 --> 00:01:32.050 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>in the coordinate frame of the first camera.</c>&nbsp;&nbsp;
 
-00:01:32.960 --> 00:01:34.752 line:78%,end align:center
-What if the exact table is missing?
+00:01:32.960 --> 00:01:34.752 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>What if the exact table is missing?</c>&nbsp;&nbsp;
 
-00:01:35.352 --> 00:01:38.242 line:78%,end align:center
-You can supply our asset library or your own.
+00:01:35.352 --> 00:01:38.242 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>You can supply our asset library or your own.</c>&nbsp;&nbsp;
 
-00:01:38.242 --> 00:01:41.352 line:78%,end align:center
-ALBUM selects the available asset it scores highest
+00:01:38.242 --> 00:01:41.352 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>ALBUM selects the available asset it scores highest</c>&nbsp;&nbsp;
 
-00:01:41.352 --> 00:01:42.883 line:78%,end align:center
-and estimates where it fits.
+00:01:41.352 --> 00:01:42.883 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and estimates where it fits.</c>&nbsp;&nbsp;
 
-00:01:46.960 --> 00:01:50.060 line:78%,end align:center
-On ScanNet++, these substitutes can match
+00:01:46.960 --> 00:01:50.060 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>On ScanNet++, these substitutes can match</c>&nbsp;&nbsp;
 
-00:01:50.060 --> 00:01:51.450 line:78%,end align:center
-in appearance or in meaning.
+00:01:50.060 --> 00:01:51.450 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>in appearance or in meaning.</c>&nbsp;&nbsp;
 
-00:01:51.450 --> 00:01:54.409 line:78%,end align:center
-Each keeps its original geometry and materials.
+00:01:51.450 --> 00:01:54.409 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Each keeps its original geometry and materials.</c>&nbsp;&nbsp;
 
-00:01:54.960 --> 00:01:57.940 line:78%,end align:center
-Even surfaces hidden from the cameras are preserved.
+00:01:54.960 --> 00:01:57.940 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Even surfaces hidden from the cameras are preserved.</c>&nbsp;&nbsp;
 
-00:01:57.940 --> 00:02:00.635 line:78%,end align:center
-The colored scan gives context for the placement.
+00:01:57.940 --> 00:02:00.635 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The colored scan gives context for the placement.</c>&nbsp;&nbsp;
 
-00:02:02.960 --> 00:02:05.320 line:78%,end align:center
-Retrieval also preserves the moving parts
+00:02:02.960 --> 00:02:05.320 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Retrieval also preserves the moving parts</c>&nbsp;&nbsp;
 
-00:02:05.320 --> 00:02:06.740 line:78%,end align:center
-of the source asset.
+00:02:05.320 --> 00:02:06.740 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>of the source asset.</c>&nbsp;&nbsp;
 
-00:02:06.740 --> 00:02:08.930 line:78%,end align:center
-A drawer can slide or a door can swing
+00:02:06.740 --> 00:02:08.930 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>A drawer can slide or a door can swing</c>&nbsp;&nbsp;
 
-00:02:08.930 --> 00:02:10.917 line:78%,end align:center
-using its original joint.
+00:02:08.930 --> 00:02:10.917 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>using its original joint.</c>&nbsp;&nbsp;
 
-00:02:12.960 --> 00:02:16.420 line:78%,end align:center
-Replica supplies its own ground-truth asset libraries.
+00:02:12.960 --> 00:02:16.420 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Replica supplies its own ground-truth asset libraries.</c>&nbsp;&nbsp;
 
-00:02:16.420 --> 00:02:19.701 line:78%,end align:center
-Both the rooms and their assets were unseen in training.
+00:02:16.420 --> 00:02:19.701 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Both the rooms and their assets were unseen in training.</c>&nbsp;&nbsp;
 
-00:02:20.301 --> 00:02:22.029 line:78%,end align:center
-We use the same network weights.
+00:02:20.301 --> 00:02:22.029 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>We use the same network weights.</c>&nbsp;&nbsp;
 
-00:02:23.960 --> 00:02:26.260 line:78%,end align:center
-The retrieved meshes can also be edited.
+00:02:23.960 --> 00:02:26.260 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The retrieved meshes can also be edited.</c>&nbsp;&nbsp;
 
-00:02:26.260 --> 00:02:28.260 line:78%,end align:center
-For this wardrobe, we rigged the front door
+00:02:26.260 --> 00:02:28.260 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>For this wardrobe, we rigged the front door</c>&nbsp;&nbsp;
 
-00:02:28.260 --> 00:02:30.381 line:78%,end align:center
-to slide across the other panel.
+00:02:28.260 --> 00:02:30.381 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>to slide across the other panel.</c>&nbsp;&nbsp;
 
-00:02:34.960 --> 00:02:37.360 line:97%,end align:center
-ALBUM retrieves and places several objects
+00:02:34.960 --> 00:02:37.360 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>ALBUM retrieves and places several objects</c>&nbsp;&nbsp;
 
-00:02:37.360 --> 00:02:38.757 line:97%,end align:center
-in one forward pass.
+00:02:37.360 --> 00:02:38.757 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>in one forward pass.</c>&nbsp;&nbsp;
 
-00:02:39.357 --> 00:02:41.437 line:97%,end align:center
-Their point prompts share scene features,
+00:02:39.357 --> 00:02:41.437 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Their point prompts share scene features,</c>&nbsp;&nbsp;
 
-00:02:41.437 --> 00:02:43.773 line:97%,end align:center
-and all layouts use the same camera frame.
+00:02:41.437 --> 00:02:43.773 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and all layouts use the same camera frame.</c>&nbsp;&nbsp;
 
-00:02:44.960 --> 00:02:47.008 line:94%,end align:center
-Where do these library assets come from?
+00:02:44.960 --> 00:02:47.008 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Where do these library assets come from?</c>&nbsp;&nbsp;
 
-00:02:47.335 --> 00:02:51.555 line:94%,end align:center
-ALBUM brings together 6,961 textured assets
+00:02:47.335 --> 00:02:51.555 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>ALBUM brings together 6,961 textured assets</c>&nbsp;&nbsp;
 
-00:02:51.555 --> 00:02:53.735 line:94%,end align:center
-across 97 indoor categories.
+00:02:51.555 --> 00:02:53.735 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>across 97 indoor categories.</c>&nbsp;&nbsp;
 
-00:02:54.063 --> 00:02:59.113 line:94%,end align:center
-Our own collection contributes 2,289 high-quality models
+00:02:54.063 --> 00:02:59.113 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Our own collection contributes 2,289 high-quality models</c>&nbsp;&nbsp;
 
-00:02:59.113 --> 00:03:01.167 line:94%,end align:center
-created by artists and designers.
+00:02:59.113 --> 00:03:01.167 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>created by artists and designers.</c>&nbsp;&nbsp;
 
-00:03:01.494 --> 00:03:05.274 line:94%,end align:center
-A further 2,865 come from Artiverse
+00:03:01.494 --> 00:03:05.274 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>A further 2,865 come from Artiverse</c>&nbsp;&nbsp;
 
-00:03:05.274 --> 00:03:08.300 line:94%,end align:center
-and 1,807 from InternScenes.
+00:03:05.274 --> 00:03:08.300 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and 1,807 from InternScenes.</c>&nbsp;&nbsp;
 
-00:03:08.627 --> 00:03:11.467 line:94%,end align:center
-We checked for duplicates, defective geometry,
+00:03:08.627 --> 00:03:11.467 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>We checked for duplicates, defective geometry,</c>&nbsp;&nbsp;
 
-00:03:11.467 --> 00:03:12.915 line:94%,end align:center
-and implausible dimensions.
+00:03:11.467 --> 00:03:12.915 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and implausible dimensions.</c>&nbsp;&nbsp;
 
-00:03:13.242 --> 00:03:17.472 line:94%,end align:center
-The library includes 4,236 static assets
+00:03:13.242 --> 00:03:17.472 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>The library includes 4,236 static assets</c>&nbsp;&nbsp;
 
-00:03:17.472 --> 00:03:21.132 line:94%,end align:center
-and 2,725 articulated assets
+00:03:17.472 --> 00:03:21.132 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>and 2,725 articulated assets</c>&nbsp;&nbsp;
 
-00:03:21.132 --> 00:03:22.992 line:94%,end align:center
-with part and joint metadata.
+00:03:21.132 --> 00:03:22.992 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>with part and joint metadata.</c>&nbsp;&nbsp;
 
-00:03:23.502 --> 00:03:25.762 line:78%,end align:center
-We use these assets to furnish rooms.
+00:03:23.502 --> 00:03:25.762 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>We use these assets to furnish rooms.</c>&nbsp;&nbsp;
 
-00:03:25.762 --> 00:03:27.822 line:78%,end align:center
-Support furniture goes in first,
+00:03:25.762 --> 00:03:27.822 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Support furniture goes in first,</c>&nbsp;&nbsp;
 
-00:03:27.822 --> 00:03:31.246 line:78%,end align:center
-then smaller objects are placed on compatible surfaces.
+00:03:27.822 --> 00:03:31.246 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>then smaller objects are placed on compatible surfaces.</c>&nbsp;&nbsp;
 
-00:03:31.846 --> 00:03:34.636 line:78%,end align:center
-Collision and support checks help us construct
+00:03:31.846 --> 00:03:34.636 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Collision and support checks help us construct</c>&nbsp;&nbsp;
 
-00:03:34.636 --> 00:03:37.798 line:78%,end align:center
-100,414 furnished layouts.
+00:03:34.636 --> 00:03:37.798 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>100,414 furnished layouts.</c>&nbsp;&nbsp;
 
-00:03:38.502 --> 00:03:40.982 line:97%,end align:center
-We render multiple views along a camera path
+00:03:38.502 --> 00:03:40.982 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>We render multiple views along a camera path</c>&nbsp;&nbsp;
 
-00:03:40.982 --> 00:03:42.320 line:97%,end align:center
-through each furnished room.
+00:03:40.982 --> 00:03:42.320 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>through each furnished room.</c>&nbsp;&nbsp;
 
-00:03:42.920 --> 00:03:45.920 line:97%,end align:center
-Each instance mask links what the camera sees
+00:03:42.920 --> 00:03:45.920 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>Each instance mask links what the camera sees</c>&nbsp;&nbsp;
 
-00:03:45.920 --> 00:03:48.620 line:97%,end align:center
-to the exact source asset and its 3D layout.
+00:03:45.920 --> 00:03:48.620 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>to the exact source asset and its 3D layout.</c>&nbsp;&nbsp;
 
-00:03:48.620 --> 00:03:50.878 line:97%,end align:center
-These links supervise both decoders.
-
+00:03:48.620 --> 00:03:50.878 line:-1 position:50% size:94% align:center
+&nbsp;&nbsp;<c.words>These links supervise both decoders.</c>&nbsp;&nbsp;

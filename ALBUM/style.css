@@ -106,7 +106,36 @@ a { color: inherit; text-underline-offset: .24em; }
   font-weight: 500;
   text-shadow: none;
 }
-#intro-film:fullscreen::cue { font-size: 2.32vw; }
+#intro-film:fullscreen::cue { font-size: 2.5vw; }
+#intro-film::cue(.words) { font-size: .88em; }
+#intro-film.inline-captions::cue {
+  color: transparent;
+  background-color: transparent;
+  text-shadow: none;
+}
+.film-captions:not([hidden]) {
+  display: grid;
+  justify-items: center;
+  align-items: start;
+  padding: .32rem .25rem 0;
+  min-block-size: 2.4em;
+  font: 500 clamp(.9rem, 1.45vw, 1.45rem)/1.32 Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+.film-captions span {
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  padding: .24em .76em .3em;
+  border-radius: .27em;
+  background: rgba(23, 25, 28, .74);
+  color: white;
+  overflow-wrap: anywhere;
+}
+.film-captions span:empty { visibility: hidden; }
+@media (max-width: 650px) {
+  .film-captions:not([hidden]) { min-block-size: 3.4em; }
+}
+
 .overview-film figcaption { display: flex; flex-wrap: wrap; gap: .25rem 1rem; justify-content: space-between; }
 .film-chapters { margin-top: .65rem; }
 

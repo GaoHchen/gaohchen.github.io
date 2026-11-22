@@ -105,6 +105,32 @@
   queueChapter();
 
   const overview = $('intro-film');
+  const captionStrip = $('film-captions');
+  const captionLabel = captionStrip.firstElementChild;
+  const englishTrack = overview.querySelector('track');
+  function syncCaptions() {
+    const track = englishTrack.track;
+    const nativePresentation = document.fullscreenElement === overview ||
+      document.pictureInPictureElement === overview || overview.webkitDisplayingFullscreen ||
+      ['fullscreen', 'picture-in-picture'].includes(overview.webkitPresentationMode);
+    const inline = !nativePresentation && track.mode === 'showing' && englishTrack.readyState === 2;
+    overview.classList.toggle('inline-captions', inline);
+    captionStrip.hidden = !inline;
+    captionLabel.textContent = inline
+      ? Array.from(track.activeCues || [], cue => cue.getCueAsHTML().textContent.trim()).join(' ')
+      : '';
+  }
+  englishTrack.addEventListener('load', syncCaptions);
+  englishTrack.addEventListener('error', syncCaptions);
+  englishTrack.track.addEventListener('cuechange', syncCaptions);
+  overview.textTracks.addEventListener('change', syncCaptions);
+  document.addEventListener('fullscreenchange', syncCaptions);
+  for (const event of ['webkitpresentationmodechanged', 'webkitbeginfullscreen',
+    'webkitendfullscreen', 'enterpictureinpicture', 'leavepictureinpicture']) {
+    overview.addEventListener(event, syncCaptions);
+  }
+  syncCaptions();
+
   const shade = $('film-shade');
   let visible = false;
   function updateTheater() {

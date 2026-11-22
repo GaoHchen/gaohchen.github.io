@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f4f3ef">
   <title>ALBUM | Asset Localization By Unified Matching</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/vinyl-record.png">
-  <link rel="stylesheet" href="style.css?v=captioned-overview">
+  <link rel="stylesheet" href="style.css?v=low-captions">
   <link rel="stylesheet" href="architecture-tour.css?v=reading-route">
   <script src="architecture-tour.js?v=canonical-ase-689" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
@@ -17,7 +17,7 @@
   <script src="pbr-viewer.js?v=reading-route" defer></script>
   <script src="query-viewer.js?v=objects-only" defer></script>
   <script src="site.js?v=reading-route" defer></script>
-  <script src="research.js?v=reading-route" defer></script>
+  <script src="research.js?v=low-captions" defer></script>
 </head>
 <body>
   <div id="film-shade" aria-hidden="true"></div>
@@ -80,8 +80,9 @@
           <figure class="overview-film" id="film">
             <video id="intro-film" controls playsinline preload="metadata" poster="assets/overview-poster.jpg?v=opening-title" aria-label="ALBUM introduction film, Asset Localization By Unified Matching">
               <source src="assets/intro.mp4?v=paper-narration-v2" type="video/mp4">
-              <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=paper-narration-v2">
+              <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=low-captions">
             </video>
+            <div id="film-captions" class="film-captions" hidden aria-hidden="true"><span></span></div>
             <div class="choices film-chapters" role="group" aria-label="Jump to a film chapter">
               <button type="button" data-film-start="0" aria-pressed="true">Title</button>
               <button type="button" data-film-start="4" aria-pressed="false">Introduction</button>
