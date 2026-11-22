@@ -108,11 +108,6 @@ a { color: inherit; text-underline-offset: .24em; }
 }
 #intro-film:fullscreen::cue { font-size: 2.5vw; }
 #intro-film::cue(.words) { font-size: .88em; }
-#intro-film.inline-captions::cue {
-  color: transparent;
-  background-color: transparent;
-  text-shadow: none;
-}
 .film-captions:not([hidden]) {
   display: grid;
   justify-items: center;

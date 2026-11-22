@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f4f3ef">
   <title>ALBUM | Asset Localization By Unified Matching</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/vinyl-record.png">
-  <link rel="stylesheet" href="style.css?v=low-captions">
+  <link rel="stylesheet" href="style.css?v=single-captions">
   <link rel="stylesheet" href="architecture-tour.css?v=reading-route">
   <script src="architecture-tour.js?v=canonical-ase-689" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
@@ -17,7 +17,7 @@
   <script src="pbr-viewer.js?v=reading-route" defer></script>
   <script src="query-viewer.js?v=objects-only" defer></script>
   <script src="site.js?v=reading-route" defer></script>
-  <script src="research.js?v=low-captions" defer></script>
+  <script src="research.js?v=single-captions" defer></script>
 </head>
 <body>
   <div id="film-shade" aria-hidden="true"></div>
@@ -46,12 +46,12 @@
     <section class="hero" id="top" aria-labelledby="title">
       <div class="hero-media">
         <picture>
-          <source media="(max-aspect-ratio: 5/4)" srcset="assets/hero-portrait.jpg?v=lounge-carousel-v6">
-          <img src="assets/hero-cover.jpg?v=lounge-carousel-v6" alt="" width="1920" height="1080" fetchpriority="high">
+          <source media="(max-aspect-ratio: 5/4)" srcset="assets/hero-portrait.jpg?v=steady-rgb-v7">
+          <img src="assets/hero-cover.jpg?v=steady-rgb-v7" alt="" width="1920" height="1080" fetchpriority="high">
         </picture>
         <video id="reel" muted playsinline loop preload="metadata" aria-label="Point prompts select lounge furniture in RGB footage. Retrieved assets move into their saved positions as the dense room background is revealed.">
-          <source src="assets/hero-portrait.mp4?v=lounge-carousel-v6" media="(max-aspect-ratio: 5/4)" type="video/mp4">
-          <source src="assets/hero-1080.mp4?v=lounge-carousel-v6" type="video/mp4">
+          <source src="assets/hero-portrait.mp4?v=steady-rgb-v7" media="(max-aspect-ratio: 5/4)" type="video/mp4">
+          <source src="assets/hero-1080.mp4?v=steady-rgb-v7" type="video/mp4">
         </video>
       </div>
       <div class="hero-layout">
@@ -79,18 +79,18 @@
           </header>
           <figure class="overview-film" id="film">
             <video id="intro-film" controls playsinline preload="metadata" poster="assets/overview-poster.jpg?v=opening-title" aria-label="ALBUM introduction film, Asset Localization By Unified Matching">
-              <source src="assets/intro.mp4?v=paper-narration-v2" type="video/mp4">
-              <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=low-captions">
+              <source src="assets/intro.mp4?v=artist-collection" type="video/mp4">
+              <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=artist-collection">
             </video>
-            <div id="film-captions" class="film-captions" hidden aria-hidden="true"><span></span></div>
+            <div id="film-captions" class="film-captions" hidden><span></span></div>
             <div class="choices film-chapters" role="group" aria-label="Jump to a film chapter">
               <button type="button" data-film-start="0" aria-pressed="true">Title</button>
               <button type="button" data-film-start="4" aria-pressed="false">Introduction</button>
               <button type="button" data-film-start="16" aria-pressed="false">Method</button>
-              <button type="button" data-film-start="92.75" aria-pressed="false">Results</button>
-              <button type="button" data-film-start="154.75" aria-pressed="false">Overhead views</button>
-              <button type="button" data-film-start="164.75" aria-pressed="false">Asset library</button>
-              <button type="button" data-film-start="203.292" aria-pressed="false">Training data</button>
+              <button type="button" data-film-start="61.333" aria-pressed="false">Results</button>
+              <button type="button" data-film-start="104.833" aria-pressed="false">Overhead views</button>
+              <button type="button" data-film-start="113.833" aria-pressed="false">Asset library</button>
+              <button type="button" data-film-start="133.375" aria-pressed="false">Training data</button>
             </div>
           </figure>
         </section>
@@ -271,10 +271,10 @@
           </header>
           <section class="dataset-part" id="library" aria-labelledby="library-title">
             <h3 id="library-title">Asset library</h3>
-            <p>Our curated collection contains 6,961 textured assets across 97 categories, including 2,725 articulated objects with part and joint metadata. The film shows 25 ASE assets and seven articulated Artiverse models in their original materials.</p>
+            <p>We collected over 2,000 3D assets created by artists and designers. The full ALBUM library contains 6,961 textured assets across 97 categories, with 4,236 static models and 2,725 articulated models.</p>
             <video class="library-board" id="library-board" width="2048" height="1362" controls autoplay muted loop playsinline preload="metadata"
                    src="assets/curation/asset-library-board.mp4?v=native-faces-96" poster="assets/curation/asset-library-board.jpg?v=native-faces-96"
-                   aria-label="Rotating ASE and Artiverse assets with animated hinges and drawers"></video>
+                   aria-label="Static and articulated 3D assets rotating, with doors and drawers opening"></video>
           </section>
           <section class="dataset-part" id="training-rooms" aria-labelledby="training-rooms-title">
             <h3 id="training-rooms-title">Furnished rooms</h3>
