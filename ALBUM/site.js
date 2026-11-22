@@ -490,6 +490,12 @@
       }
     });
   }
+  function contactNote(enabled) {
+    if (!enabled) return 'Saved placements before display correction.';
+    return activeCase === 'scannet-living'
+      ? 'The two cane chairs are pulled back on their observed side of the table.'
+      : 'Contact-corrected display. Turn off Collision correction to inspect the saved poses.';
+  }
   contactButton.addEventListener('click', async () => {
     const revision = viewRevision;
     contactButton.disabled = true;
@@ -498,9 +504,7 @@
       const applied = await galleryPbr.setContactLayout(enabled);
       if (revision !== viewRevision) return;
       toggle(contactButton, Boolean(applied));
-      $('case-model-note').textContent = applied
-        ? 'Contact-corrected display. Turn off Collision correction to inspect the original predictions.'
-        : 'Original predicted poses with Replica’s scan colors.';
+      $('case-model-note').textContent = contactNote(applied);
     } finally {
       if (revision === viewRevision) contactButton.disabled = false;
     }
@@ -617,7 +621,7 @@
         : 'Saved placements with archived vertex colors.';
       showGallery(assets.map(({ label, name }) => ({ label: label.replace(/^\d+\s+|\.\d{3}$/g, ''), value: name })),
         opened.hasContactLayout
-          ? 'Contact-corrected display. Turn off Collision correction to inspect the original predictions.'
+          ? contactNote(true)
           : [materialNote, collisionNote].filter(Boolean).join(' '), galleryPbrCanvas);
       return;
     } catch (error) {
