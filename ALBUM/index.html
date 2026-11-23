@@ -8,15 +8,15 @@
   <meta name="theme-color" content="#f4f3ef">
   <title>ALBUM | Asset Localization By Unified Matching</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/vinyl-record.png">
-  <link rel="stylesheet" href="style.css?v=dataset-hd-grid">
-  <link rel="stylesheet" href="architecture-tour.css?v=stage-rail">
-  <script src="architecture-tour.js?v=da3-outputs" defer></script>
+  <link rel="stylesheet" href="style.css?v=benchmark-light">
+  <link rel="stylesheet" href="architecture-tour.css?v=method-arrows-2pt">
+  <script src="architecture-tour.js?v=method-loop" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
-  <script src="assets/review-data.js?v=cane-side" defer></script>
+  <script src="assets/review-data.js?v=6832351f5f69" defer></script>
   <script src="scene-viewer.js?v=reading-route" defer></script>
-  <script src="pbr-viewer.js?v=cloud-orbit" defer></script>
+  <script src="pbr-viewer.js?v=native-surfaces" defer></script>
   <script src="query-viewer.js?v=objects-only" defer></script>
-  <script src="site.js?v=cane-side" defer></script>
+  <script src="site.js?v=122918a636ad" defer></script>
   <script src="research.js?v=single-captions" defer></script>
 </head>
 <body>
@@ -50,8 +50,8 @@
           <img src="assets/hero-cover.jpg?v=steady-rgb-v7" alt="" width="1920" height="1080" fetchpriority="high">
         </picture>
         <video id="reel" muted playsinline loop preload="metadata" aria-label="Point prompts select lounge furniture in RGB footage. Retrieved assets move into their saved positions as the dense room background is revealed.">
-          <source src="assets/hero-portrait.mp4?v=review200" media="(max-aspect-ratio: 5/4)" type="video/mp4">
-          <source src="assets/hero-1080.mp4?v=review200" type="video/mp4">
+          <source src="assets/hero-portrait.mp4?v=9636b8571340" media="(max-aspect-ratio: 5/4)" type="video/mp4">
+          <source src="assets/hero-1080.mp4?v=79ed172ff6ee" type="video/mp4">
         </video>
       </div>
       <div class="hero-layout">
@@ -79,7 +79,7 @@
           </header>
           <figure class="overview-film" id="film">
             <video id="intro-film" controls playsinline preload="metadata" poster="assets/overview-poster.jpg?v=opening-title" aria-label="ALBUM introduction film, Asset Localization By Unified Matching">
-              <source src="assets/intro.mp4?v=pose-review200" type="video/mp4">
+              <source src="assets/intro.mp4?v=36a5941cff5a" type="video/mp4">
               <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=pose-review200">
             </video>
             <div id="film-captions" class="film-captions" hidden><span></span></div>
@@ -188,7 +188,7 @@
           <header class="chapter-heading" id="explore">
             <div class="chapter-rule" aria-hidden="true">04</div>
             <h2 id="results-title">Scene gallery</h2>
-            <p>Compare rooms reconstructed with different libraries. <strong>ScanNet++</strong> uses substitute assets, <strong>Replica</strong> uses each scene’s ground-truth assets, and <strong>our captures</strong> use agent-created assets. Explore held-out <strong>ALBUM-Bench</strong> rooms alongside them.</p>
+            <p>Compare rooms reconstructed with different libraries. <strong>Our in-house captures</strong> use agent-created assets, <strong>ScanNet++</strong> uses substitute assets, and <strong>Replica</strong> uses each scene’s ground-truth assets. Explore held-out <strong>ALBUM-Bench</strong> rooms alongside them.</p>
           </header>
           <div class="case-filters">
             <div class="choices" id="case-groups" role="group" aria-label="Filter reconstructions"></div>
@@ -243,7 +243,6 @@
                     <button type="button" data-case-layer="assembly" aria-pressed="true">Placed assets</button>
                     <button type="button" data-case-layer="instance" aria-pressed="false">Isolate object</button>
                     <button type="button" id="case-joints" aria-pressed="false" hidden>Play joint motion</button>
-                    <button type="button" id="case-contact-layout" aria-pressed="false" hidden>Collision correction</button>
                     <button type="button" id="case-instance-colors" aria-pressed="false">Instance colors</button>
                   </div>
                   <label id="case-picker-label" hidden>Asset <select id="case-picker"></select></label>
@@ -262,27 +261,70 @@
           </div>
           <section class="benchmarks" id="benchmarks" aria-labelledby="benchmarks-title">
             <h3 id="benchmarks-title">Benchmark results</h3>
-            <dl class="benchmark-list">
-              <div class="measure-joint">
-                <dt>Exact asset and placement</dt>
-                <dd><strong class="benchmark-value">63.50<span>%</span></strong><span class="benchmark-source">ALBUM-Bench</span></dd>
-                <dd>ALBUM identified and correctly placed <strong>1,016 of 1,600 targets</strong>.</dd>
-              </div>
-              <div class="measure-layout">
-                <dt>3D alignment accuracy</dt>
-                <dd><strong class="benchmark-value">48.4<span>%</span></strong><span class="benchmark-source">Scan2CAD</span></dd>
-                <dd>Instances with the correct category and <strong>translation, rotation, and scale</strong> within tolerance.</dd>
-              </div>
-              <div class="measure-match">
-                <dt>Top-5 exact-CAD retrieval</dt>
-                <dd><strong class="benchmark-value">98.12<span>%</span></strong><span class="benchmark-source">Scan2CAD</span></dd>
-                <dd>The exact CAD model ranked among the <strong>five best matches</strong> in the scene’s library.</dd>
-              </div>
-            </dl>
+            <div class="benchmark-board">
+              <section class="benchmark-dataset" aria-label="ALBUM-Bench">
+                <div>
+                  <h4>ALBUM-Bench</h4>
+                  <table>
+                    <caption>Unseen-asset retrieval</caption>
+                    <thead><tr><th scope="col">Method</th><th scope="col">Top-1</th><th scope="col">Top-5</th></tr></thead>
+                    <tbody>
+                      <tr><th scope="row">ROCA</th><td>3.88%</td><td>17.48%</td></tr>
+                      <tr><th scope="row">Uni3D</th><td>21.12%</td><td>44.78%</td></tr>
+                      <tr><th scope="row">HOC-Search</th><td>27.43%</td><td>44.30%</td></tr>
+                      <tr><th scope="row">OpenShape</th><td>45.87%</td><td>76.58%</td></tr>
+                      <tr><th scope="row">CNOS</th><td>56.31%</td><td>82.52%</td></tr>
+                      <tr class="benchmark-ours"><th scope="row">ALBUM</th><td>72.21%</td><td>93.45%</td></tr>
+                    </tbody>
+                  </table>
+                  <p class="benchmark-scope">824 unseen-asset targets, four RGB views and 200 candidates per scene.</p>
+                </div>
+                <figure class="benchmark-plot">
+                  <figcaption>Retrieval and placement</figcaption>
+                  <p class="benchmark-scope">ALBUM on all 1,600 targets across 400 scenes.</p>
+                  <div class="benchmark-bars">
+                    <dl>
+                      <dt>Exact asset (Top-1)</dt><dd><span style="--score: 74.94%">74.94%</span></dd>
+                      <dt>Correct placement</dt><dd><span style="--score: 76.88%">76.88%</span></dd>
+                      <dt>Both correct</dt><dd><span class="benchmark-key" style="--score: 63.50%">63.50%</span></dd>
+                    </dl>
+                    <div class="benchmark-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+                  </div>
+                </figure>
+              </section>
+              <section class="benchmark-dataset" aria-label="Scan2CAD">
+                <div>
+                  <h4>Scan2CAD</h4>
+                  <table>
+                    <caption>3D alignment accuracy</caption>
+                    <thead><tr><th scope="col">Method</th><th scope="col">Class avg.</th><th scope="col">Instance avg.</th></tr></thead>
+                    <tbody>
+                      <tr><th scope="row">ODAM</th><td>25.6%</td><td>29.2%</td></tr>
+                      <tr><th scope="row">Vid2CAD</th><td>30.7%</td><td>38.6%</td></tr>
+                      <tr><th scope="row">RayTran</th><td>36.2%</td><td>43.0%</td></tr>
+                      <tr><th scope="row">FastCAD</th><td>39.3%</td><td>48.2%</td></tr>
+                      <tr class="benchmark-ours"><th scope="row">ALBUM</th><td>42.7%</td><td>48.4%</td></tr>
+                    </tbody>
+                  </table>
+                  <p class="benchmark-scope">3,184 targets across nine categories. The class average weights each category equally.</p>
+                </div>
+                <figure class="benchmark-plot">
+                  <figcaption>Exact-CAD retrieval</figcaption>
+                  <p class="benchmark-scope">ALBUM ranks CAD models from each scene’s inventory.</p>
+                  <div class="benchmark-bars">
+                    <dl>
+                      <dt>Top-1</dt><dd><span style="--score: 73.37%">73.37%</span></dd>
+                      <dt>Top-5</dt><dd><span class="benchmark-key" style="--score: 98.12%">98.12%</span></dd>
+                    </dl>
+                    <div class="benchmark-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+                  </div>
+                </figure>
+              </section>
+            </div>
             <details class="eval-protocol">
               <summary>Evaluation details</summary>
-              <p><strong>ALBUM-Bench.</strong> Joint success requires the exact asset identity and a diameter-normalized ADD-S error below 0.1.</p>
-              <p><strong>Scan2CAD.</strong> Both metrics use four RGB views, ground-truth point prompts, and scene-specific CAD candidates. Alignment allows up to 20 cm of translation error, 20° of symmetry-aware rotation error, and 20% scale error.</p>
+              <p><strong>ALBUM-Bench.</strong> Top-1 and Top-5 count exact asset matches. ALBUM uses one point per object. CNOS and ROCA receive ground-truth masks, OpenShape and Uni3D use masked crops, and HOC-Search also uses depth and calibrated cameras. Correct placement requires a diameter-normalized ADD-S error below 0.1. ALBUM retrieves the exact asset and meets this threshold for 1,016 of 1,600 targets.</p>
+              <p><strong>Scan2CAD.</strong> ALBUM uses four RGB views, ground-truth point prompts and scene-specific CAD candidates. Alignment requires the correct category and errors within 20 cm of translation, 20° of symmetry-aware rotation and 20% scale. Top-1 and Top-5 measure exact CAD identity separately.</p>
             </details>
           </section>
         </section>
@@ -301,14 +343,14 @@
               <div><dt>Static assets</dt><dd>4,236</dd></div>
               <div><dt>Articulated assets</dt><dd>2,725</dd></div>
             </dl>
-            <video class="library-board" id="library-board" width="2048" height="1362" controls autoplay muted loop playsinline preload="metadata"
-                   src="assets/curation/asset-library-board.mp4?v=review200" poster="assets/curation/asset-library-board.jpg?v=native-faces-96"
-                   aria-label="Static and articulated 3D assets rotating, with doors and drawers opening"></video>
+            <video class="library-board" id="library-board" width="1280" height="768" controls autoplay muted loop playsinline preload="metadata"
+                   src="assets/curation/asset-library-board.mp4?v=scroll-56" poster="assets/curation/asset-library-board.jpg?v=scroll-56"
+                   aria-label="Fifty-six rotating library assets scroll from right to left. Fifteen models open, tilt or slide on their original joints."></video>
           </section>
           <section class="dataset-part" id="training-rooms" aria-labelledby="training-rooms-title">
             <h3 id="training-rooms-title">Furnished rooms</h3>
             <p class="layout-total"><strong>100,414</strong> furnished layouts</p>
-            <p>Built from Aria Synthetic Environments, <strong>ALBUM-Train</strong> pairs each view with instance masks, asset identities, and 3D layouts.</p>
+            <p>Our dataset pairs RGB views with ground-truth depth maps, surface normal maps, camera parameters, and instance segmentation masks. Instance IDs link each object across views to its source asset and 3D layout.</p>
             <div class="research-browser" id="dataset-gallery"></div>
           </section>
         </section>

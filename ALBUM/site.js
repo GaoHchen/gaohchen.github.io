@@ -23,7 +23,7 @@
     'album-cream-bedroom', 'album-pink-bedroom', 'album-timber-living', 'album-white-office',
     'album-blue-cabinet', 'album-red-cabinet', 'album-wood-storage', 'album-stone-bedroom', 'album-kitchen-pantry',
   ]);
-  const openingScenes = ['scannet-living', 'replica-room-2', 'replica-office-4', 'img_3562', 'img_3561'];
+  const openingScenes = ['img_3562', 'img_3561', 'scannet-living', 'replica-room-2', 'replica-office-4'];
   function casePriority(id) {
     const openingIndex = openingScenes.indexOf(id);
     if (openingIndex !== -1) return openingIndex;
@@ -315,7 +315,6 @@
   const highlightButton = $('case-instance-colors');
   const gtButton = $('case-ground-truth');
   const jointsButton = $('case-joints');
-  const contactButton = $('case-contact-layout');
   const inputs = $('case-inputs');
   const inputStrip = $('case-input-views');
   const inputImage = $('case-input-image');
@@ -490,25 +489,11 @@
       }
     });
   }
-  function contactNote(enabled) {
-    if (!enabled) return 'Saved placements before display correction.';
-    return activeCase === 'scannet-living'
-      ? 'The two cane chairs are pulled back on their observed side of the table.'
-      : 'Contact-corrected display. Turn off Collision correction to inspect the saved poses.';
+  function contactNote(id) {
+    return id === 'scannet-living'
+      ? 'Dining chairs stay on their table side and the kitchen stools meet the floor. The ceiling fixture combines two retrieved parts, aligned to the hub and globe in four RGB views.'
+      : 'Saved placements include collision correction.';
   }
-  contactButton.addEventListener('click', async () => {
-    const revision = viewRevision;
-    contactButton.disabled = true;
-    try {
-      const enabled = contactButton.getAttribute('aria-pressed') !== 'true';
-      const applied = await galleryPbr.setContactLayout(enabled);
-      if (revision !== viewRevision) return;
-      toggle(contactButton, Boolean(applied));
-      $('case-model-note').textContent = contactNote(applied);
-    } finally {
-      if (revision === viewRevision) contactButton.disabled = false;
-    }
-  });
   overlayControl(gtButton, 'setGroundTruth');
   overlayControl(jointsButton, 'animateJoints');
 
@@ -519,7 +504,6 @@
     const assembly = layer === 'assembly';
     denseButton.hidden = !(assembly && galleryNative && denseBackgroundFor(activeCase));
     gtButton.hidden = !(assembly && galleryNative && immersive[activeCase]?.groundTruth);
-    contactButton.hidden = !(assembly && galleryNative && galleryDataset.hasContactLayout);
     jointsButton.hidden = !(assembly && (galleryNative ? galleryDataset.hasJoints : window.ALBUM_ROOM_RIGS?.[activeCase]));
     positionsButton.hidden = !(assembly && galleryNative && immersive[activeCase]?.cameraViews?.some(pose => pose?.eye && pose.target));
     if (!assembly) {
@@ -576,7 +560,7 @@
 
   function showGallery(assets, note, canvas) {
     $('case-stage-status').textContent = '';
-    $('case-model-note').textContent = note;
+    $('case-model-note').textContent = immersive[activeCase]?.displayNote || note;
     canvas.hidden = false;
     $('case-camera').hidden = false;
     $('gallery-tools').hidden = false;
@@ -613,15 +597,13 @@
       });
       if (revision !== viewRevision || !opened) return;
       galleryDataset = opened;
-      contactButton.disabled = false;
-      toggle(contactButton, Boolean(opened.hasContactLayout));
       galleryNative = true;
       const materialNote = saved ? (id.startsWith('replica-')
         ? 'Saved placements with Replica’s original scan colors.' : 'Saved placements with original asset materials.')
         : 'Saved placements with archived vertex colors.';
       showGallery(assets.map(({ label, name }) => ({ label: label.replace(/^\d+\s+|\.\d{3}$/g, ''), value: name })),
         opened.hasContactLayout
-          ? contactNote(true)
+          ? contactNote(id)
           : [materialNote, collisionNote].filter(Boolean).join(' '), galleryPbrCanvas);
       return;
     } catch (error) {
@@ -641,7 +623,6 @@
   function resetModel() {
     viewRevision++;
     denseRevision++;
-    contactButton.hidden = true;
     denseButton.hidden = denseStatus.hidden = true;
     denseButton.removeAttribute('aria-busy');
     toggle(denseButton, false);
@@ -679,7 +660,7 @@
     $('case-figure').hidden = false;
     $('case-title').textContent = example.title;
     $('case-source').textContent = example.source;
-    $('case-library').textContent = assetLibrary[groupFor(example)];
+    $('case-library').textContent = immersive[example.id]?.libraryLabel || assetLibrary[groupFor(example)];
     $('case-query-link').hidden = !queryButtons.has(example.id);
     setInputs(example);
     $('case-description').textContent = example.description;

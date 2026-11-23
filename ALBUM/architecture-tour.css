@@ -31,7 +31,7 @@
 .arch-sequence [data-station="2"] { --step-ink: var(--match); }
 .arch-sequence [data-station="3"], .arch-sequence [data-station="4"] { --step-ink: var(--layout); }
 .arch-note { margin-top: .8rem; padding-top: .85rem; border-top: 1px solid var(--line); }
-.arch-stage { grid-area: screen; position: relative; aspect-ratio: 2.04; width: 100%; overflow: hidden; background: var(--dots) center / 18px 18px; }
+.arch-stage { grid-area: screen; position: relative; aspect-ratio: 2.04; width: 100%; overflow: hidden; background: var(--page); }
 .arch-stage canvas, .arch-stage>img { position: absolute; inset: 0; display:block; width: 100%; height:100%; object-fit:contain; }
 .arch-stage canvas { opacity:0; }
 .architecture-tour.ready canvas {opacity:1;}

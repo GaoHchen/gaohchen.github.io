@@ -87,23 +87,32 @@
     }
     c.restore();
   }
-  // Follow the actual polyline length so the head turns corners with its shaft.
-  function wire(c,points,progress,color=colors.line){
+  // Draw the shaft by path length. The tip grows on the final segment, with
+  // the flat end of the shaft tucked inside the filled triangle.
+  function wire(c,points,progress,color=colors.line,arrow=true){
     if(progress<=0)return;
     const lengths=points.slice(1).map((v,i)=>Math.hypot(v[0]-points[i][0],v[1]-points[i][1]));
-    const distance=lengths.reduce((a,b)=>a+b,0)*clamp(progress);
-    if(!distance)return;
-    let left=distance,tip=points[0],heading=0;
-    c.save();c.beginPath();c.moveTo(...tip);c.lineWidth=2.7;c.lineJoin='round';c.lineCap='round';c.strokeStyle=color;
+    const total=lengths.reduce((a,b)=>a+b,0),distance=total*clamp(progress);
+    if(distance<c.lineWidth/2)return;
+    const last=points.length-1,end=points[last],prev=points[last-1];
+    const finalTravel=Math.max(0,lengths[last-1]-(total-distance));
+    const head=arrow?Math.min(3.4*c.lineWidth,finalTravel):0;
+    let left=distance-head*.85;
+    c.save();c.beginPath();c.moveTo(...points[0]);c.strokeStyle=color;
     for(let i=0;i<lengths.length && left>0;i++){
       if(!lengths[i])continue;
-      const u=Math.min(1,left/lengths[i]);tip=[mix(points[i][0],points[i+1][0],u),mix(points[i][1],points[i+1][1],u)];
-      heading=Math.atan2(points[i+1][1]-points[i][1],points[i+1][0]-points[i][0]);
-      c.lineTo(...tip);left-=lengths[i];
+      const u=Math.min(1,left/lengths[i]);
+      c.lineTo(mix(points[i][0],points[i+1][0],u),mix(points[i][1],points[i+1][1],u));left-=lengths[i];
     }
-    c.stroke();c.translate(...tip);c.rotate(heading);
-    const head=Math.min(10,distance);
-    c.beginPath();c.moveTo(0,0);c.lineTo(-head,-head*.53);c.lineTo(-head*.73,0);c.lineTo(-head,head*.53);c.closePath();c.fillStyle=color;c.fill();c.restore();
+    c.stroke();
+    if(head>0){
+      const u=finalTravel/lengths[last-1];
+      c.translate(mix(prev[0],end[0],u),mix(prev[1],end[1],u));
+      c.rotate(Math.atan2(end[1]-prev[1],end[0]-prev[0]));
+      c.beginPath();c.moveTo(0,0);c.lineTo(-head,-head*.46);c.lineTo(-head,head*.46);
+      c.closePath();c.fillStyle=color;c.fill();
+    }
+    c.restore();
   }
   function tokens(c,x,y,n,p,color,w=22){
     for(let i=0;i<n;i++){
@@ -143,7 +152,11 @@
         });
       });
       layer(c,(1-encode)*ramp(t,.25,.8),()=>label(c,'ScanNet++  /  observed views',65,518,17,500,colors.sub,'left'));
-      for(let i=0;i<3;i++)wire(c,[[271,99+168*i],[321,99+168*i],[321,266],[386,266]],ramp(t,5.65+i*.29,6.95+i*.29));
+      for(let i=0;i<3;i++){
+        const y=98+168*i;
+        wire(c,[[267,y],[321,y],[321,266]],ramp(t,5.65+i*.29,6.95+i*.29),colors.line,false);
+      }
+      wire(c,[[321,266],[386,266]],ramp(t,6.95,7.5));
       tile(c,390,209,212,114,colors.peach,['Multiview','encoder'],ramp(t,6.5,7.45));
       wire(c,[[603,266],[733,266]],ramp(t,7.5,8.5),colors.memory);
     });
@@ -160,37 +173,13 @@
   // A bracket groups the candidate renders; DINOv3 still encodes each one.
   function libraryInlet(c,t,first,spacing,top,rail,inletX,tipY){
     const last=first+(refs.length-1)*spacing;
-    const radius=5, start=12.04, stagger=.49;
-    c.save();
-    c.lineCap='round';c.lineJoin='round';c.lineWidth=1.65;c.strokeStyle='#796b83';
-    refs.forEach((_,i)=>{
-      const p=ramp(t,start+i*stagger,start+i*stagger+.37);
-      if(!p)return;
-      const x=first+i*spacing, side=i===0?1:i===refs.length-1?-1:0;
-      c.beginPath();c.moveTo(x,top);
-      if(side){
-        const corner=rail-radius;
-        const length=corner-top+Math.PI*radius/2;
-        c.setLineDash([p*length,spacing*4]);
-        c.lineTo(x,corner);c.arcTo(x,rail,x+side*radius,rail,radius);
-      }else{
-        c.lineTo(x,mix(top,rail,p));
-      }
-      c.stroke();c.setLineDash([]);
-    });
-    const span=ramp(t,start+.35,start+3*stagger+.36);
-    if(span){
-      c.beginPath();c.moveTo(first+radius,rail);
-      c.lineTo(mix(first+radius,last-radius,span),rail);c.stroke();
+    const start=12.04,stagger=.49;
+    wire(c,[[first,top],[first,rail],[last,rail],[last,top]],ramp(t,start,13.87),colors.match,false);
+    for(let i=1;i<refs.length-1;i++){
+      const x=first+i*spacing,at=start+i*stagger;
+      wire(c,[[x,top],[x,rail]],ramp(t,at,at+.37),colors.match,false);
     }
-    const flow=ramp(t,13.88,14.24);
-    if(flow){
-      const y=mix(rail,tipY,flow),head=3.3*ramp(t,14.02,14.24);
-      c.strokeStyle=colors.match;c.beginPath();c.moveTo(inletX,rail);c.lineTo(inletX,y);
-      if(head){c.moveTo(inletX-head,y-head);c.lineTo(inletX,y);c.lineTo(inletX+head,y-head);}
-      c.stroke();
-    }
-    c.restore();
+    wire(c,[[inletX,rail],[inletX,tipY]],ramp(t,13.88,14.24),colors.match);
   }
   function matching(c,t){
     const out=ramp(t,18.7,20.3);
@@ -206,14 +195,14 @@
         });
       });
       const inletX=258.5;
-      libraryInlet(c,t,107,101,190,203,inletX,225);
-      tile(c,inletX-66,229,132,47,'#e6e1eb',['DINOv3'],ramp(t,12.48,13.16));
-      wire(c,[[inletX,280],[inletX,310],[315,310]],ramp(t,14.23,14.80),colors.match);
-      tokens(c,326,300,4,ramp(t,14.46,15.13),'#9f90b1',19);
-      wire(c,[[429,310],[496,310]],ramp(t,14.95,15.48),colors.match);
+      libraryInlet(c,t,107,101,190,203,inletX,251);
+      tile(c,inletX-66,255,132,47,'#e6e1eb',['DINOv3'],ramp(t,12.48,13.16));
+      wire(c,[[inletX,306],[inletX,325],[315,325]],ramp(t,14.23,14.80),colors.match);
+      tokens(c,326,315.5,4,ramp(t,14.46,15.13),'#9f90b1',19);
+      wire(c,[[429,325],[499,325]],ramp(t,14.95,15.48),colors.match);
       wire(c,[[333,447],[475,447],[475,356],[500,356]],ramp(t,14.5,15.52),colors.memory);
       tile(c,503,262,197,126,colors.match,['Instance cross-','attention decoder'],ramp(t,14.65,15.63));
-      wire(c,[[705,321],[768,321]],ramp(t,15.8,16.9),colors.match);
+      wire(c,[[704,325],[768,325]],ramp(t,15.8,16.9),colors.match);
     });
   }
   function canonicalViews(c,t,x,y,width,height,gap){
@@ -239,13 +228,14 @@
       label(c,'Selected reference',64,75,21,570,colors.ink,'left');
       canonicalViews(c,t,62,101,92,91,7);
       layer(c,ramp(t,20.3,21),()=>label(c,'Canonical geometry + layout queries',62,212,16,500,colors.sub,'left'));
-      wire(c,[[217,228],[217,277],[417,277]],ramp(t,20.55,21.73),colors.match);
-      wire(c,[[269,447],[367,447],[367,337],[417,337]],ramp(t,20.9,22.02),colors.memory);
-      tile(c,422,245,195,116,colors.layout,['Layout cross-','attention decoder'],ramp(t,21.45,22.4));
+      wire(c,[[207,228],[207,277],[400,277]],ramp(t,20.55,21.73),colors.match);
+      wire(c,[[269,447],[345,447],[345,337],[400,337]],ramp(t,20.9,22.02),colors.memory);
+      tile(c,404,245,177,116,colors.layout,['Layout cross-','attention decoder'],ramp(t,21.45,22.4));
+      wire(c,[[585,303],[622,303]],ramp(t,22.6,22.85),colors.layout,false);
       for(let i=0;i<3;i++){
-        const at=22.6+i*.83,y=245+56*i;
-        wire(c,[[620,303],[640,303],[640,y],[659,y]],ramp(t,at,at+.76),colors.layout);
-        layer(c,ramp(t,at+.2,at+.8),()=>{round(c,663,y-16,105,32,7,'#e0e7e8');label(c,['Translation','Uniform scale','Rotation'][i],715,y,15,570);});
+        const at=22.85+i*.83,y=247+56*i;
+        wire(c,[[622,303],[622,y],[669,y]],ramp(t,at,at+.62),colors.layout);
+        layer(c,ramp(t,at+.2,at+.8),()=>{round(c,673,y-16,105,32,7,'#e0e7e8');label(c,['Translation','Uniform scale','Rotation'][i],725.5,y,15,570);});
       }
     });
   }
@@ -286,7 +276,7 @@
       photo(c,1,18,24,w,ramp(t,1,1.65),ramp(t,.6,.9),(t-1.15)/.8);
       [1,2].forEach((i)=>layer(c,ramp(t,1+i*.7,2+i*.7),()=>photo(c,i+1,mix(245,204,u),18+(i-1)*82,100,1,0,(t-1.15-i*.84)/.8)));
       if(idx===1){
-        wire(c,[[114,160],[114,185]],ramp(t,5.8,6.85));
+        wire(c,[[98,152],[98,190]],ramp(t,5.8,6.85));
         tile(c,22,194,152,61,colors.peach,['Multiview','encoder'],ramp(t,6.5,7.4));
         wire(c,[[177,225],[207,225]],ramp(t,7.5,8.5),colors.memory);
         tokens(c,218,217,5,ramp(t,8.05,9.72),colors.memory,13);
@@ -296,24 +286,25 @@
       refs.forEach((id,i)=>{
         layer(c,ramp(t,10.8+i*.3,11.7+i*.3),()=>reference(c,id,15+85*i,7,75,59,scanPhase(t,i)));
       });
-      libraryInlet(c,t,52.5,85,69,81,74,100);
-      tile(c,26,104,96,40,'#e6e1eb',['DINOv3'],ramp(t,12.48,13.16));
-      wire(c,[[124,125],[153,125]],ramp(t,14.23,14.80));
-      tile(c,158,101,182,48,colors.match,['Instance decoder'],ramp(t,14.3,15.4));
-      tokens(c,28,168,5,1,colors.memory,13);
-      wire(c,[[126,175],[170,175],[170,152]],ramp(t,14.5,15.6),colors.memory);
-      wire(c,[[248,151],[248,170]],ramp(t,15.8,16.9),colors.match);
-      layer(c,ramp(t,15.9,17.35),()=>portrait(c,244,219,170,.16*ramp(t,16.2,18.8),(t-17.45)/.85));
+      libraryInlet(c,t,52.5,85,69,78,74,117);
+      tile(c,26,121,96,40,'#e6e1eb',['DINOv3'],ramp(t,12.48,13.16));
+      wire(c,[[126,141],[154,141]],ramp(t,14.23,14.80),colors.match);
+      tile(c,158,117,182,48,colors.match,['Instance decoder'],ramp(t,14.3,15.4));
+      tokens(c,28,179,5,1,colors.memory,13);
+      wire(c,[[126,185.5],[170,185.5],[170,169]],ramp(t,14.5,15.6),colors.memory);
+      wire(c,[[249,169],[249,188]],ramp(t,15.8,16.9),colors.match);
+      layer(c,ramp(t,15.9,17.35),()=>portrait(c,249,229,156,.16*ramp(t,16.2,18.8),(t-17.45)/.85));
     }else if(idx===3){
       canonicalViews(c,t,20,6,98,83,13);
       tokens(c,27,105,5,1,colors.memory,13);label(c,'Instance tokens',75,132,13);
-      wire(c,[[76,141],[76,153]],ramp(t,20.18,21.15),colors.memory);
-      wire(c,[[180,92],[180,123],[143,123],[143,153]],ramp(t,20.65,21.78),colors.match);
-      tile(c,20,156,152,54,colors.layout,['Layout','decoder'],ramp(t,19.4,21));
+      wire(c,[[75,142],[75,147],[135,147],[135,155]],ramp(t,20.18,21.15),colors.memory);
+      wire(c,[[180,93],[180,155]],ramp(t,20.65,21.78),colors.match);
+      tile(c,104,159,152,46,colors.layout,['Layout','decoder'],ramp(t,19.4,21));
+      wire(c,[[180,209],[180,220]],ramp(t,22.6,22.85),colors.layout,false);
       ['Translation','Uniform scale','Rotation'].forEach((s,i)=>{
-        const x=56+i*103,at=22.6+i*.83;
-        wire(c,[[62+i*36,211],[62+i*36,219],[x,224],[x,232]],ramp(t,at,at+.76),colors.layout);
-        layer(c,ramp(t,at+.2,at+.8),()=>label(c,s,x,246,16));
+        const x=65+i*115,at=22.85+i*.83;
+        wire(c,[[180,220],[x,220],[x,247]],ramp(t,at,at+.62),colors.layout);
+        layer(c,ramp(t,at+.2,at+.8),()=>label(c,s,x,260,16));
       });
     }else{
       c.drawImage(assets['room-empty'],49,3,273,262);
@@ -326,6 +317,8 @@
     const small=w/h<1.6, sw=small?360:1120,sh=small?274:550;
     const scale=Math.min(w/sw,h/sh);
     ctx.save();ctx.translate((w-scale*sw)/2,(h-scale*sh)/2);ctx.scale(scale,scale);
+    // Keep two typographic points on screen at every layout scale and pixel density.
+    ctx.lineWidth=(2*96/72)/scale;ctx.lineCap='butt';ctx.lineJoin='round';
     if(small)drawSmall(ctx,t);else drawWide(ctx,t);ctx.restore();
   }
   function drawFilm(target,t){
@@ -354,7 +347,10 @@
   function tick(now){
     raf=0;
     if(!inside || document.hidden || document.querySelector('.method-detail').open){last=0;return;}
-    if(requested){time=Math.min(duration,time+(last?Math.min((now-last)/1000,.12):0));if(time>=duration)requested=false;}
+    if(requested && last){
+      const elapsed=Math.min((now-last)/1000,.12);
+      time=(time+elapsed)%duration;
+    }
     last=now;paint();
     if(requested)raf=requestAnimationFrame(tick);
   }

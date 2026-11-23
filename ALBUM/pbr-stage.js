@@ -3,6 +3,7 @@ import {
   AnimationMixer, Box3, BufferGeometry, CanvasTexture, Color, DataTexture, DirectionalLight, EquirectangularReflectionMapping, Float32BufferAttribute, Group, HalfFloatType, HemisphereLight, LinearFilter, LinearSRGBColorSpace, NeutralToneMapping, NoToneMapping, PCFShadowMap, RGBAFormat,
   LineBasicMaterial, LineSegments, Matrix4, MeshBasicMaterial, PerspectiveCamera, PropertyBinding, Scene, Raycaster, Sprite, SpriteMaterial, SRGBColorSpace, Vector3, WebGLRenderer,
 } from 'three';
+import { captureSurfaceLibrary } from './capture-surfaces.js';
 import { GLTFLoader } from './vendor/three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from './vendor/three/addons/controls/OrbitControls.js';
 
@@ -71,6 +72,11 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     sun.shadow.intensity = .81;
   }
 
+  const captureSurfaces = captureSurfaceLibrary(new URL('assets/lighting/capture/', document.baseURI), renderer);
+  function restoreCapture(group, model) {
+    if (!filmPlate && /^img_356[12]$/.test(model.sceneId)) return captureSurfaces.apply(group);
+  }
+
   function loadEnvironment() {
     if (filmPlate) return;
     if (!environmentJob) {
@@ -97,43 +103,86 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     return environmentJob;
   }
 
-  function lightRoom(model) {
+  // The source DCC mapping rotates Blender UVs about their centre, then
+  // scales them. Exported glTF UVs have the opposite vertical axis.
+  const mappedMaterials = new WeakSet();
+  function restoreTextureCoordinates(surface) {
+    const mapping = surface.userData.albumUV;
+    if (!mapping || mappedMaterials.has(surface)) return;
+    mappedMaterials.add(surface);
+    const copies = new Map();
+    for (const [slot, [sx, sy, rotation, tx, ty]] of Object.entries(mapping)) {
+      const original = surface[slot];
+      if (!original) continue;
+      // glTF commonly binds the same ORM texture to two material slots.
+      // Keep maps shared within this material, separate from neighbouring assets.
+      const key = [original.uuid, sx, sy, rotation, tx, ty].join('/');
+      let copy = copies.get(key);
+      if (!copy) {
+        copy = original.clone();
+        copy.center.set(.5, .5);
+        copy.repeat.set(sx, sy);
+        copy.offset.set(tx, ty);
+        copy.rotation = rotation;
+        copy.updateMatrix();
+        copies.set(key, copy);
+      }
+      surface[slot] = copy;
+    }
+  }
+  function prepareMeshes(group, kind) {
     if (filmPlate) return;
-    const dataset = model.kind === 'dataset';
-    sun.castShadow = renderer.shadowMap.enabled = dataset;
-    const sharpness = Math.min(4, renderer.capabilities.getMaxAnisotropy());
-    prediction.traverse(mesh => {
+    const dataset = kind === 'dataset';
+    const shadows = dataset || kind === 'gallery' || kind === 'queryRoom';
+    const sharpness = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    group.traverse(mesh => {
       if (!mesh.isMesh) return;
       const surfaces = [mesh.material].flat();
       for (const surface of surfaces) {
-        for (const map of [surface.map, surface.normalMap, surface.roughnessMap]) {
-          if (map) map.anisotropy = sharpness;
-        }
-      }
-      if (dataset) {
-        const floor = surfaces.some(m => m.name === 'm_floor');
-        if (floor && !mesh.geometry.getAttribute('uv') && surfaces.some(m => m.map)) {
-          // The ASE floor shader feeds Blender world XY to its Mapping node.
-          // GLTFLoader already applies that node's KHR_texture_transform.
-          mesh.updateWorldMatrix(true, false);
-          const vertices = mesh.geometry.getAttribute('position');
-          const uv = new Float32Array(vertices.count * 2);
-          const world = new Vector3();
-          for (let i = 0; i < vertices.count; i++) {
-            world.fromBufferAttribute(vertices, i).applyMatrix4(mesh.matrixWorld);
-            uv[2 * i] = world.x;
-            uv[2 * i + 1] = 1 + world.z;
+        restoreTextureCoordinates(surface);
+        for (const map of [surface.map, surface.normalMap, surface.roughnessMap,
+                           surface.metalnessMap, surface.aoMap, surface.bumpMap]) {
+          if (map && map.anisotropy !== sharpness) {
+            map.anisotropy = sharpness;
+            map.needsUpdate = true;
           }
-          mesh.geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
         }
-        // The display plinth is immediately beneath the native floor.
-        const foundation = surfaces.some(m => m.name.startsWith('Foundation '));
-        mesh.castShadow = !floor && !foundation && surfaces.some(m =>
-          (!m.transparent && !(m.transmission > .2)) || m.alphaTest > 0);
-        mesh.receiveShadow = true;
       }
+      if (!shadows) return;
+      const floor = dataset && surfaces.some(m => m.name === 'm_floor');
+      if (floor && !mesh.geometry.getAttribute('uv') && surfaces.some(m => m.map)) {
+        // The ASE floor shader feeds Blender world XY to its Mapping node.
+        // GLTFLoader already applies that node's KHR_texture_transform.
+        mesh.updateWorldMatrix(true, false);
+        const vertices = mesh.geometry.getAttribute('position');
+        const uv = new Float32Array(vertices.count * 2);
+        const world = new Vector3();
+        for (let i = 0; i < vertices.count; i++) {
+          world.fromBufferAttribute(vertices, i).applyMatrix4(mesh.matrixWorld);
+          uv[2 * i] = world.x;
+          uv[2 * i + 1] = 1 + world.z;
+        }
+        mesh.geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+      }
+      const foundation = dataset && surfaces.some(m => m.name.startsWith('Foundation '));
+      mesh.castShadow = !floor && !foundation && surfaces.some(m =>
+        (!m.transparent && !(m.transmission > .2)) || m.alphaTest > 0);
+      mesh.receiveShadow = true;
     });
-    if (!dataset) {
+  }
+  function lightRoom(model) {
+    if (filmPlate) return;
+    const objects = model.kind === 'gallery' || model.kind === 'queryRoom';
+    const shadows = objects || model.kind === 'dataset';
+    sun.castShadow = renderer.shadowMap.enabled = shadows;
+    // The HDR supplies reflections, the window key describes form, and the
+    // weaker diffuse fill preserves detail on the shaded side of upholstery.
+    sky.intensity = objects ? .44 : .72;
+    fill.intensity = objects ? .21 : .32;
+    stage.environmentIntensity = objects ? .72 : .84;
+    sun.intensity = objects ? 2.22 : 2.05;
+    prepareMeshes(prediction, model.kind);
+    if (!shadows) {
       sun.target.position.set(0, 0, 0);
       sun.position.copy(keyDirection);
       return;
@@ -172,6 +221,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
   const beforeRender = stage.onBeforeRender;
   stage.onBeforeRender = function (...args) {
     beforeRender.apply(this, args);
+    if (moving) sun.shadow.needsUpdate = true;
     if (!walls.length) return;
     args[2].getWorldPosition(cameraWorld);
     args[2].getWorldDirection(cameraForward);
@@ -395,6 +445,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       node.updateMatrix();
     }
     prediction.updateMatrixWorld(true);
+    sun.shadow.needsUpdate = true;
     redraw();
     return enabled;
   }
@@ -402,6 +453,11 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     prediction = object;
     if (transform) prediction.applyMatrix4(new Matrix4().fromArray(transform));
     stage.add(prediction);
+  }
+  function edgeHighlight(material) {
+    return material.isMeshStandardMaterial
+      ? 'pow(1.0 - clamp(abs(dot(normal, normalize(vViewPosition))), 0.0, 1.0), 2.4)'
+      : '0.24';
   }
   function colorInstances(parser, assets, colors) {
     const byName = new Map();
@@ -424,15 +480,10 @@ export function createStage(canvas, { filmPlate = false } = {}) {
           original.onBeforeCompile(shader, drawing);
           shader.uniforms.albumInstanceTint = { value: tint };
           shader.uniforms.albumInstanceStrength = instanceTintStrength;
-          const fragment = shader.fragmentShader.replace('#include <color_fragment>', `
-            #include <color_fragment>
-            float albumBase = clamp(dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722)), 0.0, 1.0);
-            diffuseColor.rgb = mix(diffuseColor.rgb, albumInstanceTint * (0.52 + 0.48 * albumBase), albumInstanceStrength);
-          `).replace('#include <emissivemap_fragment>', `
-            #include <emissivemap_fragment>
-            float albumEmission = dot(totalEmissiveRadiance, vec3(0.2126, 0.7152, 0.0722));
-            totalEmissiveRadiance = mix(totalEmissiveRadiance, albumInstanceTint * (0.10 + albumEmission), albumInstanceStrength);
-          `);
+          const fragment = shader.fragmentShader.replace('#include <opaque_fragment>', `
+            float edge = ${edgeHighlight(surface)};
+            outgoingLight = mix(outgoingLight, albumInstanceTint, albumInstanceStrength * (0.10 + 0.82 * edge));
+            #include <opaque_fragment>`);
           shader.fragmentShader = `
             uniform vec3 albumInstanceTint;
             uniform float albumInstanceStrength;
@@ -575,6 +626,13 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       if (opened === serial) throw result.reason || shell.reason || observation.reason || Error('The registered room is unavailable');
       return null;
     }
+    await restoreCapture(result.value.scene, model);
+    if (opened !== serial) {
+      release(result.value.scene);
+      release(shell.value?.scene);
+      release(observation.value?.scene);
+      return null;
+    }
     addPrediction(result.value.scene, model.matrix);
     if (model.kind === 'gallery') {
       prediction.traverse(node => {
@@ -585,7 +643,6 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       });
       setContactLayout(true);
     }
-    lightRoom(model);
     if (model.kind === 'dataset') prediction.traverse(node => {
       if (!node.userData.cutawayPlane) return;
       const [nx, nz, distance] = node.userData.cutawayPlane;
@@ -601,6 +658,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
         queryRoots.set(item.id, root);
       }
     }
+    lightRoom(model);
     if (model.kind === 'gallery' && model.instanceColors?.length) {
       colorInstances(result.value.parser, model.assets || [], model.instanceColors);
       setInstanceHighlight(Boolean(model.highlightInstances));
@@ -628,6 +686,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     if (replacement) release(replacement);
     if (selectedRoot) selectedRoot.visible = true;
     replacement = selectedRoot = null;
+    sun.shadow.needsUpdate = true;
   }
   function highlightQueryRoot(root) {
     const copies = new Map();
@@ -637,8 +696,8 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       material.onBeforeCompile = (shader, renderer) => {
         original.onBeforeCompile(shader, renderer);
         shader.fragmentShader = shader.fragmentShader.replace('#include <opaque_fragment>', `
-          float lightness = dot(outgoingLight, vec3(0.2126, 0.7152, 0.0722));
-          outgoingLight = mix(outgoingLight, vec3(0.035, 0.56, 1.0) * (0.7 + 0.3 * clamp(lightness, 0.0, 1.0)), 0.86);
+          float edge = ${edgeHighlight(material)};
+          outgoingLight = mix(outgoingLight, vec3(0.035, 0.56, 1.0), 0.075 + 0.84 * edge);
           #include <opaque_fragment>`);
       };
       material.customProgramCacheKey = () => original.customProgramCacheKey() + '|query-selection';
@@ -660,16 +719,21 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     selectedRoot = root;
     if (candidate && root) {
       redraw();
+      const room = descriptor;
       const { scene } = await loader.loadAsync(candidate.prediction);
+      if (revision !== selectionVersion) { release(scene); return false; }
+      await restoreCapture(scene, room);
       if (revision !== selectionVersion) { release(scene); return false; }
       scene.applyMatrix4(new Matrix4().fromArray(candidate.matrix));
       scene.userData.queryInstance = id;
+      prepareMeshes(scene, descriptor.kind);
       replacement = scene;
       stage.add(scene);
       root.visible = false;
       root = scene;
     }
     if (root) highlightQueryRoot(root);
+    sun.shadow.needsUpdate = true;
     redraw();
     return true;
   }
@@ -691,6 +755,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
   }
   function focus(name) {
     if (!prediction) return false;
+    sun.shadow.needsUpdate = true;
     if (activeName) prediction.traverse(node => { if (node.userData.albumVisibility !== undefined) {
       node.visible = node.userData.albumVisibility;
       delete node.userData.albumVisibility;
@@ -788,6 +853,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
           else node.visible = false;
         });
         motionSet = result.scene;
+        prepareMeshes(motionSet, descriptor.kind);
         motionSet.visible = false;
         stage.add(motionSet);
         animatedStatic = animated;
@@ -806,6 +872,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       for (const asset of animatedStatic) asset.visible = !enabled;
     }
     moving = enabled;
+    sun.shadow.needsUpdate = true;
     previous = 0;
     redraw();
     return moving;
@@ -872,6 +939,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       clear();
       stage.onBeforeRender = beforeRender;
       lightingRequest.abort();
+      captureSurfaces.dispose();
       stage.environment = null;
       reflectionMap?.dispose();
       sun.shadow.dispose();
