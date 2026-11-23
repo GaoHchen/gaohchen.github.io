@@ -22,6 +22,80 @@ function release(group) {
   resources.forEach(resource => resource.dispose());
 }
 
+// Restore the exact GLB before passing it to the standard material and geometry loader.
+function restorePointCloud(bytes) {
+  const packed = new Uint8Array(bytes);
+  const input = new DataView(bytes);
+  if (bytes.byteLength < 4 || input.getUint32(0) !== 0x41504332) return bytes;
+
+  const size = input.getUint32(12, true);
+  const jsonLength = input.getUint32(16, true);
+  const binaryStart = 28 + jsonLength;
+  if (size > 128 * 1024 * 1024 || binaryStart > size || binaryStart + 4 > packed.length) {
+    throw new Error('Invalid point cloud header');
+  }
+  const gltf = JSON.parse(new TextDecoder().decode(packed.subarray(24, 24 + jsonLength)));
+  const glb = new Uint8Array(size);
+  glb.set(packed.subarray(4, 4 + binaryStart));
+  let at = 4 + binaryStart;
+  let out = binaryStart;
+
+  function copy(count) {
+    if (count < 0 || at + count > packed.length) throw new Error('Invalid point cloud range');
+    glb.set(packed.subarray(at, at + count), out);
+    at += count;
+    out += count;
+  }
+
+  for (const view of gltf.bufferViews) {
+    copy(binaryStart + (view.byteOffset || 0) - out);
+    const format = packed[at++];
+    if (format === 82) { // Raw glTF buffer view
+      copy(view.byteLength);
+      continue;
+    }
+    const count = view.byteLength / 8;
+    const values = new Uint16Array(glb.buffer, out, count * 4);
+    if (format === 80) { // XYZ: signed differences, separated into byte planes.
+      if (at + count * 6 > packed.length) throw new Error('Truncated point positions');
+      for (let axis = 0; axis < 3; axis++) {
+        let previous = 0;
+        const low = at + axis * count;
+        const high = low + 3 * count;
+        for (let i = 0; i < count; i++) {
+          const z = packed[low + i] | (packed[high + i] << 8);
+          previous = (previous + ((z >>> 1) ^ -(z & 1))) & 65535;
+          values[4 * i + axis] = previous;
+        }
+      }
+      at += count * 6;
+    } else if (format === 67) { // RGB: palette indices relative to green.
+      const length = input.getUint16(at, true);
+      at += 2;
+      if (length < 1 || length > 256 || at + length * 2 + count * 3 > packed.length) {
+        throw new Error('Invalid point color palette');
+      }
+      const palette = new Uint16Array(length);
+      for (let i = 0; i < length; i++) palette[i] = input.getUint16(at + 2 * i, true);
+      at += length * 2;
+      for (let i = 0; i < count; i++) {
+        const green = packed[at + count + i];
+        values[4 * i] = palette[(packed[at + i] + green) & 255];
+        values[4 * i + 1] = palette[green];
+        values[4 * i + 2] = palette[(packed[at + count * 2 + i] + green) & 255];
+        values[4 * i + 3] = 65535;
+      }
+      at += count * 3;
+    } else {
+      throw new Error('Unknown point cloud format');
+    }
+    out += view.byteLength;
+  }
+  copy(size - out);
+  if (at !== packed.length) throw new Error('Unexpected trailing point cloud data');
+  return glb.buffer;
+}
+
 class ReviewLoader extends GLTFLoader {
   async loadAsync(input, onProgress) {
     const url = new URL(input, document.baseURI);
@@ -29,7 +103,7 @@ class ReviewLoader extends GLTFLoader {
     const response = await fetch(url);
     if (!response.ok) throw new Error('Could not load ' + url.pathname);
     const bytes = await new Response(response.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
-    return this.parseAsync(bytes, new URL('.', url).href);
+    return this.parseAsync(restorePointCloud(bytes), new URL('.', url).href);
   }
 }
 export function createStage(canvas, { filmPlate = false } = {}) {

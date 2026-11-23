@@ -90,9 +90,6 @@
     }, { threshold: [.15] }).observe(hero);
   }
   if (reel.readyState > 0) preparePreview();
-  document.querySelector('a[href="#film"]').addEventListener('click', () => {
-    $('intro-film').play().catch(() => {});
-  });
 
   function makeButton(text, onClick, selected = false) {
     const button = document.createElement('button');

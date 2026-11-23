@@ -12,11 +12,11 @@
   <link rel="stylesheet" href="architecture-tour.css?v=method-arrows-2pt">
   <script src="architecture-tour.js?v=method-loop" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
-  <script src="assets/review-data.js?v=6832351f5f69" defer></script>
+  <script src="assets/review-data.js?v=225d0d4396c8" defer></script>
   <script src="scene-viewer.js?v=reading-route" defer></script>
-  <script src="pbr-viewer.js?v=native-surfaces" defer></script>
+  <script src="pbr-viewer.js?v=ad546167b714" defer></script>
   <script src="query-viewer.js?v=objects-only" defer></script>
-  <script src="site.js?v=122918a636ad" defer></script>
+  <script src="site.js?v=2310b331a1d1" defer></script>
   <script src="research.js?v=single-captions" defer></script>
 </head>
 <body>
@@ -50,7 +50,7 @@
           <img src="assets/hero-cover.jpg?v=steady-rgb-v7" alt="" width="1920" height="1080" fetchpriority="high">
         </picture>
         <video id="reel" muted playsinline loop preload="metadata" aria-label="Point prompts select lounge furniture in RGB footage. Retrieved assets move into their saved positions as the dense room background is revealed.">
-          <source src="assets/hero-portrait.mp4?v=9636b8571340" media="(max-aspect-ratio: 5/4)" type="video/mp4">
+          <source src="assets/hero-portrait.mp4?v=4fc69d462a23" media="(max-aspect-ratio: 5/4)" type="video/mp4">
           <source src="assets/hero-1080.mp4?v=79ed172ff6ee" type="video/mp4">
         </video>
       </div>
@@ -61,8 +61,7 @@
           <p class="hero-byline">Anonymous Authors</p>
           <p>From unposed multi-view RGB images and a point prompt, ALBUM <strong>retrieves an asset from your library</strong> and <strong>estimates its 7DoF layout</strong> in a single forward pass.</p>
           <div class="hero-actions">
-            <a class="button primary" href="#film"><span class="play-icon" aria-hidden="true"></span>Watch film</a>
-            <a class="button secondary" href="#results">Explore scenes</a>
+            <a class="button primary" href="assets/supplement.pdf" type="application/pdf" target="_blank" rel="noopener">Suppliment</a>
           </div>
         </div>
         <button class="reel-toggle" type="button" aria-controls="reel" aria-label="Play preview" hidden></button>
@@ -79,7 +78,7 @@
           </header>
           <figure class="overview-film" id="film">
             <video id="intro-film" controls playsinline preload="metadata" poster="assets/overview-poster.jpg?v=opening-title" aria-label="ALBUM introduction film, Asset Localization By Unified Matching">
-              <source src="assets/intro.mp4?v=36a5941cff5a" type="video/mp4">
+              <source src="assets/intro.mp4?v=c19dd2d60f3d" type="video/mp4">
               <track default kind="subtitles" srclang="en" label="English" src="assets/overview.vtt?v=pose-review200">
             </video>
             <div id="film-captions" class="film-captions" hidden><span></span></div>
@@ -344,13 +343,13 @@
               <div><dt>Articulated assets</dt><dd>2,725</dd></div>
             </dl>
             <video class="library-board" id="library-board" width="1280" height="768" controls autoplay muted loop playsinline preload="metadata"
-                   src="assets/curation/asset-library-board.mp4?v=scroll-56" poster="assets/curation/asset-library-board.jpg?v=scroll-56"
+                   src="assets/curation/asset-library-board.mp4?v=e9606923ee00" poster="assets/curation/asset-library-board.jpg?v=scroll-56"
                    aria-label="Fifty-six rotating library assets scroll from right to left. Fifteen models open, tilt or slide on their original joints."></video>
           </section>
           <section class="dataset-part" id="training-rooms" aria-labelledby="training-rooms-title">
             <h3 id="training-rooms-title">Furnished rooms</h3>
             <p class="layout-total"><strong>100,414</strong> furnished layouts</p>
-            <p>Our dataset pairs RGB views with ground-truth depth maps, surface normal maps, camera parameters, and instance segmentation masks. Instance IDs link each object across views to its source asset and 3D layout.</p>
+            <p>Our dataset pairs RGB views with ground-truth <strong>depth maps</strong>, <strong>surface normal maps</strong>, <strong>camera parameters</strong>, and <strong>instance segmentation masks</strong>. Instance IDs link each object across views to its source asset and 3D layout.</p>
             <div class="research-browser" id="dataset-gallery"></div>
           </section>
         </section>
