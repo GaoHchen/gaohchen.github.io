@@ -199,7 +199,6 @@
     const tabs = host.querySelector('.evidence-tabs');
     const title = host.querySelector('.evidence-title');
     const source = host.querySelector('.evidence-source');
-    const caption = host.querySelector('.evidence-caption');
     const screen = host.querySelector('.evidence-screen');
     const image = host.querySelector('.evidence-image');
     const video = host.querySelector('.evidence-video');
@@ -287,7 +286,6 @@
       select(tabs, selector);
       title.textContent = item.title;
       source.textContent = item.source || '';
-      caption.textContent = item.description || '';
 
       function showPoster() {
         closeModel();
