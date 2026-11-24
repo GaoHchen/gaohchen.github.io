@@ -237,13 +237,13 @@
     queryRanks.replaceChildren();
     instanceList.hidden = Boolean(point);
     if (point) showRanks(sourceQuery, point);
-    else $('rank-detail').textContent = 'This instance is part of the saved room layout. No point query was recorded for it.';
+    else $('rank-detail').textContent = 'This object is part of the saved room layout. Select a numbered point in the input image to explore its five matches.';
     updatePlacement();
   }
 
   function overview() {
     selectedInstance = null;
-    const items = roomInstances[roomForQuery(currentQuery.id)];
+    const items = roomInstances[roomForQuery(currentQuery.id)].filter(item => !item.promptOnly);
     pressOnly(queryPoints, null);
     pressOnly(instanceList, null);
     $('query-title').textContent = currentQuery.title;
@@ -285,7 +285,7 @@
       marker.style.top = `${100 * point.y}%`;
       return marker;
     }));
-    const items = roomInstances[roomForQuery(query.id)];
+    const items = roomInstances[roomForQuery(query.id)].filter(item => !item.promptOnly);
     instanceList.replaceChildren(...items.map(item => {
       const repeated = items.some(other => other !== item && other.label === item.label);
       const button = makeButton(repeated ? `${item.label} · ${item.id}` : item.label, () => selectRoomInstance(item.id));

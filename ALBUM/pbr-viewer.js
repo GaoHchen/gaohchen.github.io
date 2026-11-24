@@ -29,7 +29,7 @@ function mountViser(canvas) {
       else job.reject(Error(message.error || 'Viser could not display this scene.'));
     }, { signal: listener.signal });
   });
-  frame.src = new URL('vendor/viser/index.html?album=1&v=b9b8ca17e83e', document.baseURI);
+  frame.src = new URL('vendor/viser/index.html?album=1&v=a203bb063862', document.baseURI);
   canvas.after(frame);
 
   return {
@@ -92,7 +92,7 @@ window.albumPbrViewer = canvas => {
       }
     }
 
-    fallbackLoad ||= import('./pbr-stage.js?v=bda6fd3fe51b').then(module => {
+    fallbackLoad ||= import('./pbr-stage.js?v=c663f4ea15cf').then(module => {
       fallback = module.createStage(canvas);
       return fallback;
     });

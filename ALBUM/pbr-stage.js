@@ -377,7 +377,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
   function fitGallery(angle = 'corner') {
     const bounds = [];
     prediction.updateWorldMatrix(true, true);
-    prediction.traverse(({ geometry, matrixWorld }) => {
+    prediction.traverseVisible(({ geometry, matrixWorld }) => {
       if (!geometry) return;
       if (!geometry.boundingBox) geometry.computeBoundingBox();
       bounds.push(geometry.boundingBox.clone().applyMatrix4(matrixWorld));
@@ -388,7 +388,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     const size = extent.getSize(new Vector3());
     const alongZ = size.z > size.x;
     const direction = new Vector3(alongZ ? 1.42 : .4, .93, alongZ ? .4 : 1.42);
-    if (descriptor.kind === 'queryRoom') {
+    if (descriptor.kind === 'queryRoom' && descriptor.eye && descriptor.target) {
       direction.fromArray(descriptor.eye).sub(new Vector3(...descriptor.target));
       direction.y = Math.max(direction.y, .45 * Math.hypot(direction.x, direction.z));
     }
@@ -708,7 +708,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       return null;
     }
     addPrediction(result.value.scene, model.matrix);
-    if (model.kind === 'gallery') {
+    if (model.kind === 'gallery' || model.kind === 'queryRoom') {
       prediction.traverse(node => {
         const correction = node.userData.contactLayout;
         if (!correction) return;
@@ -729,6 +729,10 @@ export function createStage(canvas, { filmPlate = false } = {}) {
         const root = item.observation ? observation.value.scene : slots.get(item.slot);
         if (!root) throw Error('Missing saved room instance: ' + item.id);
         root.userData.queryInstance = item.id;
+        if (item.promptOnly) {
+          root.userData.promptOnly = true;
+          root.visible = false;
+        }
         queryRoots.set(item.id, root);
       }
     }
@@ -747,7 +751,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       actions = clips.map(clip => mixer.clipAction(clip));
     }
     setHome(model, room);
-    return { capture: Boolean(context), hasContactLayout: contactPoses.size > 0, hasJoints: Boolean(mixer || model.motion), instanceCount: queryRoots.size };
+    return { capture: Boolean(context), hasContactLayout: contactPoses.size > 0, hasJoints: Boolean(mixer || model.motion), instanceCount: model.instances?.filter(item => !item.promptOnly).length || 0 };
   }
   function restoreQueryInstance() {
     const copies = new Set();
@@ -758,7 +762,7 @@ export function createStage(canvas, { filmPlate = false } = {}) {
     copies.forEach(m => m.dispose());
     queryMaterials.clear();
     if (replacement) release(replacement);
-    if (selectedRoot) selectedRoot.visible = true;
+    if (selectedRoot) selectedRoot.visible = !selectedRoot.userData.promptOnly;
     replacement = selectedRoot = null;
     sun.shadow.needsUpdate = true;
   }
@@ -806,7 +810,10 @@ export function createStage(canvas, { filmPlate = false } = {}) {
       root.visible = false;
       root = scene;
     }
-    if (root) highlightQueryRoot(root);
+    if (root) {
+      root.visible = true;
+      highlightQueryRoot(root);
+    }
     sun.shadow.needsUpdate = true;
     redraw();
     return true;

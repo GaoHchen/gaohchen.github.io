@@ -12,7 +12,9 @@ window.albumRoomPlacementViewer = canvas => {
         const instances = window.ALBUM_QUERY_INSTANCES[roomId];
         const job = { id: roomId, result: viewer.open({
           kind: 'queryRoom', sceneId: roomId, prediction: room.prediction,
-          eye: room.eye, target: room.target, instances, observation: instances.find(i => i.observation)?.observation,
+          matrix: room.matrix,
+          ...(roomId === 'scannet-living' ? {} : { eye: room.eye, target: room.target }),
+          instances, observation: instances.find(i => i.observation)?.observation,
         }) };
         loaded = job;
         job.result.catch(() => { if (loaded === job) loaded = null; });
