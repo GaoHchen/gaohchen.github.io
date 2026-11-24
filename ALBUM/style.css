@@ -404,7 +404,6 @@ footer { border-top: 1px solid var(--line); }
   .case-live:fullscreen .gallery-workspace { flex:none; }
   .case-live:fullscreen .gallery-workspace .case-stage { height:56svh; }
 }
-#case-query-link { display: inline-block; margin-top: .55rem; font-size: .83rem; color: var(--accent); }
 .case-picker button:not(:has(img)) { grid-template-columns: 1fr; min-height: 2.9rem; }
 #dataset .evidence-main { width: 100%; margin-inline: 0; }
 #dataset .evidence-modes { margin-bottom: .8rem; }

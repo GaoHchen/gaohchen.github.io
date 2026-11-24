@@ -465,7 +465,6 @@
     });
   }
 
-  $('case-query-link').addEventListener('click', () => queryButtons.get(activeCase)?.click());
 
   function overlayControl(button, action) {
     button.addEventListener('click', async () => {
@@ -651,7 +650,6 @@
     $('case-title').textContent = example.title;
     $('case-source').textContent = example.source;
     $('case-library').textContent = immersive[example.id]?.libraryLabel || assetLibrary[groupFor(example)];
-    $('case-query-link').hidden = !queryButtons.has(example.id);
     setInputs(example);
     $('case-live').hidden = false;
     gtButton.hidden = !immersive[example.id]?.groundTruth;
