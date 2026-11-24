@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f4f3ef">
   <title>ALBUM | Asset Localization By Unified Matching</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/vinyl-record.png">
-  <link rel="stylesheet" href="style.css?v=benchmark-light">
+  <link rel="stylesheet" href="style.css?v=bb47077ce1d1">
   <link rel="stylesheet" href="architecture-tour.css?v=method-arrows-2pt">
   <script src="architecture-tour.js?v=method-loop" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
@@ -16,7 +16,7 @@
   <script src="scene-viewer.js?v=reading-route" defer></script>
   <script src="pbr-viewer.js?v=5f6f3df90472" defer></script>
   <script src="query-viewer.js?v=0cd26f2f3f0d" defer></script>
-  <script src="site.js?v=c74da3da365f" defer></script>
+  <script src="site.js?v=974d7dbb5856" defer></script>
   <script src="research.js?v=53b497769a75" defer></script>
 </head>
 <body>
@@ -247,15 +247,14 @@
                   <label id="case-picker-label" hidden>Asset <select id="case-picker"></select></label>
                 </div>
                 <p class="case-gt-key" id="case-gt-key" role="status" hidden>Teal surfaces show the registered ground truth.</p>
+                <p class="caption" id="case-layer-error" role="status" hidden>This saved layer could not be loaded.</p>
                 <p class="caption" id="case-dense-status" role="status" hidden>The room points could not load. Select Dense background to retry.</p>
                 <div class="gallery-contact" id="case-inputs" hidden>
                   <h4>Input cameras <span id="case-view-count"></span></h4>
                   <div class="case-input-strip" id="case-input-views" role="group" aria-label="Input camera views"></div>
                 </div>
-                <p class="caption" id="case-model-note"></p>
               </div>
               <a id="case-query-link" href="#retrieve" hidden>Explore point prompts for this room</a>
-              <figcaption class="caption" id="case-description"></figcaption>
             </figure>
           </div>
           <section class="benchmarks" id="benchmarks" aria-labelledby="benchmarks-title">
@@ -320,11 +319,6 @@
                 </figure>
               </section>
             </div>
-            <details class="eval-protocol">
-              <summary>Evaluation details</summary>
-              <p><strong>ALBUM-Bench.</strong> Top-1 and Top-5 count exact asset matches. ALBUM uses one point per object. CNOS and ROCA receive ground-truth masks, OpenShape and Uni3D use masked crops, and HOC-Search also uses depth and calibrated cameras. Correct placement requires a diameter-normalized ADD-S error below 0.1. ALBUM retrieves the exact asset and meets this threshold for 1,016 of 1,600 targets.</p>
-              <p><strong>Scan2CAD.</strong> ALBUM uses four RGB views, ground-truth point prompts and scene-specific CAD candidates. Alignment requires the correct category and errors within 20 cm of translation, 20° of symmetry-aware rotation and 20% scale. Top-1 and Top-5 measure exact CAD identity separately.</p>
-            </details>
           </section>
         </section>
 

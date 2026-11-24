@@ -319,6 +319,7 @@
   const positionsButton = $('case-map');
   const denseButton = $('case-dense');
   const denseStatus = $('case-dense-status');
+  const layerError = $('case-layer-error');
   let preferDense = true;
   let denseRevision = 0;
   const workspace = $('gallery-workspace');
@@ -470,6 +471,7 @@
     button.addEventListener('click', async () => {
       const revision = viewRevision;
       const layer = layerRevision;
+      layerError.hidden = true;
       const enabled = button.getAttribute('aria-pressed') !== 'true';
       button.disabled = true;
       try {
@@ -480,23 +482,21 @@
           if (button === gtButton) $('case-gt-key').hidden = !applied;
         } else if (applied) await galleryView()[action](false);
       } catch {
-        if (revision === viewRevision) $('case-model-note').textContent = 'This saved layer could not be loaded.';
+        if (revision === viewRevision && layer === layerRevision) layerError.hidden = false;
       } finally {
         if (revision === viewRevision) button.disabled = false;
       }
     });
-  }
-  function contactNote(id) {
-    return id === 'scannet-living'
-      ? 'Dining chairs stay on their table side and the kitchen stools meet the floor. The ceiling fixture combines two retrieved parts, aligned to the hub and globe in four RGB views.'
-      : 'Saved placements include collision correction.';
   }
   overlayControl(gtButton, 'setGroundTruth');
   overlayControl(jointsButton, 'animateJoints');
 
   function showLayer(layer) {
     if (!galleryDataset) return;
-    if (layer !== activeLayer) layerRevision++;
+    if (layer !== activeLayer) {
+      layerRevision++;
+      layerError.hidden = true;
+    }
     activeLayer = layer;
     const assembly = layer === 'assembly';
     denseButton.hidden = !(assembly && galleryNative && denseBackgroundFor(activeCase));
@@ -555,9 +555,8 @@
   $('case-zoom-in').addEventListener('click', () => galleryView()?.zoom(1 / 1.18));
   $('case-reset').addEventListener('click', () => galleryView()?.reset());
 
-  function showGallery(assets, note, canvas) {
+  function showGallery(assets, canvas) {
     $('case-stage-status').textContent = '';
-    $('case-model-note').textContent = immersive[activeCase]?.displayNote || note;
     canvas.hidden = false;
     $('case-camera').hidden = false;
     $('gallery-tools').hidden = false;
@@ -577,8 +576,7 @@
     modelRequested = null;
     const status = $('case-stage-status');
     status.textContent = 'Loading saved 3D geometry…';
-    const { model, id, revision } = job;
-    const collisionNote = id.startsWith('scannet-147k-') && model.note?.match(/(?:Collision checks|Detected intersecting pairs).*/)?.[0];
+    const { id, revision } = job;
     const native = window.ALBUM_IMMERSIVE_ROOMS?.[id];
     const nativeAssets = native?.assets || window.ALBUM_BENCH_INSTANCE_PARTS?.[id];
     try {
@@ -595,13 +593,7 @@
       if (revision !== viewRevision || !opened) return;
       galleryDataset = opened;
       galleryNative = true;
-      const materialNote = saved ? (id.startsWith('replica-')
-        ? 'Saved placements with Replica’s original scan colors.' : 'Saved placements with original asset materials.')
-        : 'Saved placements with archived vertex colors.';
-      showGallery(assets.map(({ label, name }) => ({ label: label.replace(/^\d+\s+|\.\d{3}$/g, ''), value: name })),
-        opened.hasContactLayout
-          ? contactNote(id)
-          : [materialNote, collisionNote].filter(Boolean).join(' '), galleryPbrCanvas);
+      showGallery(assets.map(({ label, name }) => ({ label: label.replace(/^\d+\s+|\.\d{3}$/g, ''), value: name })), galleryPbrCanvas);
       return;
     } catch (error) {
       if (revision !== viewRevision) return;
@@ -620,6 +612,7 @@
   function resetModel() {
     viewRevision++;
     denseRevision++;
+    layerError.hidden = true;
     denseButton.hidden = denseStatus.hidden = true;
     denseButton.removeAttribute('aria-busy');
     toggle(denseButton, false);
@@ -660,14 +653,11 @@
     $('case-library').textContent = immersive[example.id]?.libraryLabel || assetLibrary[groupFor(example)];
     $('case-query-link').hidden = !queryButtons.has(example.id);
     setInputs(example);
-    $('case-description').textContent = example.description;
-    const model = caseModels[example.id];
     $('case-live').hidden = false;
     gtButton.hidden = !immersive[example.id]?.groundTruth;
     gtButton.disabled = true;
-    $('case-model-note').textContent = '';
     $('case-stage-status').textContent = 'Opening saved 3D scene…';
-    modelRequested = { model, id: example.id, revision: viewRevision };
+    modelRequested = { id: example.id, revision: viewRevision };
     loadModel();
   }
 

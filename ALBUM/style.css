@@ -245,10 +245,6 @@ canvas[data-viewer="viser"]:not([hidden]) + .viser-frame { visibility: visible; 
 .benchmark-bars dd > span { display: flex; justify-content: flex-end; align-items: center; width: var(--score); padding-right: .4rem; box-sizing: border-box; height: 1.42rem; color: var(--white); background: #626879; font-size: .78rem; line-height: 1; font-weight: 650; }
 .benchmark-bars .benchmark-key { background: var(--accent); }
 .benchmark-axis { grid-column: 2; display: flex; justify-content: space-between; color: var(--muted); font-size: .72rem; line-height: 1; }
-.eval-protocol { margin-top: .45rem; }
-.eval-protocol summary { width: fit-content; cursor: pointer; padding-block: .68rem; font-size: .9rem; font-weight: 600; }
-.eval-protocol p { max-width: 84ch; margin: 0 0 .5rem; color: var(--muted); font-size: .94rem; }
-.eval-protocol strong { color: var(--ink); }
 @container (max-width: 46rem) {
   .benchmark-board { grid-template-columns: minmax(0, 1fr); gap: 1.55rem; }
   .benchmark-dataset { grid-row: auto; grid-template-rows: auto auto; gap: 1.1rem; }
@@ -323,7 +319,6 @@ canvas[data-viewer="viser"]:not([hidden]) + .viser-frame { visibility: visible; 
 .case-geometry .mode-switch { margin-top: 0; }
 .case-geometry label { font-size: .82rem; display: flex; align-items: center; gap: .38rem; }
 .case-geometry select { max-width: min(40vw,17rem); border-radius: .26rem; border: 1px solid var(--line); color: var(--ink); padding: .27rem; background: var(--white); }
-#case-model-note:empty { display: none; }
 footer { border-top: 1px solid var(--line); }
 .footer-row { padding: 1.3rem var(--gutter); max-width: 93rem; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: .87rem; }
 
