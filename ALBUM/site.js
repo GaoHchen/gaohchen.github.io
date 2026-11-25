@@ -47,6 +47,21 @@
   const reel = $('reel');
   const reelButton = document.querySelector('.reel-toggle');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  if ('IntersectionObserver' in window && !reduce.matches) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    }, { threshold: .08, rootMargin: '0px 0px -48px 0px' });
+
+    document.querySelectorAll('.chapters-content > .chapter > *').forEach((element, index) => {
+      element.classList.add('scroll-reveal');
+      element.style.setProperty('--reveal-delay', `${Math.min(index % 5 * 65, 260)}ms`);
+      revealObserver.observe(element);
+    });
+  }
   let previewVisible = true;
   let runPreview = !reduce.matches;
   function updatePreview() {
